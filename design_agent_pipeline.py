@@ -23,6 +23,9 @@ def classify_design_from_api(protocol):
     arm_types = [a.get('type', '') for a in arm_groups]
     
     # Determine control_type
+    is_phase1 = any('PHASE1' in p for p in phases)
+    is_nonrandomized = allocation == 'NON_RANDOMIZED'
+    
     if 'PLACEBO_COMPARATOR' in arm_types:
         control_type = 'Placebo'
     elif 'ACTIVE_COMPARATOR' in arm_types:
@@ -32,6 +35,8 @@ def classify_design_from_api(protocol):
     elif 'NO_INTERVENTION' in arm_types:
         control_type = 'No Treatment'
     elif len(arm_types) <= 1:
+        control_type = 'None (Single-Arm)'
+    elif is_phase1 and is_nonrandomized:
         control_type = 'None (Single-Arm)'
     else:
         control_type = 'Standard of Care'
@@ -56,7 +61,9 @@ def classify_design_from_api(protocol):
     
     # Determine superiority_type from phase and purpose
     # Noninferiority/equivalence trials are more common in Phase 3 with active comparators
-    if control_type == 'Active Comparator' and 'PHASE3' in phases:
+    if is_phase1:
+        superiority_type = 'Unclear'
+    elif control_type == 'Active Comparator' and 'PHASE3' in phases:
         superiority_type = 'Noninferiority'
     elif control_type == 'Placebo':
         superiority_type = 'Superiority'
@@ -141,6 +148,31 @@ def analyze_sample_size(protocol, endpoints):
     arm_groups = arms.get('armGroups', [])
     enrollment_info = design_mod.get('enrollmentInfo', {})
     enrollment = enrollment_info.get('count', 0)
+    phases = design_mod.get('phases', [])
+    
+    if not enrollment:
+        return None
+    
+    # Phase 1 dose-escalation trials are not powered for efficacy
+    is_phase1 = any('PHASE1' in p for p in phases)
+    if is_phase1:
+        interventional_arms = [a for a in arm_groups if a.get('type') != 'NO_INTERVENTION']
+        num_arms = len(interventional_arms)
+        n_per_arm = max(1, enrollment // num_arms) if num_arms > 0 else enrollment
+        return {
+            'enrollment_actual': enrollment,
+            'estimated_n_per_arm': n_per_arm,
+            'num_arms': num_arms,
+            'primary_endpoint_type': 'Safety / Dose-Finding',
+            'power_analysis': {
+                'alpha': None,
+                'power_target': None,
+                'test_type': 'N/A (Phase 1 dose-escalation)',
+                'detectable_absolute_difference': None,
+                'estimated_power_for_20pct_improvement': None,
+                'assessment': 'N/A — Phase 1 trial, not powered for efficacy'
+            }
+        }
     
     if not enrollment:
         return None
@@ -355,10 +387,6 @@ def analyze_adaptive_design(protocol, api_design):
         if any(k in description_text for k in keywords):
             adaptive_types.append(design_type)
     
-    # Also flag from API: SEQUENTIAL model always means adaptive
-    if intervention_model == 'SEQUENTIAL' and 'Group Sequential' not in adaptive_types:
-        adaptive_types.append('Group Sequential')
-    
     # Phase 1 trials are inherently dose-finding (adaptive)
     is_phase1 = any('PHASE1' in p for p in phases)
     if is_phase1 and 'Dose-Finding / Phase I' not in adaptive_types:
@@ -394,11 +422,26 @@ def analyze_adaptive_design(protocol, api_design):
     else:
         description = 'Standard fixed-design trial. No adaptive features detected.'
     
+    # Detect dose-escalation method for Phase 1 trials
+    dose_method = None
+    if is_phase1:
+        if any(k in description_text for k in ['continual reassessment', 'crm']):
+            dose_method = 'Continual Reassessment Method (CRM)'
+        elif any(k in description_text for k in ['bayesian']):
+            dose_method = 'Bayesian dose-escalation'
+        elif any(k in description_text for k in ['3+3', '3 plus 3']):
+            dose_method = 'Traditional 3+3'
+        elif any(k in description_text for k in ['rolling six']):
+            dose_method = 'Rolling Six design'
+        else:
+            dose_method = 'Standard dose-escalation (not explicitly specified)'
+    
     return {
         'has_adaptive_features': has_adaptive,
         'adaptive_types': adaptive_types,
         'interim_analysis_mentioned': interim_analysis,
         'stopping_rules': stopping_rules,
+        'dose_escalation_method': dose_method,
         'description': description
     }
 
@@ -577,10 +620,16 @@ def analyze_trial(nct_id):
     
     def classify_endpoint_type(measure, description):
         text = (measure + ' ' + (description or '')).lower()
-        safety_keywords = ['adverse event', 'tolerability', 'safety', 'clinically significant', 'laboratory', 'ecg', 'vital sign']
+        safety_keywords = ['adverse event', 'tolerability', 'safety', 'clinically significant', 'laboratory', 'ecg', 'vital sign',
+                          'dlt', 'dose-limiting', 'maximum tolerated', 'mt']
         qol_keywords = ['quality of life', 'qol', 'patient-reported', 'questionnaire', 'sf-36', 'eq-5d', 'dlqi', 'pssd', 'wpai']
-        clinical_keywords = ['death', 'mortality', 'survival', 'stroke', 'infarction', 'hospitalization', 'fracture']
-        biomarker_keywords = ['concentration', 'level', 'biomarker', 'gene', 'genetic', 'pcr', 'assay']
+        clinical_keywords = ['death', 'mortality', 'survival', 'stroke', 'infarction', 'hospitalization', 'fracture',
+                            'overall survival', 'os']
+        biomarker_keywords = ['concentration', 'level', 'biomarker', 'gene', 'genetic', 'pcr', 'assay',
+                             'pharmacokinetic', 'pk', 'auc', 'cmax', 'tmax', 'half-life', 'terminal half-life']
+        surrogate_keywords = ['objective response', 'orr', 'disease control', 'dcr', 'duration of response',
+                             'progression-free', 'pfs', 'recist', 'tumor response', 'antitumor activity',
+                             'best overall response', 'confirmed response']
         composite_keywords = ['composite', 'mace', 'combined', 'major adverse']
         
         if any(k in text for k in safety_keywords):
@@ -593,6 +642,8 @@ def analyze_trial(nct_id):
             return 'Patient-Reported'
         elif any(k in text for k in biomarker_keywords):
             return 'Biomarker'
+        elif any(k in text for k in surrogate_keywords):
+            return 'Surrogate'
         else:
             return 'Surrogate'
     
@@ -644,6 +695,7 @@ def analyze_trial(nct_id):
     print(f"\nAdaptive Designs:")
     print(f"  Has adaptive features: {adaptive['has_adaptive_features']}")
     print(f"  Types: {', '.join(adaptive['adaptive_types']) if adaptive['adaptive_types'] else 'None'}")
+    print(f"  Dose-escalation method: {adaptive['dose_escalation_method'] or 'N/A'}")
     print(f"  Interim analysis: {adaptive['interim_analysis_mentioned']}")
     print(f"  Stopping rules: {adaptive['stopping_rules']}")
     
@@ -653,7 +705,7 @@ def analyze_trial(nct_id):
     print(f"  AE Reporting: {safety_ae['ae_reporting_method']}")
     print(f"  Ascertainment: {safety_ae['ae_ascertainment']}")
     print(f"  AE types detected: {', '.join(safety_ae['ae_types_detected'][:5]) if safety_ae['ae_types_detected'] else 'None detected in text'}")
-    print(f"  TYK2 class effects: {', '.join(safety_ae['class_effects_known'][:5]) if safety_ae['class_effects_known'] else 'None detected'}")
+    print(f"  Class-specific effects: {', '.join(safety_ae['class_effects_known'][:5]) if safety_ae['class_effects_known'] else 'None detected'}")
     print(f"  Safety monitoring: {safety_ae['safety_monitoring']}")
     
     # --- STEP 2: LLM classification of eligibility ---

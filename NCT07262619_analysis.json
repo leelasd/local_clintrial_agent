@@ -1,0 +1,298 @@
+{
+  "nct_id": "NCT07262619",
+  "title": "EIK1005-002: A Clinical Research Study Evaluating EIK1005, a Werner Helicase Inhibitor, as Monotherapy and in Combination With Pembrolizumab in Participants With Advanced Solid Tumors Including Microsatellite Instability High (MSI-H) Tumors",
+  "phase": "PHASE1",
+  "eligibility": [
+    {
+      "text": ". is \u2265 18 years of age at the time of signing the informed consent.",
+      "reasoning_category": "Feasibility",
+      "justification": "Age requirement ensures participants are legally competent to participate in clinical trials.",
+      "competing_risk": false
+    },
+    {
+      "text": ". has a life expectancy of at least 3 months.",
+      "reasoning_category": "Safety",
+      "justification": "Ensures patients have sufficient time for the study duration and potential treatment effects.",
+      "competing_risk": false
+    },
+    {
+      "text": "has histologically or cytologically documented advanced (unresectable and/or metastatic) solid tumor.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with a specific type of cancer, ensuring they are eligible for the study.",
+      "competing_risk": true
+    },
+    {
+      "text": "Part 1A: recommend that participants have archival tissue not more than 3 years old.",
+      "reasoning_category": "Safety",
+      "justification": "Ensures sufficient time has passed since tumor diagnosis to obtain reliable tissue samples for analysis.",
+      "competing_risk": true
+    },
+    {
+      "text": "Part 1B and Part 2: participant has locally confirmed Microsatellite Instability High (MSI-H) or Mismatch Repair Deficient (dMMR) tumor.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with specific genetic markers, ensuring they are eligible for the study.",
+      "competing_risk": true
+    },
+    {
+      "text": "Participant must have archival tumor tissue (not more than 3 years old) for retrospective confirmation of MSI-H or dMMR tumor by a central laboratory.",
+      "reasoning_category": "Safety",
+      "justification": "Ensures the accuracy of diagnosis and eligibility criteria.",
+      "competing_risk": true
+    },
+    {
+      "text": ". In Part 1A, has received and then progressed after or is intolerant to at least 1 standard treatment regimen in the advanced setting.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients who have failed previous treatments, ensuring they are eligible for the study.",
+      "competing_risk": false
+    },
+    {
+      "text": "The participant does not have alternative therapeutic options per PI's medical judgement.",
+      "reasoning_category": "Safety",
+      "justification": "Ensures that participants have exhausted all other treatment options before enrolling in the trial.",
+      "competing_risk": false
+    },
+    {
+      "text": "Preference should be given to: (1) participants with MSI-H or dMMR cancers that have progressed after checkpoint inhibitor (CPI) therapy and (2) participants with microsatellite stable cells (MSS) cancers that have progressed following at least one regimen of platinum, alkylating or topoisomerase containing chemotherapy.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with specific cancer types, ensuring they are eligible for the study.",
+      "competing_risk": true
+    },
+    {
+      "text": ". has measurable disease at baseline according to Response Evaluation Criteria in Solid Tumors version 1.1 (RECIST 1.1) as determined by the PI.",
+      "reasoning_category": "Statistical Power",
+      "justification": "Ensures that patients have a measurable disease for accurate treatment evaluation.",
+      "competing_risk": true
+    },
+    {
+      "text": ". has an Eastern Cooperative Oncology Group (ECOG) score of 0 to 1.",
+      "reasoning_category": "Feasibility",
+      "justification": "Specifies inclusion criteria based on patient's physical condition, ensuring they are eligible for the study.",
+      "competing_risk": false
+    },
+    {
+      "text": ". has an adequate organ and marrow function.",
+      "reasoning_category": "Safety",
+      "justification": "Ensures patients have sufficient organ and marrow function to tolerate treatment.",
+      "competing_risk": false
+    },
+    {
+      "text": ". has not recovered (i.e., to Grade \u2264 1 or to baseline) from prior anti-cancer therapy-induced adverse events (AEs).",
+      "reasoning_category": "Safety",
+      "justification": "Ensures patients have recovered sufficiently from previous treatment-related side effects before enrolling in the trial.",
+      "competing_risk": true
+    },
+    {
+      "text": "has received prior treatment with Werner (WRN) inhibitor.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients who have received WRN inhibitors, ensuring they are eligible for the study.",
+      "competing_risk": false
+    },
+    {
+      "text": ". has a history of relevant drug hypersensitivity, ascertained or presumptive allergy/hypersensitivity to the active drug substance and/or formulation ingredients, history of serious allergic reactions leading to hospitalization, or any other allergic reaction in general.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with a history of allergies, ensuring they are eligible for the study.",
+      "competing_risk": false
+    },
+    {
+      "text": ". In Parts 1B and Part 2 Rescue: diagnosis of immunodeficiency or is receiving chronic systemic steroid therapy (in dosing exceeding 10 mg daily of prednisone equivalent) or any other form of immunosuppressive therapy within 7 days prior to the first dose of study intervention.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with immunodeficiency, ensuring they are eligible for the study.",
+      "competing_risk": false
+    },
+    {
+      "text": ". has known additional malignancy that is progressing or has required active treatment within the past 3 years.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with a history of cancer, ensuring they are eligible for the study.",
+      "competing_risk": true
+    },
+    {
+      "text": ". has known active central nervous system (CNS) metastases and/or carcinomatous meningitis.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with CNS metastases, ensuring they are eligible for the study.",
+      "competing_risk": false
+    },
+    {
+      "text": "Participants with previously treated brain metastases may participate provided they are radiologically stable (ie, without evidence of progression) for at least 4 weeks as confirmed by repeat imaging performed during the study screening, are clinically stable and have not required steroid treatment for at least 14 days before the first dose of study treatment.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with brain metastases, ensuring they are eligible for the study.",
+      "competing_risk": false
+    },
+    {
+      "text": ". has mean resting QTcF > 470 ms (men and women) obtained from triplicate electrocardiograms (ECGs).",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with a specific heart rhythm, ensuring they are eligible for the study.",
+      "competing_risk": false
+    },
+    {
+      "text": ". has active autoimmune disease that has required systemic treatment in the past 2 years (ie, with use of disease modifying agents, corticosteroids, or immunosuppressive drugs).",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with autoimmune diseases, ensuring they are eligible for the study.",
+      "competing_risk": false
+    },
+    {
+      "text": ". has history of (non-infectious) pneumonitis/pneumonitis/interstitial lung disease that required steroids or current pneumonitis/interstitial lung disease.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with a history of pneumonitis, ensuring they are eligible for the study.",
+      "competing_risk": false
+    },
+    {
+      "text": ". has active tuberculosis.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with active tuberculosis, ensuring they are eligible for the study.",
+      "competing_risk": false
+    },
+    {
+      "text": ". has any active infections requiring systemic therapy.",
+      "reasoning_category": "Safety",
+      "justification": "Specifies inclusion criteria for patients with active infections, ensuring they are eligible for the study.",
+      "competing_risk": false
+    }
+  ],
+  "population": {
+    "sex": "ALL",
+    "age_range": "18 Years+",
+    "std_ages": [
+      "ADULT",
+      "OLDER_ADULT"
+    ],
+    "healthy_volunteers": false,
+    "age_restrictiveness": "Moderate",
+    "has_competing_risk_exclusions": true,
+    "recruitment_yield_estimate": "Moderate (5-20% screen-to-enroll)",
+    "enrollment_count": 160,
+    "enrollment_type": "ESTIMATED"
+  },
+  "sample_size": {
+    "enrollment_actual": 160,
+    "estimated_n_per_arm": 53,
+    "num_arms": 3,
+    "primary_endpoint_type": "Safety / Dose-Finding",
+    "power_analysis": {
+      "alpha": null,
+      "power_target": null,
+      "test_type": "N/A (Phase 1 dose-escalation)",
+      "detectable_absolute_difference": null,
+      "estimated_power_for_20pct_improvement": null,
+      "assessment": "N/A \u2014 Phase 1 trial, not powered for efficacy"
+    }
+  },
+  "endpoints": [
+    {
+      "text": "Dose-Limiting Toxicity (DLT) - Part 1",
+      "endpoint_type": "Safety",
+      "timeframe": "21 Days",
+      "is_primary": true
+    },
+    {
+      "text": "Adverse Events (AEs) - Part 1 and Part 2",
+      "endpoint_type": "Safety",
+      "timeframe": "From the time of first dose of study medication through 30 days following cessation of study treatment.",
+      "is_primary": true
+    },
+    {
+      "text": "Objective Response (OR) - Part 1 and Part 2",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Through study completion, an average of 2 years.",
+      "is_primary": false
+    },
+    {
+      "text": "Duration of Response (DOR) - Part 1 and Part 2",
+      "endpoint_type": "Clinical",
+      "timeframe": "Through study completion, an average of 2 years.",
+      "is_primary": false
+    },
+    {
+      "text": "Disease Control (DC) - Part 1 and Part 2",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Through study completion, an average of 2 years.",
+      "is_primary": false
+    },
+    {
+      "text": "Progression-free survival (PFS) - Part 2",
+      "endpoint_type": "Clinical",
+      "timeframe": "Through study completion, an average of 2 years.",
+      "is_primary": false
+    },
+    {
+      "text": "Pharmacokinetic (PK) parameters of EIK1005 - AUC0-24 (Part 1 and Part 2)",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to 1 year",
+      "is_primary": false
+    },
+    {
+      "text": "Pharmacokinetic (PK) parameters of EIK1005 - AUCtau,ss (Part 1 and Part 2)",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to 1 year",
+      "is_primary": false
+    },
+    {
+      "text": "Pharmacokinetic (PK) parameters of EIK1005 - Cmax (Part 1 and Part 2)",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to 1 year",
+      "is_primary": false
+    },
+    {
+      "text": "Pharmacokinetic (PK) parameters of EIK1005 - tmax (Part 1 and Part 2)",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to 1 year",
+      "is_primary": false
+    },
+    {
+      "text": "Pharmacokinetic (PK) parameters of EIK1005 - t\u00bd (Half-life) (Part 1 and Part 2)",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to 1 year",
+      "is_primary": false
+    }
+  ],
+  "trial_integrity": {
+    "masking_level": "Open-label",
+    "blinding_validation_method": "Not specified",
+    "concomitant_therapy_controls": "Standardized background care"
+  },
+  "trial_design": {
+    "design_type": "Adaptive Design",
+    "control_type": "None (Single-Arm)",
+    "superiority_type": "Unclear"
+  },
+  "randomization": {
+    "randomization_type": "Not described",
+    "allocation_ratio": "1:1:1",
+    "stratification_factors": [
+      "Baseline",
+      "Prior Treatment",
+      "Age"
+    ],
+    "randomization_description": "Stratified by Baseline, Prior Treatment, Age. "
+  },
+  "adaptive_designs": {
+    "has_adaptive_features": true,
+    "adaptive_types": [
+      "Dose-Finding / Phase I"
+    ],
+    "interim_analysis_mentioned": false,
+    "stopping_rules": "Not mentioned",
+    "dose_escalation_method": "Standard dose-escalation (not explicitly specified)",
+    "description": "Adaptive design detected: Types identified: Dose-Finding / Phase I."
+  },
+  "safety_adverse_events": {
+    "ae_reporting_method": "CTCAE severity grading",
+    "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
+    "ae_types_detected": [
+      "Urinary Tract Infection"
+    ],
+    "class_effects_known": [
+      "ALT elevation",
+      "Infections (general)",
+      "AST elevation",
+      "Tuberculosis screening"
+    ],
+    "safety_endpoints": [],
+    "sae_stopping_rules": "Not specified in protocol text",
+    "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+  },
+  "summary": {
+    "Feasibility": 2,
+    "Safety": 21,
+    "Statistical Power": 1
+  }
+}

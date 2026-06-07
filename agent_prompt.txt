@@ -74,6 +74,7 @@ Example structure:
     "adaptive_types": [],
     "interim_analysis_mentioned": false,
     "stopping_rules": "Not mentioned",
+    "dose_escalation_method": null,
     "description": "Standard fixed-design parallel RCT with no adaptive features. No interim analyses or stopping rules specified."
   },
   "safety_adverse_events": {
