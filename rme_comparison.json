@@ -2002,15 +2002,19 @@
       "enrollment_actual": 500,
       "estimated_n_per_arm": 250,
       "num_arms": 2,
-      "primary_endpoint_type": "Clinical",
-      "estimated_control_event_rate": null,
+      "primary_endpoint_type": "PFS (Progression-Free Survival)",
+      "estimated_control_event_rate": 0.85,
       "power_analysis": {
         "alpha": 0.05,
         "power_target": 0.8,
-        "test_type": "Two-sided",
-        "detectable_absolute_difference": null,
-        "estimated_power_for_20pct_improvement": null,
-        "assessment": "Power analysis requires dichotomous endpoint"
+        "test_type": "Two-sided (log-rank)",
+        "detectable_hazard_ratio": 0.762,
+        "hr_reduction": "24%",
+        "expected_events": 425,
+        "control_median_months": 3.5,
+        "implied_treatment_median_months": 4.6,
+        "median_improvement_months": 1.1,
+        "assessment": "Underpowered"
       }
     },
     "endpoints": [

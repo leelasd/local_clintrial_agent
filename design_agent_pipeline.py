@@ -199,70 +199,33 @@ def analyze_sample_size(protocol, endpoints):
     primary_text = primary_endpoints[0]['text'] if primary_endpoints else ''
     primary_type = primary_endpoints[0]['endpoint_type'] if primary_endpoints else 'Unknown'
     
-    # Check if dichotomous (proportion-based endpoint)
-    dichotomous_keywords = ['percentage', 'proportion', 'number of', 'achieving', 'response', 'rate']
-    is_dichotomous = any(k in primary_text.lower() for k in dichotomous_keywords)
-    
-    # For psoriasis trials, typical placebo response rate for sPGA/PASI is ~10-15%
-    estimated_control_rate = 0.10
+    # Common parameters
     alpha = 0.05
     power_target = 0.80
     z_alpha = stats.norm.ppf(1 - alpha / 2)
     z_beta = stats.norm.ppf(power_target)
     
-    if is_dichotomous and n_per_arm > 1:
-        # Compute minimum detectable absolute difference at target power
-        def compute_detectable_diff(n, p0, za, zb):
-            for delta_p in [x / 100 for x in range(1, 50)]:
-                p1 = p0 + delta_p
-                phat = (p0 + p1) / 2
-                se = math.sqrt(2 * phat * (1 - phat) / n)
-                if se == 0:
-                    continue
-                z = delta_p / se
-                est_power = stats.norm.cdf(z - za)
-                if est_power >= power_target:
-                    return delta_p
-            return None
-        
-        detectable_diff = compute_detectable_diff(n_per_arm, estimated_control_rate, z_alpha, z_beta)
-        
-        # Estimate power for a realistic 20% absolute improvement
-        p1_realistic = estimated_control_rate + 0.20
-        phat_realistic = (estimated_control_rate + p1_realistic) / 2
-        se_realistic = math.sqrt(2 * phat_realistic * (1 - phat_realistic) / n_per_arm)
-        z_realistic = 0.20 / se_realistic if se_realistic > 0 else 0
-        power_realistic = stats.norm.cdf(z_realistic - z_alpha)
-        
-        # Assessment
-        if detectable_diff is None:
-            assessment = 'Cannot determine'
-        elif detectable_diff <= 0.10:
-            assessment = 'Adequately Powered'
-        elif detectable_diff <= 0.15:
-            assessment = 'Borderline'
-        elif detectable_diff <= 0.25:
-            assessment = 'Underpowered'
-        else:
-            assessment = 'Severely Underpowered'
-        
-        return {
-            'enrollment_actual': enrollment,
-            'estimated_n_per_arm': n_per_arm,
-            'num_arms': num_arms,
-            'primary_endpoint_type': 'Dichotomous (Proportion)',
-            'estimated_control_event_rate': estimated_control_rate,
-            'power_analysis': {
-                'alpha': alpha,
-                'power_target': power_target,
-                'test_type': 'Two-sided',
-                'detectable_absolute_difference': round(detectable_diff, 3) if detectable_diff else None,
-                'estimated_power_for_20pct_improvement': round(power_realistic, 3),
-                'assessment': assessment
-            }
-        }
+    # Check if survival/time-to-event endpoint (PFS, OS)
+    # Use word-boundary matching to avoid false positives (e.g. "os" matching inside "close")
+    primary_lower = primary_text.lower() + ' '
+    survival_keywords = ['survival', 'progression-free ', 'overall survival',
+                         'time to progression', 'time to death', 'death from any cause',
+                         'disease progression', 'pfs ', 'os ']
+    is_survival = any(k in primary_lower for k in survival_keywords)
     
-    # Non-dichotomous endpoint — just report enrollment
+    # Check if dichotomous (proportion-based endpoint)
+    dichotomous_keywords = ['percentage', 'proportion', 'number of', 'achieving', 'response', 'rate']
+    is_dichotomous = any(k in primary_text.lower() for k in dichotomous_keywords)
+    
+    if is_survival and n_per_arm > 1:
+        return _analyze_survival_power(primary_text, enrollment, n_per_arm, num_arms,
+                                       alpha, power_target, z_alpha, z_beta)
+    
+    if is_dichotomous and n_per_arm > 1:
+        return _analyze_dichotomous_power(primary_text, enrollment, n_per_arm, num_arms,
+                                           alpha, power_target, z_alpha, z_beta, primary_type)
+    
+    # Non-dichotomous, non-survival endpoint
     return {
         'enrollment_actual': enrollment,
         'estimated_n_per_arm': n_per_arm,
@@ -275,7 +238,157 @@ def analyze_sample_size(protocol, endpoints):
             'test_type': 'Two-sided',
             'detectable_absolute_difference': None,
             'estimated_power_for_20pct_improvement': None,
-            'assessment': 'Power analysis requires dichotomous endpoint'
+            'assessment': 'Power analysis uses dichotomous or survival endpoints'
+        }
+    }
+
+
+def _analyze_dichotomous_power(primary_text, enrollment, n_per_arm, num_arms,
+                                alpha, power_target, z_alpha, z_beta, primary_type):
+    """Power analysis for dichotomous (proportion-based) endpoints."""
+    # For psoriasis trials, typical placebo response rate for sPGA/PASI is ~10-15%
+    estimated_control_rate = 0.10
+    
+    def compute_detectable_diff(n, p0, za, zb):
+        for delta_p in [x / 100 for x in range(1, 50)]:
+            p1 = p0 + delta_p
+            phat = (p0 + p1) / 2
+            se = math.sqrt(2 * phat * (1 - phat) / n)
+            if se == 0:
+                continue
+            z = delta_p / se
+            est_power = stats.norm.cdf(z - za)
+            if est_power >= power_target:
+                return delta_p
+        return None
+    
+    detectable_diff = compute_detectable_diff(n_per_arm, estimated_control_rate, z_alpha, z_beta)
+    
+    # Estimate power for a realistic 20% absolute improvement
+    p1_realistic = estimated_control_rate + 0.20
+    phat_realistic = (estimated_control_rate + p1_realistic) / 2
+    se_realistic = math.sqrt(2 * phat_realistic * (1 - phat_realistic) / n_per_arm)
+    z_realistic = 0.20 / se_realistic if se_realistic > 0 else 0
+    power_realistic = stats.norm.cdf(z_realistic - z_alpha)
+    
+    # Assessment
+    if detectable_diff is None:
+        assessment = 'Cannot determine'
+    elif detectable_diff <= 0.10:
+        assessment = 'Adequately Powered'
+    elif detectable_diff <= 0.15:
+        assessment = 'Borderline'
+    elif detectable_diff <= 0.25:
+        assessment = 'Underpowered'
+    else:
+        assessment = 'Severely Underpowered'
+    
+    return {
+        'enrollment_actual': enrollment,
+        'estimated_n_per_arm': n_per_arm,
+        'num_arms': num_arms,
+        'primary_endpoint_type': 'Dichotomous (Proportion)',
+        'estimated_control_event_rate': estimated_control_rate,
+        'power_analysis': {
+            'alpha': alpha,
+            'power_target': power_target,
+            'test_type': 'Two-sided',
+            'detectable_absolute_difference': round(detectable_diff, 3) if detectable_diff else None,
+            'estimated_power_for_20pct_improvement': round(power_realistic, 3),
+            'assessment': assessment
+        }
+    }
+
+
+def _analyze_survival_power(primary_text, enrollment, n_per_arm, num_arms,
+                             alpha, power_target, z_alpha, z_beta):
+    """Power analysis for time-to-event (survival) endpoints using Schoenfeld formula.
+    
+    Uses the event-count based approach:
+        D = (Z_alpha + Z_beta)^2 / [p(1-p) * ln(HR)^2]
+    
+    where D = required total number of events, p = proportion randomized to treatment.
+    For power given fixed N, we estimate expected total events and solve for
+    detectable hazard ratio: ln(HR) = sqrt((Zα+Zβ)² / [D * p(1-p)])
+    """
+    # Determine endpoint type from text
+    is_os = any(k in primary_text.lower() for k in ['overall survival', 'os'])
+    endpoint_label = 'OS (Overall Survival)' if is_os else 'PFS (Progression-Free Survival)'
+    
+    # Historical benchmarks for second-line PDAC
+    control_median_months = 6.0  # typical mOS for 2L PDAC
+    if not is_os:
+        control_median_months = 3.5  # typical mPFS for 2L PDAC
+    
+    # Proportion randomized to one of the treatment arms
+    # For 2 arms (1 treatment + 1 control): p = 0.5
+    p_alloc = 1.0 / num_arms
+    
+    # Expected total events as fraction of patients
+    # For a trial with ~3 year follow-up in advanced cancer,
+    # most patients will have the event
+    event_rate = 0.85
+    
+    expected_events = enrollment * event_rate
+    denom = expected_events * p_alloc * (1 - p_alloc)
+    
+    if denom <= 0:
+        return {
+            'enrollment_actual': enrollment,
+            'estimated_n_per_arm': n_per_arm,
+            'num_arms': num_arms,
+            'primary_endpoint_type': endpoint_label,
+            'estimated_control_event_rate': event_rate,
+            'power_analysis': {
+                'alpha': alpha,
+                'power_target': power_target,
+                'test_type': 'Two-sided (log-rank)',
+                'detectable_hazard_ratio': None,
+                'expected_events': round(expected_events),
+                'control_median_months': control_median_months,
+                'assessment': 'Cannot compute (insufficient expected events)'
+            }
+        }
+    
+    log_hr = math.sqrt((z_alpha + z_beta) ** 2 / denom)
+    # Take the negative root: treatment is expected to reduce hazard (HR < 1)
+    detectable_hr = math.exp(-log_hr)
+    
+    # detectable_hr is the hazard ratio (treatment / control)
+    # HR < 1 means treatment benefit; HR > 1 means control better
+    # For a superiority trial, we want detectable_hr < 1
+    
+    # Assessment (based on detectable HR)
+    # In oncology, HR of 0.65-0.80 is typical for Phase 3 trials
+    if detectable_hr <= 0.65:
+        assessment = 'Adequately Powered'
+    elif detectable_hr <= 0.75:
+        assessment = 'Borderline'
+    elif detectable_hr <= 0.85:
+        assessment = 'Underpowered'
+    else:
+        assessment = 'Severely Underpowered'
+    
+    # Compute implied treatment median
+    treatment_median = control_median_months / detectable_hr
+    
+    return {
+        'enrollment_actual': enrollment,
+        'estimated_n_per_arm': n_per_arm,
+        'num_arms': num_arms,
+        'primary_endpoint_type': endpoint_label,
+        'estimated_control_event_rate': event_rate,
+        'power_analysis': {
+            'alpha': alpha,
+            'power_target': power_target,
+            'test_type': 'Two-sided (log-rank)',
+            'detectable_hazard_ratio': round(detectable_hr, 3),
+            'hr_reduction': f"{(1 - detectable_hr) * 100:.0f}%",
+            'expected_events': round(expected_events),
+            'control_median_months': control_median_months,
+            'implied_treatment_median_months': round(treatment_median, 1),
+            'median_improvement_months': round(treatment_median - control_median_months, 1),
+            'assessment': assessment
         }
     }
 
@@ -697,9 +810,18 @@ def analyze_trial(nct_id):
         print(f"\nSample Size / Power:")
         print(f"  Enrollment: {sample_size['enrollment_actual']} ({sample_size['num_arms']} arms, ~{sample_size['estimated_n_per_arm']}/arm)")
         print(f"  Endpoint: {sample_size['primary_endpoint_type']}")
-        if pa['detectable_absolute_difference']:
+        if pa.get('detectable_hazard_ratio'):
+            print(f"  Test: {pa['test_type']}")
+            print(f"  Detectable HR at {pa['power_target']:.0%} power: {pa['detectable_hazard_ratio']} ({pa.get('hr_reduction', '?')} risk reduction)")
+            print(f"  Expected events: {pa['expected_events']}")
+            print(f"  Control median: {pa['control_median_months']}mo → treatment median: {pa['implied_treatment_median_months']}mo")
+            print(f"  Implied median improvement: {pa['median_improvement_months']} months")
+            print(f"  Assessment: {pa['assessment']}")
+        elif pa.get('detectable_absolute_difference'):
             print(f"  Detectable Δ at {pa['power_target']:.0%} power: {pa['detectable_absolute_difference']:.0%}")
             print(f"  Power for 20% improvement: {pa['estimated_power_for_20pct_improvement']:.0%}")
+            print(f"  Assessment: {pa['assessment']}")
+        else:
             print(f"  Assessment: {pa['assessment']}")
     
     # --- STEP 1d: Adaptive design analysis ---
