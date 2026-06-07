@@ -1,0 +1,23 @@
+{
+  "approved_trial": {
+    "nct_id": "NCT04167462",
+    "title": "An Investigational Study to Evaluate Experimental Medication BMS-986165 Compared to Placebo in Participants With Plaque Psoriasis (POETYK-PSO-3) in Mainland China, Taiwan, and South Korea",
+    "phase": "PHASE3",
+    "category_counts": {
+      "Safety": 1,
+      "Statistical Power": 1,
+      "Feasibility": 1
+    }
+  },
+  "investigational_trial": {
+    "nct_id": "NCT06220604",
+    "title": "A Study of JNJ-77242113 for the Treatment of Participants With Moderate to Severe Plaque Psoriasis (ICONIC-ADVANCE 2)",
+    "phase": "PHASE3",
+    "category_counts": {
+      "Safety": 7,
+      "Feasibility": 6,
+      "Statistical Power": 1
+    }
+  },
+  "comparison_insights": {}
+}

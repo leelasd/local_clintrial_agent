@@ -1,0 +1,57 @@
+{
+  "nct_id": "NCT06088043",
+  "title": "A Study About How Well TAK-279 Works and Its Safety in Participants With Moderate-to-severe Plaque Psoriasis During 52 Weeks of Treatment",
+  "phase": "PHASE3",
+  "eligibility": [
+    {
+      "text": "Plaque psoriasis for at least 6 months",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures a sufficient duration of disease to detect treatment effects."
+    },
+    {
+      "text": "Moderate to severe disease",
+      "reasoning_category": "Statistical Power",
+      "justification": "The severity level is crucial for detecting treatment differences in this condition."
+    },
+    {
+      "text": "Candidate for phototherapy or systemic therapy",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion helps define the patient population who can benefit from these treatments, ensuring feasibility of study participation."
+    },
+    {
+      "text": "Other forms of psoriasis",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures a diverse group for comparison and analysis to maximize statistical power."
+    },
+    {
+      "text": "History of recent infection",
+      "reasoning_category": "Safety",
+      "justification": "This criterion protects patients from potential complications related to infections."
+    },
+    {
+      "text": "Prior exposure to TAK-279 or active comparator",
+      "reasoning_category": "Safety",
+      "justification": "This criterion prevents bias by excluding individuals who have already received the treatment being compared."
+    },
+    {
+      "text": "Other protocol defined inclusion/exclusion criteria apply.",
+      "reasoning_category": "Feasibility",
+      "justification": "This is a general category that may encompass various operational or data quality considerations."
+    }
+  ],
+  "trial_integrity": {
+    "masking_level": "Double-blind",
+    "blinding_validation_method": "Not specified",
+    "concomitant_therapy_controls": "Standardized background care"
+  },
+  "trial_design": {
+    "design_type": "Parallel RCT",
+    "control_type": "Placebo",
+    "superiority_type": "Superiority"
+  },
+  "summary": {
+    "Statistical Power": 3,
+    "Feasibility": 2,
+    "Safety": 2
+  }
+}

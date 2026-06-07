@@ -1,0 +1,164 @@
+[
+  {
+    "nct_id": "NCT07286058",
+    "title": "Continuation Study of Zasocitinib in Adults With Psoriatic Arthritis",
+    "phase": "PHASE3",
+    "status": "RECRUITING",
+    "conditions": [
+      "Psoriatic Arthritis"
+    ],
+    "interventions": [
+      "Zasocitinib"
+    ],
+    "drug": "Zasocitinib",
+    "start_date": "2026-03-11",
+    "score": 55
+  },
+  {
+    "nct_id": "NCT06671483",
+    "title": "A Study of Zasocitinib in Adults With Psoriatic Arthritis Who Have Not Taken Biologic Medicines",
+    "phase": "PHASE3",
+    "status": "RECRUITING",
+    "conditions": [
+      "Psoriatic Arthritis"
+    ],
+    "interventions": [
+      "Zasocitinib",
+      "Active Comparator",
+      "Placebo"
+    ],
+    "drug": "Zasocitinib",
+    "start_date": "2025-03-03",
+    "score": 55
+  },
+  {
+    "nct_id": "NCT04908202",
+    "title": "A Study to Determine the Efficacy and Safety of Deucravacitinib Compared With Placebo in Participants With Active Psoriatic Arthritis (PsA) Who Are Na\u00efve to Biologic Disease-modifying Anti-rheumatic Drugs",
+    "phase": "PHASE3",
+    "status": "ACTIVE_NOT_RECRUITING",
+    "conditions": [
+      "Psoriatic Arthritis"
+    ],
+    "interventions": [
+      "Deucravacitinib",
+      "Placebo"
+    ],
+    "drug": "Deucravacitinib",
+    "start_date": "2021-07-13",
+    "score": 52
+  },
+  {
+    "nct_id": "NCT06979453",
+    "title": "A Study to Evaluate the Efficacy, Safety, and Drug Levels of Deucravacitinib (BMS-986165) in Adolescent Participants With Moderate to Severe Plaque Psoriasis",
+    "phase": "PHASE3",
+    "status": "RECRUITING",
+    "conditions": [
+      "Plaque Psoriasis"
+    ],
+    "interventions": [
+      "Deucravacitinib",
+      "Placebo"
+    ],
+    "drug": "Deucravacitinib",
+    "start_date": "2025-12-03",
+    "score": 45
+  },
+  {
+    "nct_id": "NCT07116967",
+    "title": "Long-Term Safety Study of Deucravacitinib Versus Ustekinumab in Participants With Psoriasis (PRAGMATYK)",
+    "phase": "PHASE3",
+    "status": "RECRUITING",
+    "conditions": [
+      "Plaque Psoriasis"
+    ],
+    "interventions": [
+      "Deucravacitinib",
+      "Ustekinumab"
+    ],
+    "drug": "Deucravacitinib",
+    "start_date": "2025-09-22",
+    "score": 45
+  },
+  {
+    "nct_id": "NCT06764615",
+    "title": "A Continuation Study of TAK-279 in Adults With Ulcerative Colitis (UC) and Crohn's Disease (CD)",
+    "phase": "PHASE2",
+    "status": "RECRUITING",
+    "conditions": [
+      "Crohn's Disease",
+      "Ulcerative Colitis"
+    ],
+    "interventions": [
+      "Zasocitinib"
+    ],
+    "drug": "Zasocitinib",
+    "start_date": "2025-05-28",
+    "score": 45
+  },
+  {
+    "nct_id": "NCT06869551",
+    "title": "A Study to Evaluate the Drug Levels, Efficacy, and Safety of Deucravacitinib (BMS-986165) in Pediatric Participants With Juvenile Psoriatic Arthritis",
+    "phase": "PHASE3",
+    "status": "RECRUITING",
+    "conditions": [
+      "Juvenile Psoriatic Arthritis"
+    ],
+    "interventions": [
+      "Deucravacitinib",
+      "Placebo"
+    ],
+    "drug": "Deucravacitinib",
+    "start_date": "2025-03-13",
+    "score": 45
+  },
+  {
+    "nct_id": "NCT06295692",
+    "title": "A Study of JNJ-77242113 for the Treatment of Participants With Generalized Pustular Psoriasis or Erythrodermic Psoriasis",
+    "phase": "PHASE3",
+    "status": "ACTIVE_NOT_RECRUITING",
+    "conditions": [
+      "Generalized Pustular Psoriasis",
+      "Erythrodermic Psoriasis"
+    ],
+    "interventions": [
+      "JNJ-77242113"
+    ],
+    "drug": "JNJ-77242113",
+    "start_date": "2024-02-09",
+    "score": 42
+  },
+  {
+    "nct_id": "NCT05946941",
+    "title": "A Study to Evaluate the Efficacy and Safety of Deucravacitinib in Adults With Active Sj\u00f6gren's Syndrome",
+    "phase": "PHASE3",
+    "status": "ACTIVE_NOT_RECRUITING",
+    "conditions": [
+      "Sj\u00f6gren's Syndrome"
+    ],
+    "interventions": [
+      "Deucravacitinib",
+      "Placebo"
+    ],
+    "drug": "Deucravacitinib",
+    "start_date": "2023-09-11",
+    "score": 42
+  },
+  {
+    "nct_id": "NCT06143878",
+    "title": "A Study of JNJ-77242113 for the Treatment of Participants With Moderate to Severe Plaque Psoriasis",
+    "phase": "PHASE3",
+    "status": "ACTIVE_NOT_RECRUITING",
+    "conditions": [
+      "Plaque Psoriasis"
+    ],
+    "interventions": [
+      "JNJ-77242113",
+      "JNJ-77242113 Matching Placebo",
+      "Deucravacitinib",
+      "Deucravacitinib Matching Placebo"
+    ],
+    "drug": "Deucravacitinib",
+    "start_date": "2024-02-01",
+    "score": 42
+  }
+]

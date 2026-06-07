@@ -1,0 +1,679 @@
+[
+  {
+    "nct_id": "NCT06710470",
+    "title": "A Study on the Safety of Deucravacitinib Exposure in Pregnant Women and Their Offspring",
+    "phase": "N/A",
+    "status": "ACTIVE_NOT_RECRUITING",
+    "conditions": [
+      "Psoriasis"
+    ],
+    "interventions": [
+      "Deucravacitinib",
+      "Systemic psoriasis medications",
+      "No systemic medications"
+    ]
+  },
+  {
+    "nct_id": "NCT06220604",
+    "title": "A Study of JNJ-77242113 for the Treatment of Participants With Moderate to Severe Plaque Psoriasis (ICONIC-ADVANCE 2)",
+    "phase": "PHASE3",
+    "status": "ACTIVE_NOT_RECRUITING",
+    "conditions": [
+      "Plaque Psoriasis"
+    ],
+    "interventions": [
+      "JNJ-77242113",
+      "JNJ-77242113 Matching Placebo",
+      "Deucravacitinib",
+      "Deucravacitinib Matching Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT06701513",
+    "title": "A Real-world Study to Evaluate the Effectiveness of Deucravacitinib in Adults With Plaque Psoriasis in France (RePhlect)",
+    "phase": "N/A",
+    "status": "RECRUITING",
+    "conditions": [
+      "Psoriasis"
+    ],
+    "interventions": [
+      "Deucravacitinib"
+    ]
+  },
+  {
+    "nct_id": "NCT06979453",
+    "title": "A Study to Evaluate the Efficacy, Safety, and Drug Levels of Deucravacitinib (BMS-986165) in Adolescent Participants With Moderate to Severe Plaque Psoriasis",
+    "phase": "PHASE3",
+    "status": "RECRUITING",
+    "conditions": [
+      "Plaque Psoriasis"
+    ],
+    "interventions": [
+      "Deucravacitinib",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT04065932",
+    "title": "A Study to Determine the Pharmacokinetic Profile of BMS-986165 Tablets",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Lupus"
+    ],
+    "interventions": [
+      "BMS-986165-01",
+      "BMS-986165 Tablet",
+      "Famotidine"
+    ]
+  },
+  {
+    "nct_id": "NCT06329258",
+    "title": "Combination of Sotyktu and Enstilar for Plaque Psoriasis",
+    "phase": "PHASE4",
+    "status": "COMPLETED",
+    "conditions": [
+      "Psoriasis"
+    ],
+    "interventions": [
+      "Enstilar",
+      "Deucravacitinib"
+    ]
+  },
+  {
+    "nct_id": "NCT04877990",
+    "title": "A Study to Evaluate the Long-term Safety and Efficacy of Deucravacitinib in Participants With Crohn's Disease or Ulcerative Colitis",
+    "phase": "PHASE2",
+    "status": "COMPLETED",
+    "conditions": [
+      "Crohn Disease",
+      "Ulcerative Colitis"
+    ],
+    "interventions": [
+      "Deucravacitinib"
+    ]
+  },
+  {
+    "nct_id": "NCT05076006",
+    "title": "Dual JAK1/TYK2 Inhibitor for Cicatricial Alopecia",
+    "phase": "PHASE2",
+    "status": "COMPLETED",
+    "conditions": [
+      "Cicatricial Alopecia"
+    ],
+    "interventions": [
+      "PF-06700841",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT03252587",
+    "title": "An Investigational Study to Evaluate BMS-986165 in Participants With Systemic Lupus Erythematosus",
+    "phase": "PHASE2",
+    "status": "COMPLETED",
+    "conditions": [
+      "Systemic Lupus Erythematosus"
+    ],
+    "interventions": [
+      "BMS-986165",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT03920267",
+    "title": "Long-Term Safety and Efficacy Study of Deucravacitinib in Participants With Systemic Lupus Erythematosus",
+    "phase": "PHASE2",
+    "status": "COMPLETED",
+    "conditions": [
+      "Systemic Lupus Erythematosus"
+    ],
+    "interventions": [
+      "BMS-986165"
+    ]
+  },
+  {
+    "nct_id": "NCT03254784",
+    "title": "A Study to Evaluate BMS-986165 Tablet Formulation Relative to BMS-986165 Capsule Formulation and the Effect of a High-Fat/ High-Calorie Meal and Increased Gastric pH on the BMS-986165 Tablet Formulation",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Systemic Lupus Erythematosus",
+      "Arthritic Psoriasis",
+      "Psoriasis",
+      "Inflammatory Bowel Diseases"
+    ],
+    "interventions": [
+      "BMS-986165 Capsule",
+      "BMS-986165 Tablet"
+    ]
+  },
+  {
+    "nct_id": "NCT07116967",
+    "title": "Long-Term Safety Study of Deucravacitinib Versus Ustekinumab in Participants With Psoriasis (PRAGMATYK)",
+    "phase": "PHASE3",
+    "status": "RECRUITING",
+    "conditions": [
+      "Plaque Psoriasis"
+    ],
+    "interventions": [
+      "Deucravacitinib",
+      "Ustekinumab"
+    ]
+  },
+  {
+    "nct_id": "NCT07335796",
+    "title": "A Study of BMS986365 in Combination With Degarelix in People With Prostate Cancer",
+    "phase": "PHASE2",
+    "status": "RECRUITING",
+    "conditions": [
+      "Prostate Cancer"
+    ],
+    "interventions": [
+      "BMS-986165",
+      "Degarelix"
+    ]
+  },
+  {
+    "nct_id": "NCT06444399",
+    "title": "Deucravacitinib (BMS-986165) for Pityriasis Rubra Pilaris",
+    "phase": "PHASE2",
+    "status": "RECRUITING",
+    "conditions": [
+      "Pityriasis Rubra Pilaris"
+    ],
+    "interventions": [
+      "Deucravacitinib"
+    ]
+  },
+  {
+    "nct_id": "NCT06875960",
+    "title": "A Study to Continue the Administration of Deucravacitinib in Participants With Systemic Lupus Erythematosus (SLE) or Discoid and/or Subacute Cutaneous Lupus Erythematosus (DLE/SCLE) Who Have Completed Study IM011074 or Study IM011132",
+    "phase": "PHASE4",
+    "status": "RECRUITING",
+    "conditions": [
+      "Systemic Lupus Erythematosus (SLE)",
+      "Discoid and/or Subacute Cutaneous Lupus Erythematosus (DLE/SCLE)"
+    ],
+    "interventions": [
+      "BMS-986165"
+    ]
+  },
+  {
+    "nct_id": "NCT05946941",
+    "title": "A Study to Evaluate the Efficacy and Safety of Deucravacitinib in Adults With Active Sj\u00f6gren's Syndrome",
+    "phase": "PHASE3",
+    "status": "ACTIVE_NOT_RECRUITING",
+    "conditions": [
+      "Sj\u00f6gren's Syndrome"
+    ],
+    "interventions": [
+      "Deucravacitinib",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT06143878",
+    "title": "A Study of JNJ-77242113 for the Treatment of Participants With Moderate to Severe Plaque Psoriasis",
+    "phase": "PHASE3",
+    "status": "ACTIVE_NOT_RECRUITING",
+    "conditions": [
+      "Plaque Psoriasis"
+    ],
+    "interventions": [
+      "JNJ-77242113",
+      "JNJ-77242113 Matching Placebo",
+      "Deucravacitinib",
+      "Deucravacitinib Matching Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT03004768",
+    "title": "Pharmacokinetics and Metabolism of [14C]BMS-986165 in Healthy Male Participants",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Psoriasis"
+    ],
+    "interventions": [
+      "BMS-986165"
+    ]
+  },
+  {
+    "nct_id": "NCT03890770",
+    "title": "A Study to Assess the Safety of Experimental Medication BMS986165 in Participants With Normal Kidney Function and Participants With Mild to End-Stage Kidney Disease.",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Renal Impairment",
+      "Healthy Volunteer"
+    ],
+    "interventions": [
+      "BMS-986165"
+    ]
+  },
+  {
+    "nct_id": "NCT05730725",
+    "title": "A Study to Evaluate Effectiveness and Safety of BMS-986322 in Participants With Moderate-to-Severe Psoriasis",
+    "phase": "PHASE2",
+    "status": "COMPLETED",
+    "conditions": [
+      "Psoriasis"
+    ],
+    "interventions": [
+      "BMS-986322",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT03419910",
+    "title": "An Investigational Study of Cyclosporine on Experimental Medication BMS-986165 in Healthy Male Participants",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Psoriasis"
+    ],
+    "interventions": [
+      "BMS-986165",
+      "Cyclosporine"
+    ]
+  },
+  {
+    "nct_id": "NCT06869551",
+    "title": "A Study to Evaluate the Drug Levels, Efficacy, and Safety of Deucravacitinib (BMS-986165) in Pediatric Participants With Juvenile Psoriatic Arthritis",
+    "phase": "PHASE3",
+    "status": "RECRUITING",
+    "conditions": [
+      "Juvenile Psoriatic Arthritis"
+    ],
+    "interventions": [
+      "Deucravacitinib",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT04908202",
+    "title": "A Study to Determine the Efficacy and Safety of Deucravacitinib Compared With Placebo in Participants With Active Psoriatic Arthritis (PsA) Who Are Na\u00efve to Biologic Disease-modifying Anti-rheumatic Drugs",
+    "phase": "PHASE3",
+    "status": "ACTIVE_NOT_RECRUITING",
+    "conditions": [
+      "Psoriatic Arthritis"
+    ],
+    "interventions": [
+      "Deucravacitinib",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT06506591",
+    "title": "A Single-And Multiple-Dose Study to Evaluate the Safety, Tolerability, Pharmacokinetics, Pharmacodynamics and Food Effect of WD-890 Tablets in Healthy Chinese Subjects",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Healthy Participants"
+    ],
+    "interventions": [
+      "WD-890",
+      "WD-890 Tablets Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT06333860",
+    "title": "A Study to Learn How Safe and Effective Risankizumab is When Compared to Deucravacitinib to Treat Participants With Moderate Plaque Psoriasis and Who Need to Try Systemic Treatment (Works Throughout the Whole Body)",
+    "phase": "PHASE4",
+    "status": "COMPLETED",
+    "conditions": [
+      "Moderate Plaque Psoriasis"
+    ],
+    "interventions": [
+      "Risankizumab",
+      "Deucravacitinib"
+    ]
+  },
+  {
+    "nct_id": "NCT07017699",
+    "title": "A Study to Assess Deucravacitinib Safety in Pregnancy",
+    "phase": "N/A",
+    "status": "RECRUITING",
+    "conditions": [
+      "Psoriasis (PsO)"
+    ],
+    "interventions": [
+      "Deucravacitinib",
+      "Other systemic treatments for PsO"
+    ]
+  },
+  {
+    "nct_id": "NCT03881059",
+    "title": "Efficacy and Safety of BMS-986165 Compared With Placebo in Participants With Active Psoriatic Arthritis (PsA)",
+    "phase": "PHASE2",
+    "status": "COMPLETED",
+    "conditions": [
+      "Active Psoriatic Arthritis"
+    ],
+    "interventions": [
+      "BMS-986165 Placebo",
+      "BMS-986165 Dose A",
+      "BMS-986165 Dose B",
+      "Ustekinumab",
+      "Ustekinumab Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT07234591",
+    "title": "A Study to Evaluate Effectiveness and Safety of a TYK2 Inhibitor in Subjects With Moderate to Severe Plaque Psoriasis",
+    "phase": "NA",
+    "status": "RECRUITING",
+    "conditions": [
+      "Plaque Psoriasis",
+      "Moderate to Severe Plaque Psoriasis"
+    ],
+    "interventions": [
+      "Tyk2 inhibitor",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT04113668",
+    "title": "The Effects Diflunisal on the Levels of BMS-986165 in Healthy Participants",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Healthy Participants"
+    ],
+    "interventions": [
+      "BMS-986165",
+      "diflunisal"
+    ]
+  },
+  {
+    "nct_id": "NCT04671953",
+    "title": "Effect of BMS-986165 on the Blood Levels of Metformin",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Healthy Participants"
+    ],
+    "interventions": [
+      "BMS-986165",
+      "Metformin"
+    ]
+  },
+  {
+    "nct_id": "NCT05374785",
+    "title": "Efficacy and Safety Study Comparing CPL409116 to Placebo in Participants With Active Rheumatoid Arthritis",
+    "phase": "PHASE2",
+    "status": "COMPLETED",
+    "conditions": [
+      "Rheumatoid Arthritis"
+    ],
+    "interventions": [
+      "CPL409116",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT06055023",
+    "title": "Phase I Clinical Study of ZL-82 Tablets",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Rheumatoid Arthritis (RA)",
+      "Inflammatory Bowel Disease - IBD1"
+    ],
+    "interventions": [
+      "ZL-82 12.5mg",
+      "ZL-82 25mg",
+      "ZL-82 50mg",
+      "ZL-82 100mg",
+      "ZL-82 200mg",
+      "ZL-82 300mg",
+      "ZL-82 450mg",
+      "ZL-82 600mg",
+      "zL-82 placebo 12.5mg",
+      "ZL-82 placebo 25mg",
+      "ZL-82 placebo 50mg",
+      "ZL-82 placebo 100mg",
+      "ZL-82 placebo 200mg",
+      "ZL-82 placebo 300mg",
+      "ZL-82 placebo 450mg",
+      "ZL-82 placebo 600mg"
+    ]
+  },
+  {
+    "nct_id": "NCT07487948",
+    "title": "Safety and Biomarker Responses of Delgocitinib (JAK1,2,3/TYK2 Inhibitor) in Central Centrifugal Cicatricial Alopecia and Lichen Planopilaris",
+    "phase": "PHASE2",
+    "status": "RECRUITING",
+    "conditions": [
+      "Central Centrifugal Cicatricial Alopecia",
+      "Lichen Planopilaris"
+    ],
+    "interventions": [
+      "Delgocitinib"
+    ]
+  },
+  {
+    "nct_id": "NCT06091956",
+    "title": "A Study of Deucravacitinib to Treat LPP and FFA",
+    "phase": "PHASE2",
+    "status": "COMPLETED",
+    "conditions": [
+      "Lichen Planopilaris"
+    ],
+    "interventions": [
+      "Deucravacitinib"
+    ]
+  },
+  {
+    "nct_id": "NCT03765554",
+    "title": "Clinical Study to Evaluate Blood Concentrations of PF-06700841 After Oral Dose as Different Formulations",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Healthy Participants"
+    ],
+    "interventions": [
+      "PF-06700841 Immediate release tablets",
+      "PF-06700841 Modified release tablets"
+    ]
+  },
+  {
+    "nct_id": "NCT06512337",
+    "title": "A Observational Study to Evaluate Deucravacitinib in Patients With Moderate Plaque Psoriasis in China",
+    "phase": "N/A",
+    "status": "ACTIVE_NOT_RECRUITING",
+    "conditions": [
+      "Plaque Psoriasis"
+    ],
+    "interventions": [
+      "Deucravacitinib"
+    ]
+  },
+  {
+    "nct_id": "NCT07326813",
+    "title": "A Clinical Study to Evaluate the Efficacy and Safety of D-2570 in the Treatment of Moderate to Severe Plaque Psoriasis",
+    "phase": "PHASE3",
+    "status": "RECRUITING",
+    "conditions": [
+      "Plaque Psoriasis"
+    ],
+    "interventions": [
+      "D-2570 Tablet",
+      "BMS-986165 Tablet",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT02534636",
+    "title": "Safety Study of BMS-986165 in Healthy Subjects and to Treat Psoriasis",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Healthy Subjects"
+    ],
+    "interventions": [
+      "BMS-986165",
+      "Interferon alpha-2a recombinant",
+      "Famotidine",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT01848028",
+    "title": "PsoBest - The German Psoriasis Registry",
+    "phase": "N/A",
+    "status": "RECRUITING",
+    "conditions": [
+      "Psoriasis",
+      "Psoriatic-arthritis"
+    ],
+    "interventions": []
+  },
+  {
+    "nct_id": "NCT03660436",
+    "title": "An Investigational Study of Experimental Medication BMS-986165 in Healthy Participants",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Healthy Participants"
+    ],
+    "interventions": [
+      "BMS-986165",
+      "MMF"
+    ]
+  },
+  {
+    "nct_id": "NCT06258668",
+    "title": "Real-World Safety and Effectiveness of Sotyktu (Deucravacitinib) in Patients With Moderate-to-Severe Plaque Psoriasis in Korea",
+    "phase": "N/A",
+    "status": "RECRUITING",
+    "conditions": [
+      "Moderate-to-severe Plaque Psoriasis"
+    ],
+    "interventions": [
+      "Deucravacitinib"
+    ]
+  },
+  {
+    "nct_id": "NCT04167462",
+    "title": "An Investigational Study to Evaluate Experimental Medication BMS-986165 Compared to Placebo in Participants With Plaque Psoriasis (POETYK-PSO-3) in Mainland China, Taiwan, and South Korea",
+    "phase": "PHASE3",
+    "status": "COMPLETED",
+    "conditions": [
+      "Psoriasis"
+    ],
+    "interventions": [
+      "BMS-986165",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT04305899",
+    "title": "A Study to Compare the Taste and Levels in Blood Plasma of BMS-986165 When Taken as Different Formulations by Healthy Adult Participants",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Healthy Participants"
+    ],
+    "interventions": [
+      "BMS-986165 Tablet formulation 1",
+      "BMS-986165 Tablet formulation 2"
+    ]
+  },
+  {
+    "nct_id": "NCT04055506",
+    "title": "A Study to Investigate the Effects of Cytochrome P450 1A2 Induction by Ritonavir on BMS-986165 Drug Levels and Effects in Healthy Participants",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Healthy Participants"
+    ],
+    "interventions": [
+      "BMS-986165",
+      "Ritonavir"
+    ]
+  },
+  {
+    "nct_id": "NCT03262727",
+    "title": "The Effect of BMS-986165 Combined With an Oral Contraceptive (Ethinyl Estradiol/Norethindrone) in Healthy Female Patients",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Systemic Lupus Erythematosus",
+      "Arthritic Psoriasis",
+      "Psoriasis",
+      "Inflammatory Bowel Diseases"
+    ],
+    "interventions": [
+      "BMS-986165",
+      "Loestrin 1.5/30 (1.5 mg norethindrone acetate/30 \u03bcg ethinyl estradiol)"
+    ]
+  },
+  {
+    "nct_id": "NCT06136403",
+    "title": "A 44-week Monocentric Open Study Assessing the Efficacy and Safety of Deucravacitinib in Adults With Inflammatory Genodermatoses",
+    "phase": "PHASE2",
+    "status": "RECRUITING",
+    "conditions": [
+      "Epidermolysis Bullosa Simplex",
+      "Ichthyosis",
+      "Genodermatosis",
+      "Inflammatory Congenital Ichthyoses"
+    ],
+    "interventions": [
+      "deucravacitinib"
+    ]
+  },
+  {
+    "nct_id": "NCT07234838",
+    "title": "Effect of Anti-Psoriatic Biologics on Risk of Anogenital Warts (CONDYPSO)",
+    "phase": "N/A",
+    "status": "RECRUITING",
+    "conditions": [
+      "Psoriasis",
+      "Condyloma Acuminata",
+      "Biotherapies"
+    ],
+    "interventions": []
+  },
+  {
+    "nct_id": "NCT03934216",
+    "title": "Safety and Efficacy of Deucravacitinib in Participants With Moderate to Severe Ulcerative Colitis",
+    "phase": "PHASE2",
+    "status": "COMPLETED",
+    "conditions": [
+      "Ulcerative Colitis"
+    ],
+    "interventions": [
+      "BMS-986165",
+      "Placebo"
+    ]
+  },
+  {
+    "nct_id": "NCT04249284",
+    "title": "Pharmacokinetics (Drug Levels in Blood) of BMS-986165 When Taken as Various Solid Tablet Prototypes by Healthy Participants",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Healthy Participants"
+    ],
+    "interventions": [
+      "BMS-986165",
+      "BMS-986165 prototype 1",
+      "BMS-986165 prototype 2"
+    ]
+  },
+  {
+    "nct_id": "NCT04670757",
+    "title": "Safety and Pharmacokinetics of JAK/ROCK Inhibitor in Healthy Volunteers",
+    "phase": "PHASE1",
+    "status": "COMPLETED",
+    "conditions": [
+      "Healthy"
+    ],
+    "interventions": [
+      "CPL409116",
+      "Placebo"
+    ]
+  }
+]

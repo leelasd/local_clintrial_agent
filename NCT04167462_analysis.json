@@ -1,0 +1,52 @@
+{
+  "nct_id": "NCT04167462",
+  "title": "An Investigational Study to Evaluate Experimental Medication BMS-986165 Compared to Placebo in Participants With Plaque Psoriasis (POETYK-PSO-3) in Mainland China, Taiwan, and South Korea",
+  "phase": "PHASE3",
+  "eligibility": [
+    {
+      "text": "Plaque psoriasis for at least 6 months",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion helps identify patients with a specific disease duration relevant to treatment efficacy."
+    },
+    {
+      "text": "Moderate to severe disease",
+      "reasoning_category": "Statistical Power",
+      "justification": "Severity of the condition is likely linked to treatment response, making it a factor in determining effectiveness."
+    },
+    {
+      "text": "Candidate for phototherapy or systemic therapy",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion indicates patients are suitable for specific treatments, which can be used to assess treatment effects."
+    },
+    {
+      "text": "Other forms of psoriasis",
+      "reasoning_category": "Feasibility",
+      "justification": "While not directly related to safety or efficacy, this criterion might influence recruitment and data collection."
+    },
+    {
+      "text": "History of recent infection",
+      "reasoning_category": "Safety",
+      "justification": "This criterion is a potential safety concern as infections can complicate treatment outcomes."
+    },
+    {
+      "text": "Prior exposure to BMS-986165",
+      "reasoning_category": "Safety",
+      "justification": "Exposure to this specific drug could influence the study's results and necessitate safety considerations."
+    },
+    {
+      "text": "Other inclusion/exclusion criteria may apply.",
+      "reasoning_category": "Feasibility",
+      "justification": "This is a general statement that might indicate additional operational or data quality requirements beyond the initial criteria."
+    }
+  ],
+  "trial_integrity": {
+    "masking_level": "QUADRUPLE",
+    "blinding_validation_method": "Not specified",
+    "concomitant_therapy_controls": "Standardized background care"
+  },
+  "summary": {
+    "Statistical Power": 3,
+    "Feasibility": 2,
+    "Safety": 2
+  }
+}
