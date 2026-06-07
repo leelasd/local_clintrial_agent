@@ -102,14 +102,23 @@ Full JSON with all analysis sections:
 
 ### Combined Comparison Files
 
-- `tyk2_comparison.json` — TYK2 psoriasis trials
-- `wrn_comparison.json` — WRN inhibitor oncology trials
-- `rme_comparison.json` — Revolution Medicines KRAS trials
+- `analysis_json/tyk2_comparison.json` — TYK2 psoriasis trials
+- `analysis_json/wrn_comparison.json` — WRN inhibitor oncology trials
+- `analysis_json/rme_comparison.json` — Revolution Medicines KRAS trials
 
 ### Visualization
 
-- `sotorasib_vs_rmc6236_power.png` — Power curve comparison between two KRAS-targeting Phase 3 trials
-- `power_analysis.png`, `power_vs_effect.png` — Power curves for TYK2 trials
+![Sotorasib vs RMC-6236 Power Comparison](sotorasib_vs_rmc6236_power.png)
+
+Power curve comparison between Sotorasib (CodeBreaK 200, N=345) and RMC-6236 (RASolute 302, N=500). The vertical dashed line marks the actual published HR from CodeBreaK 200 (HR=0.66).
+
+![TYK2 Power Analysis](power_analysis.png)
+
+Power curves for all three TYK2 psoriasis trials (Zasocitinib, Deucravacitinib, JNJ-77242113).
+
+![Power vs Effect Size](power_vs_effect.png)
+
+Detectable effect size vs sample size comparison across TYK2 trials.
 
 ## Power Analysis
 
@@ -188,9 +197,5 @@ Returns `N/A — Phase 1 trial, not powered for efficacy`.
 | `design_agent_pipeline.py` | Main pipeline — orchestrates all analysis steps |
 | `agent_prompt.txt` | LLM prompt with JSON schema |
 | `power_visualization.py` | Power curve plots for TYK2 trials |
-| `sotorasib_vs_rmc6236_power.png` | Power curve comparison for KRAS Phase 3 trials |
-| `llm_agent_pipeline.py` | Legacy: single-trial pipeline (Gemma3) |
-| `search_tyk2_trials.py` | Search ClinicalTrials.gov for TYK2 trials |
-| `compare_models.py` | Compare LLM model performance |
-| `*_comparison.json` | Combined per-portfolio analysis output |
-| `NCT*_analysis.json` | Per-trial detailed analysis |
+| `analysis_json/` | Per-trial and per-portfolio analysis outputs |
+| `agent_prompt.txt` | LLM prompt with JSON schema |
