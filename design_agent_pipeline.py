@@ -25,6 +25,7 @@ def classify_design_from_api(protocol):
     # Determine control_type
     is_phase1 = any('PHASE1' in p for p in phases)
     is_nonrandomized = allocation == 'NON_RANDOMIZED'
+    all_experimental = all(t == 'EXPERIMENTAL' for t in arm_types) if arm_types else False
     
     if 'PLACEBO_COMPARATOR' in arm_types:
         control_type = 'Placebo'
@@ -36,7 +37,7 @@ def classify_design_from_api(protocol):
         control_type = 'No Treatment'
     elif len(arm_types) <= 1:
         control_type = 'None (Single-Arm)'
-    elif is_phase1 and is_nonrandomized:
+    elif (is_phase1 or is_nonrandomized) and all_experimental:
         control_type = 'None (Single-Arm)'
     else:
         control_type = 'Standard of Care'
@@ -52,10 +53,14 @@ def classify_design_from_api(protocol):
         design_type = 'Single-Arm'
     elif allocation == 'RANDOMIZED' and intervention_model == 'PARALLEL':
         design_type = 'Parallel RCT'
-    elif allocation != 'RANDOMIZED' and intervention_model == 'PARALLEL':
+    elif allocation != 'RANDOMIZED' and intervention_model == 'PARALLEL' and not all_experimental:
         design_type = 'Nonrandomized Concurrent Control'
-    elif intervention_model == 'PARALLEL':
+    elif intervention_model == 'PARALLEL' and allocation == 'RANDOMIZED':
         design_type = 'Parallel RCT'
+    elif all_experimental and not is_phase1:
+        design_type = 'Adaptive Design'
+    elif is_phase1:
+        design_type = 'Single-Arm'
     else:
         design_type = 'Other'
     

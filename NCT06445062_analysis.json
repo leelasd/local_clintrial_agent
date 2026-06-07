@@ -1,0 +1,192 @@
+{
+  "nct_id": "NCT06445062",
+  "title": "Study of RAS(ON) Inhibitors in Patients With Gastrointestinal Solid Tumors",
+  "phase": "PHASE1",
+  "drug": "RAS(ON) inhibitors GI (RMC multi) - Phase 1/2",
+  "trial_design": {
+    "design_type": "Single-Arm",
+    "control_type": "None (Single-Arm)",
+    "superiority_type": "Unclear"
+  },
+  "trial_integrity": {
+    "masking_level": "Open-label",
+    "blinding_validation_method": "Not specified",
+    "concomitant_therapy_controls": "Standardized background care"
+  },
+  "randomization": {
+    "randomization_type": "Not described",
+    "allocation_ratio": "1:1:1:1:1:1",
+    "stratification_factors": [
+      "Center",
+      "Age"
+    ],
+    "randomization_description": "Stratified by Center, Age. "
+  },
+  "population": {
+    "sex": "ALL",
+    "age_range": "18 Years+",
+    "std_ages": [
+      "ADULT",
+      "OLDER_ADULT"
+    ],
+    "healthy_volunteers": false,
+    "age_restrictiveness": "Moderate",
+    "has_competing_risk_exclusions": true,
+    "recruitment_yield_estimate": "Moderate (5-20% screen-to-enroll)",
+    "enrollment_count": 1130,
+    "enrollment_type": "ESTIMATED"
+  },
+  "sample_size": {
+    "enrollment_actual": 1130,
+    "estimated_n_per_arm": 188,
+    "num_arms": 6,
+    "primary_endpoint_type": "Safety / Dose-Finding",
+    "power_analysis": {
+      "alpha": null,
+      "power_target": null,
+      "test_type": "N/A (Phase 1 dose-escalation)",
+      "detectable_absolute_difference": null,
+      "estimated_power_for_20pct_improvement": null,
+      "assessment": "N/A \u2014 Phase 1 trial, not powered for efficacy"
+    }
+  },
+  "endpoints": [
+    {
+      "text": "Adverse events",
+      "endpoint_type": "Safety",
+      "timeframe": "Up to 3 years",
+      "is_primary": true
+    },
+    {
+      "text": "Dose limiting toxicities",
+      "endpoint_type": "Clinical",
+      "timeframe": "28 days",
+      "is_primary": true
+    },
+    {
+      "text": "Pharmacokinetics of RMC-6236 and RMC-9805",
+      "endpoint_type": "Biomarker",
+      "timeframe": "21 weeks",
+      "is_primary": false
+    },
+    {
+      "text": "ORR",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Up to 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "DOR",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Up to 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "DCR",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Up to 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "TTR",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Up to 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "PFS",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "OS",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to 3 years",
+      "is_primary": false
+    }
+  ],
+  "adaptive_designs": {
+    "has_adaptive_features": true,
+    "adaptive_types": [
+      "Dose-Finding / Phase I"
+    ],
+    "interim_analysis_mentioned": false,
+    "stopping_rules": "Not mentioned",
+    "dose_escalation_method": "Standard dose-escalation (not explicitly specified)",
+    "description": "Adaptive design detected: Types identified: Dose-Finding / Phase I."
+  },
+  "safety_adverse_events": {
+    "ae_reporting_method": "MedDRA (Medical Dictionary for Regulatory Activities)",
+    "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
+    "ae_types_detected": [],
+    "class_effects_known": [
+      "ALT elevation",
+      "AST elevation"
+    ],
+    "safety_endpoints": [],
+    "sae_stopping_rules": "Not specified in protocol text",
+    "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+  },
+  "eligibility": [
+    {
+      "text": "\u2265 18 years of age",
+      "reasoning_category": "Feasibility",
+      "justification": "Age is a standard feasibility criterion for clinical trials.",
+      "competing_risk": false
+    },
+    {
+      "text": "ECOG PS is 0 to 1",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients are not too ill to participate in the trial, protecting them from potential harm.",
+      "competing_risk": false
+    },
+    {
+      "text": "Adequate organ function as outlined by the study",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients have sufficient organ function for treatment and data collection.",
+      "competing_risk": false
+    },
+    {
+      "text": "Pathologically or cytologically documented pancreatic carcinoma or poorly differentiated pancreatic carcinoma with metastatic disease or RAS-mutated, histologically or cytologically confirmed colorectal adenocarcinoma with documented unresectable or metastatic disease (Subprotocol A, B, and C)",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients have a specific type of cancer that is the focus of the trial.",
+      "competing_risk": false
+    },
+    {
+      "text": "Presence of RAS G12D mutation (Subprotocol D, E, F)",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures patients have a specific genetic mutation that is being studied for treatment efficacy.",
+      "competing_risk": false
+    },
+    {
+      "text": "Primary central nervous system (CNS) tumors",
+      "reasoning_category": "Safety",
+      "justification": "This criterion excludes patients with CNS tumors, protecting them from potential harm and ensuring the study's focus on specific cancers.",
+      "competing_risk": true
+    },
+    {
+      "text": "Impaired gastrointestinal (GI) function that may significantly alter the absorption of RMC drugs",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients have adequate GI function to absorb the medication, impacting feasibility.",
+      "competing_risk": false
+    },
+    {
+      "text": "Major surgery within 28 days of first dose",
+      "reasoning_category": "Safety",
+      "justification": "This criterion protects patients from potential harm by ensuring they are not undergoing major surgery before starting treatment.",
+      "competing_risk": false
+    },
+    {
+      "text": "Other inclusion/exclusion criteria may apply.",
+      "reasoning_category": "Feasibility",
+      "justification": "This is a general statement that could encompass various factors impacting feasibility, such as patient compliance or adherence to study protocols.",
+      "competing_risk": false
+    }
+  ],
+  "summary": {
+    "Feasibility": 4,
+    "Safety": 4,
+    "Statistical Power": 1
+  }
+}
