@@ -235,6 +235,67 @@ def analyze_sample_size(protocol, endpoints):
         }
     }
 
+def analyze_randomization(protocol):
+    """Extract randomization details from API data and description text."""
+    design_info = protocol.get('designModule', {}).get('designInfo', {})
+    arms = protocol.get('armsInterventionsModule', {})
+    arm_groups = arms.get('armGroups', [])
+    
+    allocation = design_info.get('allocation', '')
+    
+    # Determine allocation ratio from arm count (defaults to equal)
+    interventional = [a for a in arm_groups if a.get('type') != 'NO_INTERVENTION']
+    num_arms = len(interventional)
+    allocation_ratio = '1:1' if num_arms <= 2 else f'1:1:1' if num_arms == 3 else f'1:' * (num_arms - 1) + '1'
+    
+    # Check description text for randomization details
+    description_text = (
+        protocol.get('descriptionModule', {}).get('briefSummary', '') + ' ' +
+        protocol.get('descriptionModule', {}).get('detailedDescription', '') + ' ' +
+        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
+    ).lower()
+    
+    # Detect randomization type from keywords
+    has_stratified = any(k in description_text for k in ['stratified', 'stratum', 'stratification'])
+    has_blocked = any(k in description_text for k in ['block', 'permuted block', 'block randomization'])
+    has_adaptive_rand = any(k in description_text for k in ['adaptive randomization', 'response-adaptive', 'minimization'])
+    
+    # Infer stratification factors
+    stratification_factors = []
+    factor_keywords = [
+        'site', 'center', 'study site', 'study center',
+        'region', 'geographic',
+        'baseline', 'disease severity', 'pasi', 'psoriasis severity',
+        'body weight', 'bmi',
+        'prior biologic', 'prior treatment', 'previous therapy',
+        'age', 'sex', 'gender',
+        'smoking',
+    ]
+    for factor in factor_keywords:
+        if factor in description_text:
+            stratification_factors.append(factor.title())
+    
+    # Determine type
+    if has_adaptive_rand:
+        rand_type = 'Adaptive'
+    elif has_stratified and has_blocked:
+        rand_type = 'Stratified'
+    elif has_stratified:
+        rand_type = 'Stratified'
+    elif has_blocked:
+        rand_type = 'Blocked'
+    elif allocation == 'RANDOMIZED':
+        rand_type = 'Simple'
+    else:
+        rand_type = 'Not described'
+    
+    return {
+        'randomization_type': rand_type,
+        'allocation_ratio': allocation_ratio,
+        'stratification_factors': stratification_factors,
+        'randomization_description': f"{'Stratified by ' + ', '.join(stratification_factors[:3]) + '. ' if stratification_factors else ''}{'Blocked randomization.' if has_blocked else 'Simple randomization.' if rand_type == 'Simple' else ''}"
+    }
+
 def analyze_trial(nct_id):
     """Full pipeline: fetch, classify design from API, then LLM-classify eligibility."""
     
@@ -262,6 +323,13 @@ def analyze_trial(nct_id):
     print(f"  Allocation: {api_design['allocation']}")
     print(f"  Model: {api_design['intervention_model']}")
     print(f"  Phases: {api_design['phases']}")
+    
+    # --- STEP 0a: Randomization analysis ---
+    randomization = analyze_randomization(protocol)
+    print(f"  Randomization: {randomization['randomization_type']}")
+    print(f"  Allocation Ratio: {randomization['allocation_ratio']}")
+    if randomization['stratification_factors']:
+        print(f"  Stratification Factors: {', '.join(randomization['stratification_factors'][:5])}")
     
     # --- STEP 0b: Extract and classify endpoints from API ---
     outcomes_mod = protocol.get('outcomesModule', {})
@@ -497,6 +565,7 @@ Do not use escape characters. Write the JSON directly.
             "control_type": api_design['control_type'],
             "superiority_type": api_design['superiority_type']
         },
+        "randomization": randomization,
         "summary": dict(categories)
     }
     
@@ -514,6 +583,9 @@ Do not use escape characters. Write the JSON directly.
     print(f"Control: {api_design['control_type']}")
     print(f"Superiority: {api_design['superiority_type']}")
     print(f"Masking: {trial_integrity['masking_level']}")
+    print(f"Randomization: {randomization['randomization_type']} ({randomization['allocation_ratio']})")
+    if randomization['stratification_factors']:
+        print(f"  Stratified by: {', '.join(randomization['stratification_factors'][:4])}")
     if sample_size:
         pa = sample_size['power_analysis']
         print(f"Power: {pa['assessment']}")

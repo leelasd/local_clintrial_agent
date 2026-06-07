@@ -6,43 +6,43 @@
     {
       "text": "Plaque psoriasis for at least 6 months",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a sufficient duration of disease to detect treatment effects.",
+      "justification": "This criterion helps ensure a sufficient sample size to detect treatment effects.",
       "competing_risk": false
     },
     {
       "text": "Moderate to severe disease",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion helps identify patients who are likely to respond to the intervention, maximizing statistical power.",
+      "justification": "This criterion ensures the study population is representative of patients with moderate to severe psoriasis, maximizing the likelihood of detecting a treatment effect.",
       "competing_risk": false
     },
     {
       "text": "Candidate for phototherapy or systemic therapy",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that the patient is eligible for treatment and can be monitored effectively.",
+      "justification": "This criterion helps ensure that participants are eligible for potential treatments and can be followed up with appropriate care.",
       "competing_risk": false
     },
     {
       "text": "Other forms of psoriasis",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients with other types of psoriasis, potentially protecting them from harm.",
+      "justification": "This criterion may serve to exclude patients with other types of skin conditions, potentially reducing the risk of confounding factors in the study.",
       "competing_risk": false
     },
     {
       "text": "History of recent infection",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential complications related to infections.",
+      "justification": "This criterion helps ensure patient safety by excluding individuals who may be more susceptible to infections during treatment.",
       "competing_risk": false
     },
     {
       "text": "Prior exposure to BMS-986165",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures that the patient has not previously received the drug, potentially protecting them from harm.",
+      "justification": "This criterion ensures that participants are not already receiving the drug, potentially mitigating for potential adverse effects or interactions.",
       "competing_risk": false
     },
     {
       "text": "Other inclusion/exclusion criteria may apply.",
-      "reasoning_category": "Unknown",
-      "justification": "This is a general statement and does not fall into any specific category.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion acknowledges that additional factors might influence eligibility and feasibility of the study.",
       "competing_risk": false
     }
   ],
@@ -165,10 +165,15 @@
     "control_type": "Placebo",
     "superiority_type": "Superiority"
   },
+  "randomization": {
+    "randomization_type": "Simple",
+    "allocation_ratio": "1:1",
+    "stratification_factors": [],
+    "randomization_description": "Simple randomization."
+  },
   "summary": {
     "Statistical Power": 2,
-    "Feasibility": 1,
-    "Safety": 3,
-    "Unknown": 1
+    "Feasibility": 2,
+    "Safety": 3
   }
 }

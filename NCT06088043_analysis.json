@@ -18,19 +18,19 @@
     {
       "text": ". Candidate for phototherapy or systemic therapy.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the patient's eligibility for potential treatment modalities, which is crucial for data quality and study feasibility.",
+      "justification": "This criterion ensures the patient's eligibility for specific treatments, which may be essential for study success and data quality.",
       "competing_risk": false
     },
     {
       "text": ". Other forms of psoriasis.",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients with other forms of psoriasis, potentially protecting them from harm or complications specific to those forms.",
+      "justification": "This criterion excludes patients with other types of psoriasis, potentially protecting them from harm or ensuring a homogenous group for comparison.",
       "competing_risk": false
     },
     {
       "text": ". History of recent infection.",
       "reasoning_category": "Safety",
-      "justification": "This criterion is likely a safety measure to prevent potential adverse events related to infections in the context of this study.",
+      "justification": "This criterion protects the patient from potential complications related to infections during the study period.",
       "competing_risk": false
     },
     {
@@ -42,7 +42,7 @@
     {
       "text": "Other protocol defined inclusion/exclusion criteria apply.",
       "reasoning_category": "Safety",
-      "justification": "This criterion is likely a safety measure to protect patients from potential harm or complications specific to their individual circumstances.",
+      "justification": "This criterion is a general safety measure that ensures adherence to the trial's specific protocols and guidelines for patient selection.",
       "competing_risk": false
     }
   ],
@@ -380,6 +380,14 @@
     "design_type": "Parallel RCT",
     "control_type": "Placebo",
     "superiority_type": "Superiority"
+  },
+  "randomization": {
+    "randomization_type": "Simple",
+    "allocation_ratio": "1:1:1",
+    "stratification_factors": [
+      "Center"
+    ],
+    "randomization_description": "Stratified by Center. Simple randomization."
   },
   "summary": {
     "Statistical Power": 2,

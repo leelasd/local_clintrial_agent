@@ -19,12 +19,18 @@ In addition, you must assess **Trial Integrity**, **Bias Risk**, and **Feasibili
 - **control_type:** One of: "Placebo", "Active Comparator", "No Treatment", "Standard of Care", "Dose Comparison", "None (Single-Arm)"
 - **superiority_type:** One of: "Superiority", "Noninferiority", "Equivalence", "Unclear"
 
+**Classify randomization** details from the trial description:
+- **randomization_type:** One of: "Simple", "Blocked", "Stratified", "Adaptive", "Not described"
+- **allocation_ratio:** The ratio of assignment between arms (e.g., "1:1", "2:1", "3:1:1"). Infer from arm group structure if possible.
+- **stratification_factors:** List any factors used for stratification (e.g., ["study site", "baseline disease severity", "region", "body weight", "prior biologic use"]). Empty list if none mentioned.
+- **randomization_description:** Free text describing the randomization method mentioned in the protocol (e.g., "Permuted block randomization stratified by study site and baseline PASI score")
+
 **Classify endpoints** (primary and secondary outcome measures) as:
 - **endpoint_type:** "Clinical" (e.g., mortality, stroke, hospitalization), "Surrogate" (e.g., blood pressure, tumor shrinkage, PASI score), "Biomarker" (e.g., lab values, genetic markers), "Composite" (combination of multiple events like MACE), "Patient-Reported" (QoL, pain scales), "Safety" (AEs, lab abnormalities)
 - **timeframe:** The measurement point (e.g., "Week 16", "Baseline, Week 52")
 - **is_primary:** Whether this is a primary or secondary endpoint
 
-When extracting, output a JSON structure where each item includes the 'text' and 'reasoning_category' for eligibility, along with the 'trial_integrity', 'feasibility_assessment', 'trial_design', and 'endpoints' objects.
+When extracting, output a JSON structure where each item includes the 'text' and 'reasoning_category' for eligibility, along with the 'trial_integrity', 'feasibility_assessment', 'trial_design', 'randomization', and 'endpoints' objects.
 
 Example structure:
 {
@@ -48,6 +54,12 @@ Example structure:
     "design_type": "Parallel RCT",
     "control_type": "Placebo",
     "superiority_type": "Superiority"
+  },
+  "randomization": {
+    "randomization_type": "Blocked",
+    "allocation_ratio": "1:1",
+    "stratification_factors": ["Study site", "Baseline disease severity"],
+    "randomization_description": "Permuted block randomization stratified by site"
   },
   "endpoints": [
     {
