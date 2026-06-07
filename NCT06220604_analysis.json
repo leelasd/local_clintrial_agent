@@ -6,62 +6,324 @@
     {
       "text": "Diagnosis of plaque psoriasis, with or without psoriatic arthritis (PsA), for at least 26 weeks prior to the first administration of study intervention",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion aims to select patients who have had psoriasis for a significant duration, increasing the likelihood of detecting treatment effects."
+      "justification": "This criterion ensures a sufficient duration of disease presence to detect treatment effects.",
+      "competing_risk": false
     },
     {
       "text": "Total body surface area (BSA) greater than or equal to (>=)10 percent (%) at screening and baseline",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures a minimum level of skin affected by psoriasis, which is crucial for study inclusion."
+      "justification": "This criterion ensures a minimum BSA threshold for study inclusion, potentially impacting recruitment.",
+      "competing_risk": false
     },
     {
       "text": "Total psoriasis area and severity index (PASI) >=12 at screening and baseline",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion helps to identify patients with a higher level of psoriasis severity, increasing the likelihood of detecting treatment effects."
+      "justification": "This criterion ensures a sufficient level of disease severity to detect treatment effects.",
+      "competing_risk": false
     },
     {
       "text": "Total investigator global assessment (IGA) >=3 at screening and baseline",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion helps to identify patients with a higher level of psoriasis severity, increasing the likelihood of detecting treatment effects."
+      "reasoning_category": "Safety",
+      "justification": "This criterion assesses the severity of psoriasis, potentially indicating a higher risk for complications.",
+      "competing_risk": false
     },
     {
       "text": "Candidate for phototherapy or systemic treatment for plaque psoriasis",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that participants are actively seeking treatment options, which can influence their participation in the study."
+      "justification": "This criterion ensures that participants are eligible for potential treatments, impacting study feasibility.",
+      "competing_risk": false
     },
     {
       "text": "Nonplaque form of psoriasis (for example, erythrodermic, guttate, or pustular)",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion helps to ensure that participants are eligible for specific treatment options."
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures a specific type of psoriasis is included for treatment effect detection.",
+      "competing_risk": false
     },
     {
       "text": "Current drug-induced psoriasis (for example, a new onset of psoriasis or an exacerbation of psoriasis from beta blockers, calcium channel blockers, or lithium)",
       "reasoning_category": "Safety",
-      "justification": "This criterion aims to protect patients from potential harm by excluding those with known drug-induced psoriasis."
+      "justification": "This criterion ensures that participants are not experiencing psoriasis due to medication.",
+      "competing_risk": false
     },
     {
       "text": "A current diagnosis or signs or symptoms of severe, progressive, or uncontrolled renal, liver, cardiac, vascular, pulmonary, gastrointestinal, endocrine, neurologic, hematologic, rheumatologic, psychiatric, or metabolic disturbances",
       "reasoning_category": "Safety",
-      "justification": "This criterion aims to protect patients from known harm by excluding those with severe medical conditions."
+      "justification": "This criterion ensures that participants are healthy enough to participate in the study.",
+      "competing_risk": false
     },
     {
       "text": "Known allergies, hypersensitivity, or intolerance to JNJ-77242113, deucravacitinib or to any of the excipients or components of the study intervention",
       "reasoning_category": "Safety",
-      "justification": "This criterion aims to protect patients from potential harm by excluding those with known allergies or intolerances."
+      "justification": "This criterion ensures that participants are not allergic to the study medication.",
+      "competing_risk": false
     },
     {
       "text": "Major surgical procedure, (for example, requiring general anesthesia) within 8 weeks before screening, or will not have fully recovered from surgical procedure, or has a surgical procedure planned during the time the participant is expected to participate in the study",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that participants are healthy enough for the study and can adhere to its requirements."
+      "justification": "This criterion ensures that participants are healthy enough to participate in the study.",
+      "competing_risk": false
+    }
+  ],
+  "population": {
+    "sex": "ALL",
+    "age_range": "18 Years+",
+    "std_ages": [
+      "ADULT",
+      "OLDER_ADULT"
+    ],
+    "healthy_volunteers": false,
+    "age_restrictiveness": "Moderate",
+    "has_competing_risk_exclusions": false,
+    "recruitment_yield_estimate": "Moderate (5-20% screen-to-enroll)",
+    "enrollment_count": 731,
+    "enrollment_type": "ACTUAL"
+  },
+  "sample_size": {
+    "enrollment_actual": 731,
+    "estimated_n_per_arm": 243,
+    "num_arms": 3,
+    "primary_endpoint_type": "Dichotomous (Proportion)",
+    "estimated_control_event_rate": 0.1,
+    "power_analysis": {
+      "alpha": 0.05,
+      "power_target": 0.8,
+      "test_type": "Two-sided",
+      "detectable_absolute_difference": 0.09,
+      "estimated_power_for_20pct_improvement": 1.0,
+      "assessment": "Adequately Powered"
+    }
+  },
+  "endpoints": [
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving an Investigator's Global Assessment (IGA) Score of 0 or 1 and Greater Than or Equal to (>=) 2 Grade Improvement From Baseline at Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": true
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving Psoriasis Area and Severity Index (PASI) 90 Response at Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": true
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving an IGA Score of 0 at Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving PASI 75 Response at Weeks 4 and 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Weeks 4 and 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving PASI 90 Response at Week 8",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 8",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving PASI 100 Response at Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving Scalp-specific Investigator Global Assessment (ss-IGA) Score of 0 or 1 and a >=2-grade Improvement From Baseline at Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving Psoriasis Symptom and Sign Diary (PSSD) Symptoms Score of 0 at Weeks 8 and 16",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Weeks 8 and 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving >=4 Point Improvement From Baseline in PSSD Itch Score at Weeks 4 and 16",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Baseline, Weeks 4 and 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Deucravacitinib Group: : Percentage of Participants Achieving an IGA Score of 0 or 1 and >=2 Grade Improvement From Baseline at Weeks 16 and 24",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Deucravacitinib Group: Percentage of Participants Achieving an IGA Score of 0 at Weeks 16 and 24",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Deucravacitinib Group: Percentage of Participants Achieving PASI 75 Response at Weeks 16 and 24",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Deucravacitinib Group: Percentage of Participants Achieving PASI 90 Response at Weeks 16 and 24",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Deucravacitinib Group: Percentage of Participants Achieving PASI 100 Response at Weeks 16 and 24",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Deucravacitinib Group: Percentage of Participants With PSSD Symptom Score of 0 at Week 16",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Number of Participants with Adverse Events (AEs)",
+      "endpoint_type": "Safety",
+      "timeframe": "Up to 165 weeks",
+      "is_primary": false
+    },
+    {
+      "text": "Number of Participants with Serious Adverse Events (SAEs)",
+      "endpoint_type": "Safety",
+      "timeframe": "Up to 165 weeks",
+      "is_primary": false
+    },
+    {
+      "text": "Change From Baseline in Body Surface Area (BSA) at Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in PASI Score at Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percent Improvement in PASI Score From Baseline at Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving a Static Physician's Global Assessment of Genitalia (sPGA-G) Score of 0 or 1 and >=2-grade Improvement From Baseline to Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving a Physician's Global Assessment of Hands and Feet (hf-PGA) Score of 0 or 1 and at Least a 2-grade Improvement From Baseline to Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percent Change From Baseline in Modified Nail Psoriasis Severity Index (mNAPSI) Score at Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percent of Participants Achieving Fingernail Physician's Global Assessment (f-PGA) Score of 0 or 1 at Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Change From Baseline in PSSD Symptom Score at Week 16",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Change From Baseline in PSSD Sign Score at Week 16",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants With PSSD Sign Score of 0 at Week 16",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving Genital Psoriasis Sexual Frequency Questionnaire (GenPs-SFQ) Item 2 Score of 0 or 1 at Week 16",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Percentage of Participants Achieving Dermatology Life Quality Index (DLQI) Total Score of 0 or 1 at Week 16",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Change From Baseline in Total DLQI Score at Week 16",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Placebo Group: Change from Baseline in Domain Scores of the Patient-reported Outcomes Measurement Information System-29 (PROMIS-29) Score at Week 16",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Deucravacitinib Group: Percentage of Participants Achieving DLQI Score of 0 or 1 at Weeks 16 and 24",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "JNJ-77242113 and Deucravacitinib Group: Percentage of Participants Achieving PSSD Symptom Score of 0 at Week 24",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Week 24",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Who Achieve PASI 75 Response After Week 24 Among PASI 75 Non-responders to Deucravacitinib at Week 24",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and from Week 24 through Week 156",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Who Achieve PASI 90 Response After Week 24 Among PASI 90 Non-responders to Deucravacitinib at Week 24",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and from Week 24 through Week 156",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving IGA Score of 0 or 1 after Week 24, Among Participants with IGA score >=2 at Week 24 in the Deucravacitinib Group",
+      "endpoint_type": "Surrogate",
+      "timeframe": "From Week 24 through Week 156",
+      "is_primary": false
     }
   ],
   "trial_integrity": {
-    "masking_level": "DOUBLE",
+    "masking_level": "Double-blind",
     "blinding_validation_method": "Not specified",
     "concomitant_therapy_controls": "Standardized background care"
   },
+  "trial_design": {
+    "design_type": "Parallel RCT",
+    "control_type": "Placebo",
+    "superiority_type": "Superiority"
+  },
   "summary": {
     "Statistical Power": 3,
-    "Feasibility": 4,
-    "Safety": 3
+    "Feasibility": 3,
+    "Safety": 4
   }
 }

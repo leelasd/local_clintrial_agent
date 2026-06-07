@@ -18,31 +18,31 @@
     {
       "text": ". Candidate for phototherapy or systemic therapy.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the patient's eligibility for potential treatments, which may be essential for data quality and study feasibility.",
+      "justification": "This criterion ensures the patient's eligibility for potential treatment modalities, which is crucial for data quality and study feasibility.",
       "competing_risk": false
     },
     {
       "text": ". Other forms of psoriasis.",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients with other forms of psoriasis, potentially protecting them from harm.",
+      "justification": "This criterion excludes patients with other forms of psoriasis, potentially protecting them from harm or complications specific to those forms.",
       "competing_risk": false
     },
     {
       "text": ". History of recent infection.",
       "reasoning_category": "Safety",
-      "justification": "This criterion may be a safety concern as it could increase the risk of complications or infections in patients with psoriasis.",
+      "justification": "This criterion is likely a safety measure to prevent potential adverse events related to infections in the context of this study.",
       "competing_risk": false
     },
     {
       "text": ". Prior exposure to TAK-279 or active comparator.",
-      "reasoning_category": "Safety",
-      "justification": "This criterion ensures that patients have not previously received the treatment being tested, potentially protecting them from harm.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures that patients have not previously received treatment with TAK-279 or an active comparator, potentially impacting the study's ability to assess the new drug's efficacy.",
       "competing_risk": false
     },
     {
       "text": "Other protocol defined inclusion/exclusion criteria apply.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion is likely to be a safety or feasibility concern depending on the specific details of the protocol.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion is likely a safety measure to protect patients from potential harm or complications specific to their individual circumstances.",
       "competing_risk": false
     }
   ],
@@ -59,6 +59,21 @@
     "recruitment_yield_estimate": "Moderate (5-20% screen-to-enroll)",
     "enrollment_count": 693,
     "enrollment_type": "ACTUAL"
+  },
+  "sample_size": {
+    "enrollment_actual": 693,
+    "estimated_n_per_arm": 231,
+    "num_arms": 3,
+    "primary_endpoint_type": "Dichotomous (Proportion)",
+    "estimated_control_event_rate": 0.1,
+    "power_analysis": {
+      "alpha": 0.05,
+      "power_target": 0.8,
+      "test_type": "Two-sided",
+      "detectable_absolute_difference": 0.1,
+      "estimated_power_for_20pct_improvement": 1.0,
+      "assessment": "Adequately Powered"
+    }
   },
   "endpoints": [
     {

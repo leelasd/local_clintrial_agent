@@ -1,7 +1,9 @@
 import requests
 import json
+import math
 import ollama
 from collections import Counter
+from scipy import stats
 
 def classify_design_from_api(protocol):
     """Classify trial design type from API's structured data."""
@@ -132,6 +134,107 @@ def analyze_study_population(protocol):
         'enrollment_type': enrollment_type
     }
 
+def analyze_sample_size(protocol, endpoints):
+    """Compute sample size and power analysis using actual enrollment and primary endpoint."""
+    design_mod = protocol.get('designModule', {})
+    arms = protocol.get('armsInterventionsModule', {})
+    arm_groups = arms.get('armGroups', [])
+    enrollment_info = design_mod.get('enrollmentInfo', {})
+    enrollment = enrollment_info.get('count', 0)
+    
+    if not enrollment:
+        return None
+    
+    # Count interventional arms (exclude NO_INTERVENTION)
+    interventional_arms = [a for a in arm_groups if a.get('type') != 'NO_INTERVENTION']
+    num_arms = len(interventional_arms)
+    n_per_arm = max(1, enrollment // num_arms) if num_arms > 0 else enrollment
+    
+    # Determine primary endpoint type
+    primary_endpoints = [e for e in endpoints if e.get('is_primary')]
+    primary_text = primary_endpoints[0]['text'] if primary_endpoints else ''
+    primary_type = primary_endpoints[0]['endpoint_type'] if primary_endpoints else 'Unknown'
+    
+    # Check if dichotomous (proportion-based endpoint)
+    dichotomous_keywords = ['percentage', 'proportion', 'number of', 'achieving', 'response', 'rate']
+    is_dichotomous = any(k in primary_text.lower() for k in dichotomous_keywords)
+    
+    # For psoriasis trials, typical placebo response rate for sPGA/PASI is ~10-15%
+    estimated_control_rate = 0.10
+    alpha = 0.05
+    power_target = 0.80
+    z_alpha = stats.norm.ppf(1 - alpha / 2)
+    z_beta = stats.norm.ppf(power_target)
+    
+    if is_dichotomous and n_per_arm > 1:
+        # Compute minimum detectable absolute difference at target power
+        def compute_detectable_diff(n, p0, za, zb):
+            for delta_p in [x / 100 for x in range(1, 50)]:
+                p1 = p0 + delta_p
+                phat = (p0 + p1) / 2
+                se = math.sqrt(2 * phat * (1 - phat) / n)
+                if se == 0:
+                    continue
+                z = delta_p / se
+                est_power = stats.norm.cdf(z - za)
+                if est_power >= power_target:
+                    return delta_p
+            return None
+        
+        detectable_diff = compute_detectable_diff(n_per_arm, estimated_control_rate, z_alpha, z_beta)
+        
+        # Estimate power for a realistic 20% absolute improvement
+        p1_realistic = estimated_control_rate + 0.20
+        phat_realistic = (estimated_control_rate + p1_realistic) / 2
+        se_realistic = math.sqrt(2 * phat_realistic * (1 - phat_realistic) / n_per_arm)
+        z_realistic = 0.20 / se_realistic if se_realistic > 0 else 0
+        power_realistic = stats.norm.cdf(z_realistic - z_alpha)
+        
+        # Assessment
+        if detectable_diff is None:
+            assessment = 'Cannot determine'
+        elif detectable_diff <= 0.10:
+            assessment = 'Adequately Powered'
+        elif detectable_diff <= 0.15:
+            assessment = 'Borderline'
+        elif detectable_diff <= 0.25:
+            assessment = 'Underpowered'
+        else:
+            assessment = 'Severely Underpowered'
+        
+        return {
+            'enrollment_actual': enrollment,
+            'estimated_n_per_arm': n_per_arm,
+            'num_arms': num_arms,
+            'primary_endpoint_type': 'Dichotomous (Proportion)',
+            'estimated_control_event_rate': estimated_control_rate,
+            'power_analysis': {
+                'alpha': alpha,
+                'power_target': power_target,
+                'test_type': 'Two-sided',
+                'detectable_absolute_difference': round(detectable_diff, 3) if detectable_diff else None,
+                'estimated_power_for_20pct_improvement': round(power_realistic, 3),
+                'assessment': assessment
+            }
+        }
+    
+    # Non-dichotomous endpoint — just report enrollment
+    return {
+        'enrollment_actual': enrollment,
+        'estimated_n_per_arm': n_per_arm,
+        'num_arms': num_arms,
+        'primary_endpoint_type': primary_type,
+        'estimated_control_event_rate': None,
+        'power_analysis': {
+            'alpha': alpha,
+            'power_target': power_target,
+            'test_type': 'Two-sided',
+            'detectable_absolute_difference': None,
+            'estimated_power_for_20pct_improvement': None,
+            'assessment': 'Power analysis requires dichotomous endpoint'
+        }
+    }
+
 def analyze_trial(nct_id):
     """Full pipeline: fetch, classify design from API, then LLM-classify eligibility."""
     
@@ -215,6 +318,18 @@ def analyze_trial(nct_id):
     print(f"  Competing Risk Exclusions: {population['has_competing_risk_exclusions']}")
     print(f"  Recruitment Yield: {population['recruitment_yield_estimate']}")
     print(f"  Enrollment: {population['enrollment_count']} ({population['enrollment_type']})")
+    
+    # --- STEP 1c: Sample size / power analysis ---
+    sample_size = analyze_sample_size(protocol, endpoints)
+    if sample_size:
+        pa = sample_size['power_analysis']
+        print(f"\nSample Size / Power:")
+        print(f"  Enrollment: {sample_size['enrollment_actual']} ({sample_size['num_arms']} arms, ~{sample_size['estimated_n_per_arm']}/arm)")
+        print(f"  Endpoint: {sample_size['primary_endpoint_type']}")
+        if pa['detectable_absolute_difference']:
+            print(f"  Detectable Δ at {pa['power_target']:.0%} power: {pa['detectable_absolute_difference']:.0%}")
+            print(f"  Power for 20% improvement: {pa['estimated_power_for_20pct_improvement']:.0%}")
+            print(f"  Assessment: {pa['assessment']}")
     
     # --- STEP 2: LLM classification of eligibility ---
     eligibility_text = protocol['eligibilityModule']['eligibilityCriteria']
@@ -374,6 +489,7 @@ Do not use escape characters. Write the JSON directly.
         "phase": phase,
         "eligibility": eligibility,
         "population": population,
+        "sample_size": sample_size,
         "endpoints": endpoints,
         "trial_integrity": trial_integrity,
         "trial_design": {
@@ -398,6 +514,9 @@ Do not use escape characters. Write the JSON directly.
     print(f"Control: {api_design['control_type']}")
     print(f"Superiority: {api_design['superiority_type']}")
     print(f"Masking: {trial_integrity['masking_level']}")
+    if sample_size:
+        pa = sample_size['power_analysis']
+        print(f"Power: {pa['assessment']}")
     print(f"\nEligibility Classification:")
     for cat, count in categories.most_common():
         print(f"  {cat}: {count}")
@@ -413,5 +532,39 @@ Do not use escape characters. Write the JSON directly.
 
 
 if __name__ == '__main__':
-    # Test on Zasocitinib (TAK-279) trial
-    result = analyze_trial('NCT06088043')
+    trials = [
+        ('NCT06088043', 'Zasocitinib (TAK-279)'),
+        ('NCT04167462', 'Deucravacitinib (BMS-986165)'),
+        ('NCT06220604', 'JNJ-77242113'),
+    ]
+    
+    print("=" * 80)
+    print("TYK2 INHIBITOR TRIAL ANALYSIS")
+    print("=" * 80)
+    
+    all_results = []
+    for nct_id, drug in trials:
+        result = analyze_trial(nct_id)
+        result['drug'] = drug
+        all_results.append(result)
+    
+    print("\n" + "=" * 80)
+    print("POWER COMPARISON ACROSS TYK2 TRIALS")
+    print("=" * 80)
+    print(f"\n{'Drug':<30} {'Enroll':<8} {'Arms':<6} {'N/Arm':<6} {'Detect Δ':<10} {'Power@20%':<10} {'Assessment':<20}")
+    print("-" * 100)
+    for r in all_results:
+        ss = r.get('sample_size')
+        if ss and ss.get('power_analysis'):
+            pa = ss['power_analysis']
+            det = f"{pa['detectable_absolute_difference']:.0%}" if pa.get('detectable_absolute_difference') else 'N/A'
+            pwr = f"{pa['estimated_power_for_20pct_improvement']:.0%}" if pa.get('estimated_power_for_20pct_improvement') else 'N/A'
+        else:
+            det, pwr = 'N/A', 'N/A'
+        print(f"{r.get('drug', '')[:28]:<30} {ss['enrollment_actual'] if ss else 0:<8} {ss['num_arms'] if ss else 0:<6} {ss['estimated_n_per_arm'] if ss else 0:<6} {det:<10} {pwr:<10} {pa['assessment'] if ss else 'N/A':<20}")
+    
+    # Save combined comparison
+    comparison = {r['nct_id']: r for r in all_results}
+    with open('tyk2_comparison.json', 'w') as f:
+        json.dump(comparison, indent=2, fp=f)
+    print(f"\n✓ Detailed comparison saved to tyk2_comparison.json")
