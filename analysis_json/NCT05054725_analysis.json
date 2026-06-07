@@ -1,0 +1,215 @@
+{
+  "nct_id": "NCT05054725",
+  "title": "Combination Study of RMC-4630 and Sotorasib for NSCLC Subjects With KRASG12C Mutation After Failure of Prior Standard Therapies",
+  "phase": "PHASE2",
+  "drug": "RMC-4630 + Sotorasib (SHP2+KRAS G12C) - Phase 2",
+  "trial_design": {
+    "design_type": "Adaptive Design",
+    "control_type": "None (Single-Arm)",
+    "superiority_type": "Unclear"
+  },
+  "trial_integrity": {
+    "masking_level": "Open-label",
+    "blinding_validation_method": "Not specified",
+    "concomitant_therapy_controls": "Standardized background care"
+  },
+  "randomization": {
+    "randomization_type": "Not described",
+    "allocation_ratio": "1:1",
+    "stratification_factors": [
+      "Center",
+      "Age"
+    ],
+    "randomization_description": "Stratified by Center, Age. "
+  },
+  "population": {
+    "sex": "ALL",
+    "age_range": "18 Years+",
+    "std_ages": [
+      "ADULT",
+      "OLDER_ADULT"
+    ],
+    "healthy_volunteers": false,
+    "age_restrictiveness": "Moderate",
+    "has_competing_risk_exclusions": true,
+    "recruitment_yield_estimate": "Moderate (5-20% screen-to-enroll)",
+    "enrollment_count": 47,
+    "enrollment_type": "ACTUAL"
+  },
+  "sample_size": {
+    "enrollment_actual": 47,
+    "estimated_n_per_arm": 23,
+    "num_arms": 2,
+    "primary_endpoint_type": "Dichotomous (Proportion)",
+    "estimated_control_event_rate": 0.1,
+    "power_analysis": {
+      "alpha": 0.05,
+      "power_target": 0.8,
+      "test_type": "Two-sided",
+      "detectable_absolute_difference": 0.38,
+      "estimated_power_for_20pct_improvement": 0.396,
+      "assessment": "Severely Underpowered"
+    }
+  },
+  "endpoints": [
+    {
+      "text": "Objective Response Rate (ORR) as Assessed Per RECIST v1.1",
+      "endpoint_type": "Biomarker",
+      "timeframe": "31 months",
+      "is_primary": true
+    },
+    {
+      "text": "Clinically Significant Changes in Vital Signs",
+      "endpoint_type": "Safety",
+      "timeframe": "31 months",
+      "is_primary": false
+    },
+    {
+      "text": "Clinically Significant Changes in Laboratory Tests",
+      "endpoint_type": "Safety",
+      "timeframe": "31 months",
+      "is_primary": false
+    },
+    {
+      "text": "Clinically Significant Changes in ECGs",
+      "endpoint_type": "Safety",
+      "timeframe": "31 months",
+      "is_primary": false
+    },
+    {
+      "text": "Trough and Approximate Peak Concentrations of RMC-4630",
+      "endpoint_type": "Biomarker",
+      "timeframe": "31 months",
+      "is_primary": false
+    },
+    {
+      "text": "Trough and Approximate Peak Concentrations of Sotorasib",
+      "endpoint_type": "Biomarker",
+      "timeframe": "31 months",
+      "is_primary": false
+    },
+    {
+      "text": "Duration of Response (DOR) as Assessed Per RECIST v1.1",
+      "endpoint_type": "Clinical",
+      "timeframe": "31 months",
+      "is_primary": false
+    },
+    {
+      "text": "Disease Control Rate (DCR) as Assessed Per RECIST v.1.1",
+      "endpoint_type": "Clinical",
+      "timeframe": "31 months",
+      "is_primary": false
+    },
+    {
+      "text": "Progression-free Survival (PFS) as Assessed Per RECIST v1.1",
+      "endpoint_type": "Clinical",
+      "timeframe": "31 months",
+      "is_primary": false
+    },
+    {
+      "text": "Overall Survival (OS)",
+      "endpoint_type": "Clinical",
+      "timeframe": "31 months",
+      "is_primary": false
+    },
+    {
+      "text": "Incidence, Nature and Severity of TEAEs, SAEs",
+      "endpoint_type": "Safety",
+      "timeframe": "31 months",
+      "is_primary": false
+    }
+  ],
+  "adaptive_designs": {
+    "has_adaptive_features": false,
+    "adaptive_types": [],
+    "interim_analysis_mentioned": false,
+    "stopping_rules": "Not mentioned",
+    "dose_escalation_method": null,
+    "description": "Standard fixed-design trial. No adaptive features detected."
+  },
+  "safety_adverse_events": {
+    "ae_reporting_method": "Not explicitly specified",
+    "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
+    "ae_types_detected": [],
+    "class_effects_known": [
+      "AST elevation",
+      "ALT elevation"
+    ],
+    "safety_endpoints": [],
+    "sae_stopping_rules": "Not specified in protocol text",
+    "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+  },
+  "eligibility": [
+    {
+      "text": "Subject must be \u226518 years of age.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures eligibility for participation is within a legal and ethical framework.",
+      "competing_risk": false
+    },
+    {
+      "text": "Subject must have pathologically documented, locally advanced or metastatic KRASG12C NSCLC (not amenable to curative surgery) that has progressed on prior standard therapies (no more than 3 prior lines of therapies are allowed)",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures the study population is representative of a specific patient group with a defined disease progression and treatment history.",
+      "competing_risk": false
+    },
+    {
+      "text": "Exclusion Criteria",
+      "reasoning_category": "Safety",
+      "justification": "The inclusion criteria are not explicitly stated, but this text indicates that the study will exclude patients based on specific criteria. This is a safety measure to ensure patient well-being.",
+      "competing_risk": false
+    },
+    {
+      "text": "Primary central nervous system (CNS) tumors",
+      "reasoning_category": "Safety",
+      "justification": "This criterion excludes patients with CNS tumors, which could pose significant risks and complications. This is a safety measure to protect the patient.",
+      "competing_risk": true
+    },
+    {
+      "text": "Known or suspected leptomeningeal or brain metastases or spinal cord compression",
+      "reasoning_category": "Safety",
+      "justification": "This criterion excludes patients with known or suspected leptomeningeal or brain metastases or spinal cord compression, which could pose significant risks and complications. This is a safety measure to protect the patient.",
+      "competing_risk": false
+    },
+    {
+      "text": "Clinically significant cardiac disease",
+      "reasoning_category": "Safety",
+      "justification": "This criterion excludes patients with clinically significant cardiac disease, which could pose significant risks and complications. This is a safety measure to protect the patient.",
+      "competing_risk": false
+    },
+    {
+      "text": "Known impairment of GI function that would alter the absorption",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients have adequate digestive function, which is crucial for drug absorption. This is a feasibility measure to ensure data quality.",
+      "competing_risk": false
+    },
+    {
+      "text": "Active autoimmune disease requiring systemic treatment within past 2 years",
+      "reasoning_category": "Safety",
+      "justification": "This criterion excludes patients with active autoimmune diseases, which could pose significant risks and complications. This is a safety measure to protect the patient.",
+      "competing_risk": false
+    },
+    {
+      "text": "History of severe allergic reactions to any of the study intervention components",
+      "reasoning_category": "Safety",
+      "justification": "This criterion excludes patients with a history of severe allergic reactions, which could pose significant risks and complications. This is a safety measure to protect the patient.",
+      "competing_risk": false
+    },
+    {
+      "text": "Major surgical procedures within 28 days or non-study-related minor procedures within 7 days of treatment.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients have sufficient recovery time before starting the study. This is a feasibility measure to ensure data quality.",
+      "competing_risk": false
+    },
+    {
+      "text": "Prior therapy with KRASG12C inhibitor and/or SHP2 inhibitor",
+      "reasoning_category": "Safety",
+      "justification": "This criterion excludes patients who have received prior treatment with KRASG12C inhibitors or SHP2 inhibitors, which could pose significant risks and complications. This is a safety measure to protect the patient.",
+      "competing_risk": false
+    }
+  ],
+  "summary": {
+    "Feasibility": 3,
+    "Statistical Power": 1,
+    "Safety": 7
+  }
+}

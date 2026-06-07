@@ -1,2 +1,9 @@
-Fundamentals_of_Clinical_Trials.md
-Fundamentals_of_Clinical_Trials_4th_edition.pdf
+# Local environment
+.venv/
+__pycache__/
+
+# Textbook (full text, not tracked)
+textbook/
+
+# Legacy test scripts and JSONs
+legacy_tests/

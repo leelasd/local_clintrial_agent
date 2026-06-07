@@ -1,0 +1,229 @@
+{
+  "nct_id": "NCT06625320",
+  "title": "Phase 3 Study of Daraxonrasib (RMC-6236) in Patients With Previously Treated Metastatic Pancreatic Ductal Adenocarcinoma (PDAC)",
+  "phase": "PHASE3",
+  "drug": "RMC-6236 daraxonrasib PDAC (RAS multi) - Phase 3",
+  "trial_design": {
+    "design_type": "Parallel RCT",
+    "control_type": "Active Comparator",
+    "superiority_type": "Superiority"
+  },
+  "trial_integrity": {
+    "masking_level": "Open-label",
+    "blinding_validation_method": "Not specified",
+    "concomitant_therapy_controls": "Standardized background care"
+  },
+  "randomization": {
+    "randomization_type": "Simple",
+    "allocation_ratio": "1:1",
+    "stratification_factors": [],
+    "randomization_description": "Simple randomization."
+  },
+  "population": {
+    "sex": "ALL",
+    "age_range": "18 Years+",
+    "std_ages": [
+      "ADULT",
+      "OLDER_ADULT"
+    ],
+    "healthy_volunteers": false,
+    "age_restrictiveness": "Moderate",
+    "has_competing_risk_exclusions": false,
+    "recruitment_yield_estimate": "Moderate (5-20% screen-to-enroll)",
+    "enrollment_count": 500,
+    "enrollment_type": "ACTUAL"
+  },
+  "sample_size": {
+    "enrollment_actual": 500,
+    "estimated_n_per_arm": 250,
+    "num_arms": 2,
+    "primary_endpoint_type": "PFS (Progression-Free Survival)",
+    "estimated_control_event_rate": 0.85,
+    "power_analysis": {
+      "alpha": 0.05,
+      "power_target": 0.8,
+      "test_type": "Two-sided (log-rank)",
+      "detectable_hazard_ratio": 0.762,
+      "hr_reduction": "24%",
+      "expected_events": 425,
+      "control_median_months": 3.5,
+      "implied_treatment_median_months": 4.6,
+      "median_improvement_months": 1.1,
+      "assessment": "Underpowered"
+    }
+  },
+  "endpoints": [
+    {
+      "text": "Progression free survival (PFS) in the RAS G12-mutant population",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to approximately 3 years",
+      "is_primary": true
+    },
+    {
+      "text": "Overall survival (OS) in the RAS G12-mutant population",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to approximately 3 years",
+      "is_primary": true
+    },
+    {
+      "text": "PFS in the all-patient population",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to approximately 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "OS in the all-patient population",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to approximately 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "Objective response in the RAS G12 and all-patient populations",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Up to approximately 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "Time to deterioration (TTD) in European Organization for Research and Treatment of Cancer Quality of Life Questionnaire Pancreatic Cancer Module (EORTC QLQ-PAN26) in the RAS G12 and all-patient populations",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to approximately 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "Time to deterioration (TTD) in European Organization for Research and Treatment of Cancer Quality of Life Questionnaire Core 30 (EORTC QLQ-C30) in the RAS G12 and all-patient populations",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to approximately 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "Objective response per investigator in RAS G12 and all- patient populations",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Up to approximately 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "Duration of response (DOR) in RAS G12 and all-patient populations",
+      "endpoint_type": "Clinical",
+      "timeframe": "Up to approximately 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "Time to response (TTR) in RAS G12 and all-patient populations",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Up to approximately 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of patients with adverse events (AEs)",
+      "endpoint_type": "Safety",
+      "timeframe": "Up to approximately 3 years",
+      "is_primary": false
+    },
+    {
+      "text": "Pharmacokinetics of RMC-6236 in RAS G12 and all-patient populations",
+      "endpoint_type": "Biomarker",
+      "timeframe": "Up to approximately 3 years",
+      "is_primary": false
+    }
+  ],
+  "adaptive_designs": {
+    "has_adaptive_features": false,
+    "adaptive_types": [],
+    "interim_analysis_mentioned": false,
+    "stopping_rules": "Not mentioned",
+    "dose_escalation_method": null,
+    "description": "Standard fixed-design trial. No adaptive features detected."
+  },
+  "safety_adverse_events": {
+    "ae_reporting_method": "MedDRA (Medical Dictionary for Regulatory Activities)",
+    "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
+    "ae_types_detected": [],
+    "class_effects_known": [
+      "AST elevation"
+    ],
+    "safety_endpoints": [
+      "Percentage of patients with adverse events (AEs)"
+    ],
+    "sae_stopping_rules": "Not specified in protocol text",
+    "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+  },
+  "eligibility": [
+    {
+      "text": "At least 18 years old and has provided informed consent.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures compliance with legal requirements for clinical trials involving human subjects.",
+      "competing_risk": false
+    },
+    {
+      "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion helps ensure patients are physically capable of participating in the trial and managing potential side effects.",
+      "competing_risk": false
+    },
+    {
+      "text": "Histologically or cytologically confirmed PDAC with metastatic disease.",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures a homogeneous patient population for comparison to the control group, maximizing the likelihood of detecting treatment effects.",
+      "competing_risk": false
+    },
+    {
+      "text": "Measurable disease per RECIST 1.1.",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion helps ensure a consistent and measurable endpoint for comparison between groups.",
+      "competing_risk": false
+    },
+    {
+      "text": "Adequate organ function (bone marrow, liver, kidney, coagulation)",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients have sufficient physiological capacity to tolerate the study treatment and potential side effects.",
+      "competing_risk": false
+    },
+    {
+      "text": "Documented RAS mutation status, either mutant or wild-type. RAS mutations defined as nonsynonymous mutations in KRAS, NRAS, or HRAS at codons 12, 13, or 61 (G12, G13, or Q61).",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures a specific patient population for comparison to the control group.",
+      "competing_risk": false
+    },
+    {
+      "text": "Able to take oral medications.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion helps ensure patients can effectively receive study treatment and manage potential side effects.",
+      "competing_risk": false
+    },
+    {
+      "text": "Prior therapy with direct RAS-targeted therapy (eg. degraders and/or inhibitors).",
+      "reasoning_category": "Safety",
+      "justification": "This criterion helps ensure patients have a history of prior treatment to avoid confounding factors.",
+      "competing_risk": false
+    },
+    {
+      "text": "History of or known central nervous system metastatic disease.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion helps ensure patients are not at risk for complications related to the study treatment.",
+      "competing_risk": false
+    },
+    {
+      "text": "Any conditions that may affect the ability to take or absorb study treatment",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patient compliance and data quality by addressing potential barriers to treatment adherence.",
+      "competing_risk": false
+    },
+    {
+      "text": "Major surgery within 4 weeks prior to randomization.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion helps ensure patients have sufficient recovery time before study participation, potentially impacting their ability to adhere to the protocol.",
+      "competing_risk": false
+    },
+    {
+      "text": "Patient is unable or unwilling to comply with protocol-required study visits or procedures.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion helps ensure patient compliance and data quality by addressing potential barriers to treatment adherence.",
+      "competing_risk": false
+    }
+  ],
+  "summary": {
+    "Feasibility": 5,
+    "Safety": 4,
+    "Statistical Power": 3
+  }
+}

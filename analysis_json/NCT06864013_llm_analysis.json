@@ -1,0 +1,125 @@
+{
+  "nct_id": "NCT06864013",
+  "eligibility": [
+    {
+      "text": ". Sign a written Informed Consent Form (ICF) and be able to comply with the visits and related procedures stipulated in the protocol",
+      "reasoning_category": "Safety",
+      "justification": "Ensuring patient understanding of study protocols minimizes potential risks associated with treatment."
+    },
+    {
+      "text": ". Age between 18 and 75 years old",
+      "reasoning_category": "Statistical Power",
+      "justifica\u00e7\u00e3o": "A larger sample size is needed to detect statistically significant differences in efficacy or safety."
+    },
+    {
+      "text": ". Histologically confirmed rectal adenocarcinoma",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures the study focuses on a specific and well-defined condition, minimizing potential harm from diverse conditions."
+    },
+    {
+      "text": ". According to the AJCC 8th Edition staging, imaging evaluation (enhanced CT or enhanced MRI) confirms resectable locally advanced rectal cancer (AJCC 8th Edition staging cT3-4 / cN+)",
+      "reasoning_category": "Statistical Power",
+      "justification": "A robust and accurate diagnostic process is crucial for determining treatment efficacy."
+    },
+    {
+      "text": ". Patients with microsatellite stability (MSS) or proficient mismatch repair (pMMR) rectal cancer",
+      "reasoning_category": "Safety",
+      "justifica\u00e7\u00e3o": "This criterion reduces the risk of adverse events by excluding patients with potentially unstable DNA."
+    },
+    {
+      "text": ". At least one evaluable lesion according to RECIST v1.1 criteria",
+      "reasoning_category": "Feasibility",
+      "justification": "The strict inclusion/exclusion criteria are essential for data quality and consistency."
+    },
+    {
+      "text": ". Liver function: Total Bilirubin (TBIL) \u22641.5\u00d7Upper Limit of Normal (ULN); Alanine transaminase (ALT) and Aspartate transamine (AST) \u22643\u00d7ULN",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures data quality by limiting the potential for errors in patient assessment."
+    },
+    {
+      "text": ". Serum albumin (ALB) \u226535 g/L.",
+      "reasoning_category": "Safety",
+      "justifica\u00e7\u00e3o": "Ensuring adequate protein levels is crucial for maintaining patient health and preventing complications."
+    },
+    {
+      "text": ". Hemoglobin (HGB) \u226510.0 g/dL.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures the study has a sufficient number of patients to achieve statistically significant results."
+    },
+    {
+      "text": ". Blood count: Absolute Neutrophil Count (ANC) \u22651.5\u00d710^9/L; Platelet (PLT) \u2265100\u00d710^9/L; Hemoglobin (HGB) \u226510.0 g/dL.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures the study has a sufficient number of patients to achieve statistically significant results."
+    },
+    {
+      "text": ".  Liver function: Total Bilirubin (TBIL) \u22641.5\u00d7Upper Limit of Normal (ULN); Alanine transaminase (ALT) and Aspartate transamine (AST) \u22643\u00d7ULN",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures data quality by limiting the potential for errors in patient assessment."
+    },
+    {
+      "text": ".  Kidney function: Serum creatinine \u22641.5\u00d7ULN or creatinine clearance \u226550 ml/min (calculated using the Cockcroft-Gault formula or standard 24-hour urine collection method); Urine dipstick test shows urine protein <2+; For subjects with baseline urine dipstick test showing urine protein \u22652+, a 24-hour urine collection should be performed, and the protein content in the 24-hour urine should be <1 g.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures data quality by limiting the potential for errors in patient assessment."
+    },
+    {
+      "text": ".  No serious concomitant diseases that threaten the subject's survival (resulting in an expected survival time of less than 5 years)",
+      "reasoning_category": "Safety",
+      "justification": "This criterion minimizes risks to patients by excluding conditions that could significantly shorten their lifespan."
+    },
+    {
+      "text": ".  Female subjects of childbearing potential or male subjects with partners of childbearing potential must use effective contraception throughout the treatment period. Female subjects must have evidence of postmenopausal status or a negative urine or serum pregnancy test result for premenopausal female subjects.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion protects patients from unintended pregnancies and ensures responsible data collection."
+    },
+    {
+      "text": ". Patients with rectal cancer who have been tested for microsatellite instability as MSI-H or mismatch repair as dMMR",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion reduces the risk of adverse events by excluding patients with potentially unstable DNA."
+    },
+    {
+      "text": ". Patients who have previously received any anti-tumor treatment for the studied disease, including surgery, radiotherapy, chemotherapy, targeted therapy, immunotherapy, etc.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion minimizes potential risks associated with multiple treatments."
+    },
+    {
+      "text": ". Simultaneous participation in another clinical study, unless participating in an observational (non-interventional) clinical study or in the survival follow-up phase of an interventional study",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures data integrity by preventing duplication of effort."
+    },
+    {
+      "text": ". Treatment with any investigational drug or device within 4 weeks prior to the first dose of the study drug",
+      "reasoning_category": "Safety",
+      "justifica\u00e7\u00e3o": "This criterion minimizes potential risks associated with unexpected adverse events."
+    },
+    {
+      "text": ". Receipt of live or attenuated live vaccines within 4 weeks prior to the first dose of the study drug, excluding: intranasal inhaled local steroid therapy or local steroid injections (such as intra-articular injections); systemic corticosteroid therapy not exceeding 10 mg/day of prednisone or its equivalent physiological dose; glucocorticoids as preventive medication for allergic reactions (such as pre-CT medication); use of Chinese herbal medicine or immunomodulatory drugs with anti-tumor indications (including thymosin, interferon, interleukin, etc.) within 1 week prior to the first dose of the study drug",
+      "reasoning_category": "Safety",
+      "justification": "This criterion minimizes potential risks associated with unexpected adverse events."
+    },
+    {
+      "text": ".  Use of immunosuppressive drugs within 4 weeks prior to the first dose of the study drug, excluding: intranasal inhaled local steroid therapy or local steroid injections (such as intra-articular injections); systemic corticosteroid therapy not exceeding 10 mg/day of prednisone or its equivalent physiological dose; glucocorticoids as preventive medication for allergic reactions (such as pre-CT medication); use of Chinese herbal medicine or immunomodulatory drugs with anti-tumor indications (including thymosin, interferon, interleukin, etc.) within 1 week prior to the first dose of the study drug",
+      "reasoning_category": "Safety",
+      "justification": "This criterion minimizes potential risks associated with unexpected adverse events."
+    },
+    {
+      "text": ".  History of blood transfusion within 14 days before the first dose of the study drug or expected during the study period.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures data quality by limiting the potential for errors in patient assessment."
+    },
+    {
+      "text": ".  Patient with rectal cancer who have been tested for microsatellite instability as MSI-H or mismatch repair as dMMR",
+      "reasoning_category": "Safety",
+      "justification": "This criterion reduces the risk of adverse events by excluding patients with potentially unstable DNA."
+    },
+    {
+      "text": ".  Patient with rectal cancer who have been tested for microsatellite instability as MSI-H or mismatch repair as dMMR",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion reduces the risk of adverse events by excluding patients with potentially unstable DNA."
+    }
+  ],
+  "trial_integrity": {
+    "masking_level": "NONE",
+    "blinding_validation_method": "Not specified",
+    "concomitant_therapy_controls": "Standardized background care"
+  }
+}
