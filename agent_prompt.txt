@@ -75,6 +75,14 @@ Example structure:
     "interim_analysis_mentioned": false,
     "stopping_rules": "Not mentioned",
     "description": "Standard fixed-design parallel RCT with no adaptive features. No interim analyses or stopping rules specified."
+  },
+  "safety_adverse_events": {
+    "ae_reporting_method": "MedDRA Preferred Terms, CTCAE v5.0 grading",
+    "ae_ascertainment": "Elicited via checklist at each visit",
+    "ae_types_detected": ["Nasopharyngitis", "Upper respiratory tract infection", "Headache"],
+    "class_effects_known": ["Herpes zoster", "CPK elevation", "Acne"],
+    "sae_stopping_rules": "Discontinuation required for any SAE deemed treatment-related by investigator",
+    "safety_monitoring": "Data Safety Monitoring Board (DSMB) with scheduled reviews"
   }
 }
 

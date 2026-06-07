@@ -402,6 +402,140 @@ def analyze_adaptive_design(protocol, api_design):
         'description': description
     }
 
+
+def analyze_safety_adverse_events(protocol, endpoints):
+    """Extract safety/AE reporting methods, known AE types, and stopping rules from protocol."""
+    description_text = (
+        protocol.get('descriptionModule', {}).get('briefSummary', '') + ' ' +
+        (protocol.get('descriptionModule', {}).get('detailedDescription', '') or '') + ' ' +
+        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
+    ).lower()
+    
+    outcomes = protocol.get('outcomesModule', {})
+    safety_outcomes = []
+    for o in outcomes.get('secondaryOutcomes', []):
+        text = o.get('measure', '')
+        if any(k in text.lower() for k in ['adverse event', 'safety', 'tolerab', 'serious adverse']):
+            safety_outcomes.append(o)
+    
+    # --- Item 1: Extract known AE types from protocol text ---
+    # General AE terms commonly mentioned in protocols
+    general_ae_terms = {
+        'headache': 'Headache',
+        'nausea': 'Nausea',
+        'fatigue': 'Fatigue',
+        'diarrhea': 'Diarrhea',
+        'nasopharyngitis': 'Nasopharyngitis',
+        'upper respiratory': 'Upper Respiratory Tract Infection',
+        'uti': 'Urinary Tract Infection',
+        'injection site': 'Injection Site Reaction',
+        'arthralgia': 'Arthralgia',
+        'back pain': 'Back Pain',
+        'dizziness': 'Dizziness',
+        'rash': 'Rash',
+        'pruritus': 'Pruritus',
+        'cough': 'Cough',
+        'pyrexia': 'Pyrexia / Fever',
+        'anemia': 'Anemia',
+        'insomnia': 'Insomnia',
+    }
+    
+    # TYK2 inhibitor class-specific AEs (known from literature)
+    tyk2_class_effects = {
+        'herpes zoster': 'Herpes zoster (shingles)',
+        'zoster': 'Herpes zoster (shingles)',
+        'cpk': 'CPK elevation',
+        'creatine kinase': 'CPK elevation',
+        'acne': 'Acne',
+        'folliculitis': 'Folliculitis',
+        'neutropenia': 'Neutropenia',
+        'lipid': 'Lipid elevation (LDL/triglycerides)',
+        'transaminase': 'Liver enzyme elevation',
+        'alt': 'ALT elevation',
+        'ast': 'AST elevation',
+        'infection': 'Infections (general)',
+        'tuberculosis': 'Tuberculosis screening',
+        'tb': 'Tuberculosis screening',
+    }
+    
+    ae_types_detected = []
+    for term, label in general_ae_terms.items():
+        if term in description_text:
+            ae_types_detected.append(label)
+    
+    class_effects = []
+    for term, label in tyk2_class_effects.items():
+        if term in description_text:
+            class_effects.append(label)
+    
+    # --- Item 3: Categorize AE reporting method ---
+    # MedDRA detection
+    has_meddra = any(k in description_text for k in ['meddra', 'medical dictionary', 'system organ class', 'soc', 'preferred term'])
+    has_ctcae = any(k in description_text for k in ['ctcae', 'common terminology', 'grade ', 'ctcae v'])
+    has_elicited = any(k in description_text for k in ['checklist', 'elicited', 'solicited', 'questionnaire', 'asked about'])
+    has_volunteered = any(k in description_text for k in ['volunteer', 'spontaneous', 'open-ended', 'any health problem'])
+    
+    reporting_parts = []
+    if has_meddra:
+        reporting_parts.append('MedDRA (Medical Dictionary for Regulatory Activities)')
+    if has_ctcae:
+        reporting_parts.append('CTCAE severity grading')
+    if not has_meddra and not has_ctcae:
+        reporting_parts.append('Not explicitly specified')
+    
+    if has_elicited and has_volunteered:
+        ascertainment = 'Elicited via checklist + volunteered spontaneous reports'
+    elif has_elicited:
+        ascertainment = 'Elicited via checklist at each visit'
+    elif has_volunteered:
+        ascertainment = 'Volunteered spontaneous reports (open-ended questioning)'
+    else:
+        ascertainment = 'Not explicitly described (assumed standard investigator reporting)'
+    
+    ae_reporting_method = ', '.join(reporting_parts) if reporting_parts else 'Standard AE reporting'
+    
+    # --- Item 4: SAE stopping rules and safety monitoring ---
+    # Look for DSMB / Data Monitoring Committee
+    has_dsmb = any(k in description_text for k in [
+        'dsmb', 'data safety monitoring', 'data monitoring committee',
+        'independent data monitoring', 'safety monitoring board'
+    ])
+    has_sae_stopping = any(k in description_text for k in [
+        'discontinuation', 'withdrawn', 'stop treatment', 'dose modification',
+        'dose reduction', 'dose interruption', 'permanent discontinuation',
+        'treatment discontinuation'
+    ])
+    
+    # Try to extract the specific stopping rule language
+    sae_stopping_rules = 'Not specified in protocol text'
+    for kw in ['discontinuation', 'withdrawn', 'dose modification', 'dose reduction', 'permanent discontinuation']:
+        if kw in description_text:
+            idx = description_text.find(kw)
+            sae_stopping_rules = (
+                f"Protocol mentions '{kw}' in safety context: "
+                f"...{description_text[max(0, idx-60):idx+120]}..."
+            )
+            break
+    
+    safety_monitoring = 'Not specified'
+    if has_dsmb:
+        safety_monitoring = 'Data Safety Monitoring Board (DSMB) with scheduled reviews'
+    else:
+        safety_monitoring = 'Investigator-reported with sponsor oversight (no DSMB mentioned)'
+    
+    # Extract safety outcome endpoint text for inclusion
+    safety_endpoint_text = [o.get('measure', '') for o in safety_outcomes]
+    
+    return {
+        'ae_reporting_method': ae_reporting_method,
+        'ae_ascertainment': ascertainment,
+        'ae_types_detected': list(set(ae_types_detected)),
+        'class_effects_known': list(set(class_effects)),
+        'safety_endpoints': safety_endpoint_text,
+        'sae_stopping_rules': sae_stopping_rules if sae_stopping_rules != 'Not specified in protocol text' else sae_stopping_rules,
+        'safety_monitoring': safety_monitoring
+    }
+
 def analyze_trial(nct_id):
     """Full pipeline: fetch, classify design from API, then LLM-classify eligibility."""
     
@@ -512,6 +646,15 @@ def analyze_trial(nct_id):
     print(f"  Types: {', '.join(adaptive['adaptive_types']) if adaptive['adaptive_types'] else 'None'}")
     print(f"  Interim analysis: {adaptive['interim_analysis_mentioned']}")
     print(f"  Stopping rules: {adaptive['stopping_rules']}")
+    
+    # --- STEP 1e: Safety / Adverse Event analysis ---
+    safety_ae = analyze_safety_adverse_events(protocol, endpoints)
+    print(f"\nSafety / Adverse Events:")
+    print(f"  AE Reporting: {safety_ae['ae_reporting_method']}")
+    print(f"  Ascertainment: {safety_ae['ae_ascertainment']}")
+    print(f"  AE types detected: {', '.join(safety_ae['ae_types_detected'][:5]) if safety_ae['ae_types_detected'] else 'None detected in text'}")
+    print(f"  TYK2 class effects: {', '.join(safety_ae['class_effects_known'][:5]) if safety_ae['class_effects_known'] else 'None detected'}")
+    print(f"  Safety monitoring: {safety_ae['safety_monitoring']}")
     
     # --- STEP 2: LLM classification of eligibility ---
     eligibility_text = protocol['eligibilityModule']['eligibilityCriteria']
@@ -681,6 +824,7 @@ Do not use escape characters. Write the JSON directly.
         },
         "randomization": randomization,
         "adaptive_designs": adaptive,
+        "safety_adverse_events": safety_ae,
         "summary": dict(categories)
     }
     
@@ -704,6 +848,7 @@ Do not use escape characters. Write the JSON directly.
     if sample_size:
         pa = sample_size['power_analysis']
         print(f"Power: {pa['assessment']}")
+    print(f"Safety: {safety_ae['ae_reporting_method']} | AE types found: {len(safety_ae['ae_types_detected'])}")
     print(f"\nEligibility Classification:")
     for cat, count in categories.most_common():
         print(f"  {cat}: {count}")
