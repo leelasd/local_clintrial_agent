@@ -4,39 +4,335 @@
   "phase": "PHASE3",
   "eligibility": [
     {
-      "text": "Plaque psoriasis for at least 6 months",
+      "text": ". Plaque psoriasis for at least 6 months.",
       "reasoning_category": "Statistical Power",
       "justification": "This criterion ensures a sufficient duration of disease to detect treatment effects."
     },
     {
-      "text": "Moderate to severe disease",
+      "text": ". Moderate to severe disease.",
       "reasoning_category": "Statistical Power",
-      "justification": "The severity level is crucial for detecting treatment differences in this condition."
+      "justification": "Moderate to severe disease severity is likely to be associated with greater treatment response and thus, higher statistical power."
     },
     {
-      "text": "Candidate for phototherapy or systemic therapy",
+      "text": ". Candidate for phototherapy or systemic therapy.",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures patients are eligible for the intervention being tested, maximizing the likelihood of detecting treatment effects."
+    },
+    {
+      "text": ". Other forms of psoriasis.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion helps define the patient population who can benefit from these treatments, ensuring feasibility of study participation."
+      "justification": "This criterion may be a feasibility concern as it could limit recruitment and data quality."
     },
     {
-      "text": "Other forms of psoriasis",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a diverse group for comparison and analysis to maximize statistical power."
-    },
-    {
-      "text": "History of recent infection",
+      "text": ". History of recent infection.",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential complications related to infections."
+      "justification": "This criterion is likely to protect patients from potential complications or adverse events related to infections."
     },
     {
-      "text": "Prior exposure to TAK-279 or active comparator",
+      "text": ". Prior exposure to TAK-279 or active comparator.",
       "reasoning_category": "Safety",
-      "justification": "This criterion prevents bias by excluding individuals who have already received the treatment being compared."
+      "justification": "This criterion ensures patient safety by excluding those who may have pre-existing sensitivities or reactions to the intervention being tested."
     },
     {
       "text": "Other protocol defined inclusion/exclusion criteria apply.",
       "reasoning_category": "Feasibility",
-      "justification": "This is a general category that may encompass various operational or data quality considerations."
+      "justification": "This is a general criterion that could be used for various reasons, including data quality and patient recruitment."
+    }
+  ],
+  "endpoints": [
+    {
+      "text": "Percentage of Participants Achieving a Static Physician's Global Assessment (sPGA) of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Week 16",
+      "is_primary": true
+    },
+    {
+      "text": "Percentage of Participants Achieving >=75% Improvement from Baseline in Psoriasis Area and Severity Index (PASI) Score (PASI-75 Response) at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Week 16",
+      "is_primary": true
+    },
+    {
+      "text": "Percentage of Participants Achieving 90% Improvement from Baseline in PASI (PASI-90 Response) at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving an sPGA of Clear (0) at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving PASI-100 at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving a Scalp-specific Physician's Global Assessment (ssPGA) of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants with a Baseline Dermatology Life Quality Index (DLQI) Score >=2 who Achieve DLQI Score of 0 or 1 at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants with a Baseline Psoriasis Symptoms and Signs Diary (PSSD) >=1 who Achieve Weekly Mean PSSD Symptom Score of 0 at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Composite",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in Nail Psoriasis Severity Index (NAPSI) at Week 16 Among Participants with Nail Involvement at Baseline Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in Body Surface Area (BSA) Affected by Psoriasis at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percent Change from Baseline in Body Surface Area (BSA) Affected by Psoriasis at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving a Physician's Global Assessment (PGA) of the Hands and/or Feet of Clear (0) or Almost Clear (1) with a >=2-Point Decrease From Baseline at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in DLQI at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in the Short Form-36 Health Survey (SF-36) Version 2 Scores at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in the EuroQoL 5-Dimension 5-level Questionnaire (EQ-5D-5L) Scores at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Clinical",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Change in Work Productivity and Activity Impairment-Psoriasis (WPAI-PSO) Questionnaire Scores at Week 16 Comparing TAK-279 Against Placebo",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving an sPGA of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 16 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving PASI-75 at Week 16 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving PASI-90 at Week 16 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving an sPGA of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 24",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving PASI-75 at Week 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 24",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving PASI-90 at Week 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 24",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in Weekly Mean PSSD Symptom Score at Week 16 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Composite",
+      "timeframe": "Baseline and Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving an ssPGA of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 16 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving PASI-100 at Week 16 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving PASI-100 at Week 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 24",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving an sPGA of Clear (0) at Week 16 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants with a Baseline DLQI Score >=2 who Achieve DLQI Score of 0/1 at Week 16 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants with a Baseline PSSD >=1 who Achieve a Weekly Mean PSSD Symptom Score of 0 at Week 16 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Composite",
+      "timeframe": "Week 16",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in NAPSI, Among Participants with Nail Involvement at Baseline at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving an ssPGA of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline and Week 24",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in DLQI at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Baseline, Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in BSA Affected by Psoriasis at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "Percent Change from Baseline in BSA Affected by Psoriasis at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving an sPGA of Clear (0) at Week 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 24",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants with a Baseline DLQI Score >=2 who Achieve a DLQI Score of 0/1 at Week 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Week 24",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants with a Baseline PSSD >=1 who Achieve a Weekly Mean PSSD Symptom Score of 0 at Week 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Composite",
+      "timeframe": "Week 24",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in ssPGA at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving a PGA of the Hands and/or Feet of Clear (0) or Almost Clear (1) with a >=2-Point Decrease From Baseline at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in SF-36 Version 2 Scores at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Baseline, Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in the EQ-5D-5L Scores at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Clinical",
+      "timeframe": "Baseline, Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "Change from Baseline in the WPAI-PSO Scores at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "Baseline, Weeks 16 and 24",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving an sPGA of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Weeks 24, 40, and 52 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Baseline, Weeks 24, 40 and 52",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving PASI-75 at Weeks 24, 40, and 52 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Weeks 24, 40 and 52",
+      "is_primary": false
+    },
+    {
+      "text": "Percentage of Participants Achieving PASI-90 at Weeks 24, 40, and 52 Comparing TAK-279 Against Apremilast",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Weeks 24, 40 and 52",
+      "is_primary": false
+    },
+    {
+      "text": "Number of Participants with Treatment-emergent Adverse Events (TEAEs) and Adverse Events of Special Interest (AESI)",
+      "endpoint_type": "Safety",
+      "timeframe": "Up to Week 56",
+      "is_primary": false
+    },
+    {
+      "text": "Number of Participants with Clinically Significant Vital Signs",
+      "endpoint_type": "Safety",
+      "timeframe": "Up to Week 56",
+      "is_primary": false
+    },
+    {
+      "text": "Number of Participants with Clinically Significant Laboratory Values",
+      "endpoint_type": "Safety",
+      "timeframe": "Up to Week 56",
+      "is_primary": false
+    },
+    {
+      "text": "Number of Participants with Clinically Significant Electrocardiogram (ECG) Findings",
+      "endpoint_type": "Safety",
+      "timeframe": "Up to Week 56",
+      "is_primary": false
     }
   ],
   "trial_integrity": {

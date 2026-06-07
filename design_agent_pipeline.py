@@ -102,6 +102,52 @@ def analyze_trial(nct_id):
     print(f"  Model: {api_design['intervention_model']}")
     print(f"  Phases: {api_design['phases']}")
     
+    # --- STEP 0b: Extract and classify endpoints from API ---
+    outcomes_mod = protocol.get('outcomesModule', {})
+    endpoints = []
+    
+    def classify_endpoint_type(measure, description):
+        text = (measure + ' ' + (description or '')).lower()
+        safety_keywords = ['adverse event', 'tolerability', 'safety', 'clinically significant', 'laboratory', 'ecg', 'vital sign']
+        qol_keywords = ['quality of life', 'qol', 'patient-reported', 'questionnaire', 'sf-36', 'eq-5d', 'dlqi', 'pssd', 'wpai']
+        clinical_keywords = ['death', 'mortality', 'survival', 'stroke', 'infarction', 'hospitalization', 'fracture']
+        biomarker_keywords = ['concentration', 'level', 'biomarker', 'gene', 'genetic', 'pcr', 'assay']
+        composite_keywords = ['composite', 'mace', 'combined', 'major adverse']
+        
+        if any(k in text for k in safety_keywords):
+            return 'Safety'
+        elif any(k in text for k in composite_keywords):
+            return 'Composite'
+        elif any(k in text for k in clinical_keywords):
+            return 'Clinical'
+        elif any(k in text for k in qol_keywords):
+            return 'Patient-Reported'
+        elif any(k in text for k in biomarker_keywords):
+            return 'Biomarker'
+        else:
+            return 'Surrogate'
+    
+    for outcome in outcomes_mod.get('primaryOutcomes', []):
+        endpoints.append({
+            'text': outcome['measure'],
+            'endpoint_type': classify_endpoint_type(outcome['measure'], outcome.get('description', '')),
+            'timeframe': outcome.get('timeFrame', 'N/A'),
+            'is_primary': True
+        })
+    
+    for outcome in outcomes_mod.get('secondaryOutcomes', []):
+        endpoints.append({
+            'text': outcome['measure'],
+            'endpoint_type': classify_endpoint_type(outcome['measure'], outcome.get('description', '')),
+            'timeframe': outcome.get('timeFrame', 'N/A'),
+            'is_primary': False
+        })
+    
+    print(f"\nEndpoints: {sum(1 for e in endpoints if e['is_primary'])} primary, {sum(1 for e in endpoints if not e['is_primary'])} secondary")
+    endpoint_types = Counter(e['endpoint_type'] for e in endpoints)
+    for etype, count in endpoint_types.most_common():
+        print(f"  {etype}: {count}")
+    
     # --- STEP 2: LLM classification of eligibility ---
     eligibility_text = protocol['eligibilityModule']['eligibilityCriteria']
     
@@ -252,6 +298,7 @@ Do not use escape characters. Write the JSON directly.
         "title": title,
         "phase": phase,
         "eligibility": eligibility,
+        "endpoints": endpoints,
         "trial_integrity": trial_integrity,
         "trial_design": {
             "design_type": api_design['design_type'],

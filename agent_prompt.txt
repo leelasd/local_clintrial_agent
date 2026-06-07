@@ -12,12 +12,17 @@ In addition, you must assess **Trial Integrity**, **Bias Risk**, and **Feasibili
 - **concomitant_therapy_controls:** Whether the protocol specifies rules to equalize or track background care between groups.
 - **feasibility_assessment:** Identify potential recruitment bottlenecks based on the stringency of inclusion/exclusion criteria.
 
-**NEW: Classify the trial design** using these categories based on the information provided:
+**Classify the trial design** using these categories based on the information provided:
 - **design_type:** One of: "Parallel RCT", "Crossover", "Factorial", "Cluster/Group Allocation", "Nonrandomized Concurrent Control", "Historical Control", "Withdrawal Study", "Single-Arm", "Adaptive Design", "Other"
 - **control_type:** One of: "Placebo", "Active Comparator", "No Treatment", "Standard of Care", "Dose Comparison", "None (Single-Arm)"
 - **superiority_type:** One of: "Superiority", "Noninferiority", "Equivalence", "Unclear"
 
-When extracting, output a JSON structure where each item includes the 'text' and 'reasoning_category' for eligibility, along with the 'trial_integrity', 'feasibility_assessment', and 'trial_design' objects.
+**Classify endpoints** (primary and secondary outcome measures) as:
+- **endpoint_type:** "Clinical" (e.g., mortality, stroke, hospitalization), "Surrogate" (e.g., blood pressure, tumor shrinkage, PASI score), "Biomarker" (e.g., lab values, genetic markers), "Composite" (combination of multiple events like MACE), "Patient-Reported" (QoL, pain scales), "Safety" (AEs, lab abnormalities)
+- **timeframe:** The measurement point (e.g., "Week 16", "Baseline, Week 52")
+- **is_primary:** Whether this is a primary or secondary endpoint
+
+When extracting, output a JSON structure where each item includes the 'text' and 'reasoning_category' for eligibility, along with the 'trial_integrity', 'feasibility_assessment', 'trial_design', and 'endpoints' objects.
 
 Example structure:
 {
@@ -40,7 +45,15 @@ Example structure:
     "design_type": "Parallel RCT",
     "control_type": "Placebo",
     "superiority_type": "Superiority"
-  }
+  },
+  "endpoints": [
+    {
+      "text": "Percentage of Participants Achieving >=75% Improvement from Baseline in Psoriasis Area and Severity Index (PASI-75) at Week 16",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Week 16",
+      "is_primary": true
+    }
+  ]
 }
 
 Always prioritize precision and provide a brief justification if a criterion falls into multiple categories.
