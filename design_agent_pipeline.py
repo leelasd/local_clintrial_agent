@@ -74,6 +74,64 @@ def classify_design_from_api(protocol):
     }
 
 
+def analyze_study_population(protocol):
+    """Analyze study population from eligibility module structured data."""
+    elig = protocol.get('eligibilityModule', {})
+    design_mod = protocol.get('designModule', {})
+    enrollment = design_mod.get('enrollmentInfo', {})
+    
+    sex = elig.get('sex', 'ALL')
+    min_age = elig.get('minimumAge', 'N/A')
+    max_age = elig.get('maximumAge', 'N/A')
+    healthy_vol = elig.get('healthyVolunteers', False)
+    std_ages = elig.get('stdAges', [])
+    
+    # Determine age range stringency
+    age_restrictiveness = 'Low'
+    if min_age != 'N/A' and max_age != 'N/A':
+        age_restrictiveness = 'High'
+    elif min_age != 'N/A' or max_age != 'N/A':
+        age_restrictiveness = 'Moderate'
+    
+    # Detect whether criteria include significant competing risk exclusions
+    criteria_text = elig.get('eligibilityCriteria', '').lower()
+    competing_keywords = ['cancer', 'malignancy', 'neoplasm', 'tumor', 'liver disease', 
+                          'renal disease', 'kidney disease', 'organ failure', 'transplant',
+                          'hiv', 'aids', 'hepatitis', 'cirrhosis', 'dialysis']
+    has_competing_risks = any(k in criteria_text for k in competing_keywords)
+    
+    # Estimate recruitment yield based on restrictiveness
+    restrictive_count = 0
+    if sex != 'ALL':
+        restrictive_count += 1
+    if max_age != 'N/A' or min_age != 'N/A':
+        restrictive_count += 1
+    if healthy_vol:
+        restrictive_count -= 1  # healthy volunteers are LESS restrictive
+    
+    if restrictive_count >= 2:
+        recruitment_yield = 'Low (<5% screen-to-enroll)'
+    elif restrictive_count >= 1:
+        recruitment_yield = 'Moderate (5-20% screen-to-enroll)'
+    else:
+        recruitment_yield = 'High (>20% screen-to-enroll)'
+    
+    # Enrollment info
+    enrollment_count = enrollment.get('count', 'N/A')
+    enrollment_type = enrollment.get('type', 'N/A')
+    
+    return {
+        'sex': sex,
+        'age_range': f"{min_age} - {max_age}" if max_age != 'N/A' else f"{min_age}+",
+        'std_ages': std_ages,
+        'healthy_volunteers': healthy_vol,
+        'age_restrictiveness': age_restrictiveness,
+        'has_competing_risk_exclusions': has_competing_risks,
+        'recruitment_yield_estimate': recruitment_yield,
+        'enrollment_count': enrollment_count,
+        'enrollment_type': enrollment_type
+    }
+
 def analyze_trial(nct_id):
     """Full pipeline: fetch, classify design from API, then LLM-classify eligibility."""
     
@@ -147,6 +205,16 @@ def analyze_trial(nct_id):
     endpoint_types = Counter(e['endpoint_type'] for e in endpoints)
     for etype, count in endpoint_types.most_common():
         print(f"  {etype}: {count}")
+    
+    # --- STEP 1b: Analyze study population ---
+    population = analyze_study_population(protocol)
+    print(f"\nPopulation:")
+    print(f"  Sex: {population['sex']}")
+    print(f"  Age: {population['age_range']}")
+    print(f"  Age Restrictiveness: {population['age_restrictiveness']}")
+    print(f"  Competing Risk Exclusions: {population['has_competing_risk_exclusions']}")
+    print(f"  Recruitment Yield: {population['recruitment_yield_estimate']}")
+    print(f"  Enrollment: {population['enrollment_count']} ({population['enrollment_type']})")
     
     # --- STEP 2: LLM classification of eligibility ---
     eligibility_text = protocol['eligibilityModule']['eligibilityCriteria']
@@ -249,6 +317,9 @@ Do not use escape characters. Write the JSON directly.
         eligibility = []
     
     # --- Normalize LLM output (handle typos, variant field names) ---
+    competing_keywords = ['cancer', 'malignancy', 'neoplasm', 'tumor', 'liver disease', 
+                          'renal disease', 'kidney disease', 'organ failure', 'transplant',
+                          'hiv', 'aids', 'hepatitis', 'cirrhosis', 'dialysis']
     for item in eligibility:
         # Normalize reasoning_category field
         for key in list(item.keys()):
@@ -271,6 +342,10 @@ Do not use escape characters. Write the JSON directly.
             item['reasoning_category'] = 'Safety'
         else:
             item['reasoning_category'] = 'Unknown'
+        
+        # Add competing_risk flag based on keyword detection in text
+        text_lower = item.get('text', '').lower()
+        item['competing_risk'] = any(k in text_lower for k in competing_keywords)
     
     # --- STEP 3: Build final output ---
     categories = Counter([
@@ -298,6 +373,7 @@ Do not use escape characters. Write the JSON directly.
         "title": title,
         "phase": phase,
         "eligibility": eligibility,
+        "population": population,
         "endpoints": endpoints,
         "trial_integrity": trial_integrity,
         "trial_design": {

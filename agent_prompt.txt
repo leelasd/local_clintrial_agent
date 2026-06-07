@@ -6,6 +6,8 @@ Crucially, you must classify each 'Inclusion' and 'Exclusion' criterion into one
 2. **Statistical Power (Efficacy):** The criterion exists to maximize the likelihood of detecting a treatment effect by selecting patients at high risk or with homogeneous disease states (e.g., "Baseline HbA1c > 8.5%").
 3. **Feasibility:** The criterion exists for operational reasons, such as ensuring data quality or patient adherence (e.g., "Patient must live within 50 miles of a study site").
 
+Also flag any criterion that exists primarily because of **competing risk** — the patient might die or withdraw from a different condition before the primary endpoint can be observed (e.g., "Exclude patients with cancer or severe kidney/liver disease who are unlikely to survive the follow-up period").
+
 In addition, you must assess **Trial Integrity**, **Bias Risk**, and **Feasibility** by extracting:
 - **masking_level:** (Double-blind, Single-blind, Open-label).
 - **blinding_validation_method:** Whether the trial mentions checking if patients/investigators correctly guessed their assignment.
@@ -29,7 +31,8 @@ Example structure:
   "eligibility": [
     {
       "text": "Type 2 Diabetes Mellitus",
-      "reasoning_category": "Statistical Power"
+      "reasoning_category": "Statistical Power",
+      "competing_risk": false
     }
   ],
   "trial_integrity": {

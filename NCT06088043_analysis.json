@@ -6,39 +6,60 @@
     {
       "text": ". Plaque psoriasis for at least 6 months.",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a sufficient duration of disease to detect treatment effects."
+      "justification": "This criterion ensures a sufficient duration of disease to detect treatment effects.",
+      "competing_risk": false
     },
     {
       "text": ". Moderate to severe disease.",
       "reasoning_category": "Statistical Power",
-      "justification": "Moderate to severe disease severity is likely to be associated with greater treatment response and thus, higher statistical power."
+      "justification": "Moderate to severe disease severity is likely to be associated with greater treatment response and thus, a stronger effect size.",
+      "competing_risk": false
     },
     {
       "text": ". Candidate for phototherapy or systemic therapy.",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures patients are eligible for the intervention being tested, maximizing the likelihood of detecting treatment effects."
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures the patient's eligibility for potential treatments, which may be essential for data quality and study feasibility.",
+      "competing_risk": false
     },
     {
       "text": ". Other forms of psoriasis.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion may be a feasibility concern as it could limit recruitment and data quality."
+      "reasoning_category": "Safety",
+      "justification": "This criterion excludes patients with other forms of psoriasis, potentially protecting them from harm.",
+      "competing_risk": false
     },
     {
       "text": ". History of recent infection.",
       "reasoning_category": "Safety",
-      "justification": "This criterion is likely to protect patients from potential complications or adverse events related to infections."
+      "justification": "This criterion may be a safety concern as it could increase the risk of complications or infections in patients with psoriasis.",
+      "competing_risk": false
     },
     {
       "text": ". Prior exposure to TAK-279 or active comparator.",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patient safety by excluding those who may have pre-existing sensitivities or reactions to the intervention being tested."
+      "justification": "This criterion ensures that patients have not previously received the treatment being tested, potentially protecting them from harm.",
+      "competing_risk": false
     },
     {
       "text": "Other protocol defined inclusion/exclusion criteria apply.",
       "reasoning_category": "Feasibility",
-      "justification": "This is a general criterion that could be used for various reasons, including data quality and patient recruitment."
+      "justification": "This criterion is likely to be a safety or feasibility concern depending on the specific details of the protocol.",
+      "competing_risk": false
     }
   ],
+  "population": {
+    "sex": "ALL",
+    "age_range": "18 Years+",
+    "std_ages": [
+      "ADULT",
+      "OLDER_ADULT"
+    ],
+    "healthy_volunteers": false,
+    "age_restrictiveness": "Moderate",
+    "has_competing_risk_exclusions": false,
+    "recruitment_yield_estimate": "Moderate (5-20% screen-to-enroll)",
+    "enrollment_count": 693,
+    "enrollment_type": "ACTUAL"
+  },
   "endpoints": [
     {
       "text": "Percentage of Participants Achieving a Static Physician's Global Assessment (sPGA) of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 16 Comparing TAK-279 Against Placebo",
@@ -346,8 +367,8 @@
     "superiority_type": "Superiority"
   },
   "summary": {
-    "Statistical Power": 3,
+    "Statistical Power": 2,
     "Feasibility": 2,
-    "Safety": 2
+    "Safety": 3
   }
 }
