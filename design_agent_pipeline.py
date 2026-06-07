@@ -66,14 +66,21 @@ def classify_design_from_api(protocol):
     
     # Determine superiority_type from phase and purpose
     # Noninferiority/equivalence trials are more common in Phase 3 with active comparators
+    description_text = (
+        protocol.get('descriptionModule', {}).get('briefSummary', '') + ' ' +
+        (protocol.get('descriptionModule', {}).get('detailedDescription', '') or '') + ' ' +
+        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
+    ).lower()
+    mentions_noninferiority = any(k in description_text for k in ['noninferiority', 'non-inferiority', 'non inferior'])
+    
     if is_phase1:
         superiority_type = 'Unclear'
-    elif control_type == 'Active Comparator' and 'PHASE3' in phases:
+    elif control_type == 'None (Single-Arm)':
+        superiority_type = 'Unclear'
+    elif mentions_noninferiority:
         superiority_type = 'Noninferiority'
     elif control_type == 'Placebo':
         superiority_type = 'Superiority'
-    elif control_type == 'None (Single-Arm)':
-        superiority_type = 'Unclear'
     else:
         superiority_type = 'Superiority'
     

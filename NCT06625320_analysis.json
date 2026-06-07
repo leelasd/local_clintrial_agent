@@ -6,7 +6,7 @@
   "trial_design": {
     "design_type": "Parallel RCT",
     "control_type": "Active Comparator",
-    "superiority_type": "Noninferiority"
+    "superiority_type": "Superiority"
   },
   "trial_integrity": {
     "masking_level": "Open-label",
