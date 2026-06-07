@@ -68,7 +68,14 @@ Example structure:
       "timeframe": "Week 16",
       "is_primary": true
     }
-  ]
+  ],
+  "adaptive_designs": {
+    "has_adaptive_features": false,
+    "adaptive_types": [],
+    "interim_analysis_mentioned": false,
+    "stopping_rules": "Not mentioned",
+    "description": "Standard fixed-design parallel RCT with no adaptive features. No interim analyses or stopping rules specified."
+  }
 }
 
 Always prioritize precision and provide a brief justification if a criterion falls into multiple categories.

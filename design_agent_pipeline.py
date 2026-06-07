@@ -296,6 +296,112 @@ def analyze_randomization(protocol):
         'randomization_description': f"{'Stratified by ' + ', '.join(stratification_factors[:3]) + '. ' if stratification_factors else ''}{'Blocked randomization.' if has_blocked else 'Simple randomization.' if rand_type == 'Simple' else ''}"
     }
 
+
+def analyze_adaptive_design(protocol, api_design):
+    """Detect adaptive design features from protocol description text and API data."""
+    description_text = (
+        protocol.get('descriptionModule', {}).get('briefSummary', '') + ' ' +
+        (protocol.get('descriptionModule', {}).get('detailedDescription', '') or '') + ' ' +
+        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
+    ).lower()
+    
+    # Check API for sequential/intervention model suggesting adaptation
+    intervention_model = api_design.get('intervention_model', '')
+    phases = api_design.get('phases', [])
+    
+    # Detect adaptive design types from keywords
+    adaptive_signals = {
+        'Group Sequential': [
+            'group sequential', 'interim analysis', 'interim look', 'interim monitoring',
+            'dsmb', 'data safety monitoring board', 'data monitoring committee',
+            'stopping rule', 'stopping boundary', 'early stopping', 'early termination',
+            'obrien', 'pocock', 'lan-demets'
+        ],
+        'Sample Size Re-estimation': [
+            'sample size re-estimation', 'sample size reestimation', 'sample size adjustment',
+            're-estimate sample size', 'adaptive sample size', 'event-driven', 'event driven',
+            'number of events', 'target number of events'
+        ],
+        'Response-Adaptive Randomization': [
+            'response-adaptive', 'response adaptive', 'adaptive randomization',
+            'outcome-adaptive', 'play the winner', 'minimization'
+        ],
+        'Basket Trial': [
+            'basket trial', 'basket design', 'histology-independent', 'tumor-agnostic',
+            'multiple tumor types', 'multiple indications', 'same genetic'
+        ],
+        'Umbrella Trial': [
+            'umbrella trial', 'umbrella design', 'multiple study drugs',
+            'multiple targeted therapies', 'subtype-matched'
+        ],
+        'Platform Trial': [
+            'platform trial', 'platform design', 'master protocol', 'basket/umbrella platform',
+            'add new arms', 'drop arm', 'add experimental arm', 'shared control',
+            'permanently open'
+        ],
+        'Dose-Finding / Phase I': [
+            '3+3', '3 plus 3', 'rolling six', 'bayesian', 'continual reassessment',
+            'crm design', 'dose escalation', 'dose de-escalation', 'dose finding',
+            'mtd', 'maximum tolerated dose'
+        ],
+        'Seamless Phase 2/3': [
+            'seamless phase 2', 'seamless phase 2/3', 'adaptive seamless',
+            'phase 2/3 adaptive', 'phase 2/3 seamless'
+        ],
+    }
+    
+    adaptive_types = []
+    for design_type, keywords in adaptive_signals.items():
+        if any(k in description_text for k in keywords):
+            adaptive_types.append(design_type)
+    
+    # Also flag from API: SEQUENTIAL model always means adaptive
+    if intervention_model == 'SEQUENTIAL' and 'Group Sequential' not in adaptive_types:
+        adaptive_types.append('Group Sequential')
+    
+    # Phase 1 trials are inherently dose-finding (adaptive)
+    is_phase1 = any('PHASE1' in p for p in phases)
+    if is_phase1 and 'Dose-Finding / Phase I' not in adaptive_types:
+        adaptive_types.append('Dose-Finding / Phase I')
+    
+    # Look for specific stopping rules
+    stopping_rules = 'Not mentioned'
+    if any(k in description_text for k in ['obrien', 'obrien-fleming', 'obrien fleming', "o'brien"]):
+        stopping_rules = "O'Brien-Fleming boundary"
+    elif any(k in description_text for k in ['pocock']):
+        stopping_rules = 'Pocock boundary'
+    elif any(k in description_text for k in ['lan-demets', 'lan demets']):
+        stopping_rules = "Lan-DeMets alpha spending function"
+    elif any(k in description_text for k in ['haybittle-peto', 'haybittle peto']):
+        stopping_rules = 'Haybittle-Peto boundary'
+    elif any(k in description_text for k in ['stopping rule', 'stopping boundary']):
+        stopping_rules = 'Specified (details not available from text)'
+    
+    interim_analysis = any(k in description_text for k in [
+        'interim analysis', 'interim look', 'interim monitoring', 'interim data'
+    ])
+    
+    has_adaptive = len(adaptive_types) > 0
+    
+    if has_adaptive:
+        desc_parts = ['Adaptive design detected:']
+        desc_parts.append(f"Types identified: {', '.join(adaptive_types)}.")
+        if interim_analysis:
+            desc_parts.append('Interim analyses specified.')
+        if stopping_rules != 'Not mentioned':
+            desc_parts.append(f'Stopping rule: {stopping_rules}.')
+        description = ' '.join(desc_parts)
+    else:
+        description = 'Standard fixed-design trial. No adaptive features detected.'
+    
+    return {
+        'has_adaptive_features': has_adaptive,
+        'adaptive_types': adaptive_types,
+        'interim_analysis_mentioned': interim_analysis,
+        'stopping_rules': stopping_rules,
+        'description': description
+    }
+
 def analyze_trial(nct_id):
     """Full pipeline: fetch, classify design from API, then LLM-classify eligibility."""
     
@@ -398,6 +504,14 @@ def analyze_trial(nct_id):
             print(f"  Detectable Δ at {pa['power_target']:.0%} power: {pa['detectable_absolute_difference']:.0%}")
             print(f"  Power for 20% improvement: {pa['estimated_power_for_20pct_improvement']:.0%}")
             print(f"  Assessment: {pa['assessment']}")
+    
+    # --- STEP 1d: Adaptive design analysis ---
+    adaptive = analyze_adaptive_design(protocol, api_design)
+    print(f"\nAdaptive Designs:")
+    print(f"  Has adaptive features: {adaptive['has_adaptive_features']}")
+    print(f"  Types: {', '.join(adaptive['adaptive_types']) if adaptive['adaptive_types'] else 'None'}")
+    print(f"  Interim analysis: {adaptive['interim_analysis_mentioned']}")
+    print(f"  Stopping rules: {adaptive['stopping_rules']}")
     
     # --- STEP 2: LLM classification of eligibility ---
     eligibility_text = protocol['eligibilityModule']['eligibilityCriteria']
@@ -566,6 +680,7 @@ Do not use escape characters. Write the JSON directly.
             "superiority_type": api_design['superiority_type']
         },
         "randomization": randomization,
+        "adaptive_designs": adaptive,
         "summary": dict(categories)
     }
     
