@@ -2,26 +2,79 @@
   "nct_id": "NCT05462717",
   "title": "Dose Escalation and Dose Expansion Study of RMC-6291 Monotherapy in Subjects With Advanced KRASG12C Mutant Solid Tumors",
   "phase": "PHASE1",
-  "drug": "RMC-6291 monotherapy (KRAS G12D) - Phase 1",
-  "trial_design": {
-    "design_type": "Single-Arm",
-    "control_type": "None (Single-Arm)",
-    "superiority_type": "Unclear"
-  },
-  "trial_integrity": {
-    "masking_level": "Open-label",
-    "blinding_validation_method": "Not specified",
-    "concomitant_therapy_controls": "Standardized background care"
-  },
-  "randomization": {
-    "randomization_type": "Not described",
-    "allocation_ratio": "1:1",
-    "stratification_factors": [
-      "Center",
-      "Prior Treatment",
-      "Age"
-    ],
-    "randomization_description": "Stratified by Center, Prior Treatment, Age. "
+  "eligibility": [
+    {
+      "text": "Subject must be \u226518 years of age.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures the trial can recruit participants within a specific age range.",
+      "competing_risk": false
+    },
+    {
+      "text": "Subject must have pathologically documented, locally advanced or metastatic KRASG12C-mutated solid tumor malignancy (not amenable to curative surgery) that has previously been treated with standard-of-care therapies for respective tumor types, is intolerant to, or is considered ineligible for standard-of-care anticancer treatments.",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures the study population is representative of a specific patient group likely to respond to treatment.",
+      "competing_risk": true
+    },
+    {
+      "text": "ECOG performance status 0 or 1",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients are able to tolerate and participate in the trial.",
+      "competing_risk": false
+    },
+    {
+      "text": "Prior treatment with a KRASG12C (OFF) inhibitor allowed for dose escalation and for NSCLC in dose expansion",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures the study population is representative of patients who have previously received standard-of-care treatments.",
+      "competing_risk": false
+    },
+    {
+      "text": "Adequate organ function",
+      "reasoning_category": "Safety",
+      "justification": "This criterion protects patients from potential harm by ensuring they are healthy enough to participate in the trial.",
+      "competing_risk": false
+    },
+    {
+      "text": "Primary central nervous system (CNS) tumors",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion limits the study population to a specific group of patients, potentially impacting recruitment and data quality.",
+      "competing_risk": true
+    },
+    {
+      "text": "Active brain metastases",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patient safety by excluding those with active brain lesions that could be affected by the treatment.",
+      "competing_risk": false
+    },
+    {
+      "text": "Known impairment of GI function that would alter the absorption",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from the treatment.",
+      "competing_risk": false
+    },
+    {
+      "text": "Major surgical procedures within 28 days or non-study-related minor procedures within 7 days of treatment.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from the treatment.",
+      "competing_risk": false
+    },
+    {
+      "text": "Prior therapy with KRASG12C (ON) inhibitor",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patient safety by excluding those who have previously received a KRASG12C inhibitor, which could potentially interact with the study treatment.",
+      "competing_risk": false
+    },
+    {
+      "text": "Other inclusion/exclusion criteria may apply.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion allows for flexibility in the trial design and ensures that all necessary criteria are met to ensure patient safety and data quality.",
+      "competing_risk": false
+    }
+  ],
+  "criteria_metadata": {
+    "total_parsed": 11,
+    "classified": 11,
+    "batches": 1,
+    "batch_size": 20
   },
   "population": {
     "sex": "ALL",
@@ -125,6 +178,27 @@
       "is_primary": false
     }
   ],
+  "trial_integrity": {
+    "masking_level": "Open-label",
+    "blinding_validation_method": "Not specified",
+    "concomitant_therapy_controls": "Standardized background care"
+  },
+  "trial_design": {
+    "design_type": "Single-Arm",
+    "control_type": "None (Single-Arm)",
+    "superiority_type": "Unclear"
+  },
+  "indication": "solid_tumor",
+  "randomization": {
+    "randomization_type": "Not described",
+    "allocation_ratio": "1:1",
+    "stratification_factors": [
+      "Center",
+      "Prior Treatment",
+      "Age"
+    ],
+    "randomization_description": "Stratified by Center, Prior Treatment, Age. "
+  },
   "adaptive_designs": {
     "has_adaptive_features": true,
     "adaptive_types": [
@@ -140,81 +214,13 @@
     "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
     "ae_types_detected": [],
     "class_effects_known": [
-      "AST elevation",
-      "ALT elevation"
+      "ALT elevation",
+      "AST elevation"
     ],
     "safety_endpoints": [],
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
-  "eligibility": [
-    {
-      "text": "Subject must be \u226518 years of age.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the trial is conducted with a population that can legally participate.",
-      "competing_risk": false
-    },
-    {
-      "text": "Subject must have pathologically documented, locally advanced or metastatic KRASG12C-mutated solid tumor malignancy (not amenable to curative surgery) that has previously been treated with standard-of-care therapies for respective tumor types, is intolerant to, or is considered ineligible for standard-of-care anticancer treatments.",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study population is representative of a specific patient group likely to respond to treatment.",
-      "competing_risk": true
-    },
-    {
-      "text": "ECOG performance status 0 or 1",
-      "reasoning_category": "Safety",
-      "justification": "This criterion ensures patients are able to tolerate and participate in the trial.",
-      "competing_risk": false
-    },
-    {
-      "text": "Prior treatment with a KRASG12C (OFF) inhibitor allowed for dose escalation and for NSCLC in dose expansion",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures patients have received prior treatment, allowing for comparison of the new treatment to previous therapies.",
-      "competing_risk": false
-    },
-    {
-      "text": "Adequate organ function",
-      "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by ensuring they can tolerate the study's interventions.",
-      "competing_risk": false
-    },
-    {
-      "text": "Primary central nervous system (CNS) tumors",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion limits the trial to a specific patient population, potentially impacting recruitment and data quality.",
-      "competing_risk": true
-    },
-    {
-      "text": "Active brain metastases",
-      "reasoning_category": "Safety",
-      "justification": "This criterion ensures patients are not at risk of complications from the study's interventions.",
-      "competing_risk": false
-    },
-    {
-      "text": "Known impairment of GI function that would alter the absorption",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion limits the trial to a specific patient population, potentially impacting recruitment and data quality.",
-      "competing_risk": false
-    },
-    {
-      "text": "Major surgical procedures within 28 days or non-study-related minor procedures within 7 days of treatment.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patients are not at risk of complications from the study's interventions.",
-      "competing_risk": false
-    },
-    {
-      "text": "Prior therapy with KRASG12C (ON) inhibitor",
-      "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by ensuring they are not already receiving treatment that could interact with the study's interventions.",
-      "competing_risk": false
-    },
-    {
-      "text": "Other inclusion/exclusion criteria may apply.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion allows for flexibility in patient selection, potentially impacting recruitment and data quality.",
-      "competing_risk": false
-    }
-  ],
   "summary": {
     "Feasibility": 5,
     "Statistical Power": 2,

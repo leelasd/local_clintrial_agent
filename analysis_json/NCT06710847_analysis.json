@@ -12,118 +12,148 @@
     {
       "text": "Has a known dMMR/MSI-H status as determined by a certified local laboratory at the time of Pre-screening or has an unknown Mismatch repair (MMR)/ Microsatellite Instability (MSI) status at the time of Pre-screening and MMR/MSI status will be determined by central reference laboratory",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion aims to identify patients with a specific genetic profile that may respond better to treatment, thus maximizing the likelihood of detecting a treatment effect.",
+      "justification": "This criterion ensures a specific population for analysis, maximizing the likelihood of detecting treatment effects.",
       "competing_risk": false
     },
     {
       "text": "Provides an archival or fresh (preferred) formalin fixed, paraffin embedded (FFPE) sample",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures proper sample collection and preservation for analysis, which is crucial for the study's integrity.",
+      "justification": "This criterion ensures proper sample collection and analysis for the study.",
       "competing_risk": true
     },
     {
       "text": "Intends to receive GSK4418959 (alone or in combination with PD-1 inhibitor, as determined between Investigator and sponsor) as next line of treatment",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion reflects the study's design, which involves a sequential treatment approach. It ensures that patients are receiving the intended treatment.",
+      "justification": "This criterion ensures the study's focus on a specific treatment regimen.",
       "competing_risk": false
     },
     {
       "text": "Has an Eastern Cooperative Oncology Group (ECOG) performance status of 0-2",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion reflects the study's design, which involves a sequential treatment approach. It ensures that patients are receiving the intended treatment.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients are able to tolerate the study's demands.",
       "competing_risk": false
     },
     {
       "text": "Is expected to have a minimum of 3 months life expectancy",
-      "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from harm by ensuring they have sufficient time for potential treatment effects to manifest or be observed.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patient survival for the duration of the study.",
       "competing_risk": false
     },
     {
       "text": "Has adequate organ function, as defined in the protocol",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that patients can tolerate the study's interventions and adhere to its protocols.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion protects patients from potential harm by ensuring their organs are functioning properly.",
       "competing_risk": false
     },
     {
       "text": "\u2022 Has histologically diagnosed advanced (unresectable, metastatic or recurrent) solid tumor and has exhausted all standard of care treatment options",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from harm by ensuring they have exhausted all available treatment options.",
+      "justification": "This criterion ensures patients are not receiving other treatments that could interfere with the study's results.",
       "competing_risk": true
     },
     {
       "text": "Has histologically diagnosed advanced (unresectable, metastatic or recurrent) Colorectal cancer (CRC) or Endometrial cancer (EC)",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that the study's focus is on specific cancers.",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures the study focuses on a specific population for analysis.",
       "competing_risk": true
     },
     {
       "text": "Has received at least 1 but no more than 3 lines of systemic anticancer therapy for their advanced (unresectable, metastatic or recurrent) disease including at least one line of Immune checkpoint inhibitors (ICI) therapy",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that patients have received appropriate treatment and are eligible for the study.",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures a specific population for analysis.",
       "competing_risk": true
     },
     {
       "text": "Has measurable disease (i.e., at least 1 target lesion) during the Screening period per RECIST 1.1, as determined by the investigator",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures that patients have a quantifiable disease for accurate treatment evaluation.",
+      "justification": "This criterion ensures a specific population for analysis.",
       "competing_risk": false
     },
     {
       "text": "Has not recovered (i.e., to Grade \u22641 or to baseline) from prior anticancer therapy-induced AEs",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from harm by ensuring they have recovered sufficiently from previous treatment.",
+      "justification": "This criterion ensures patient safety and prevents complications.",
       "competing_risk": true
     },
     {
       "text": "Has received prior treatment with a WRN inhibitor",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures that patients are not receiving treatments that could interfere with the study's objectives.",
+      "justification": "This criterion protects patients from potential harm by ensuring they have not received specific treatments that could interfere with the study's results.",
       "competing_risk": false
     },
     {
       "text": "Is unable to swallow and retain orally administered study treatment",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion reflects the study's design, which involves a sequential treatment approach. It ensures that patients can receive the intended treatment.",
+      "justification": "This criterion ensures patient safety and feasibility of administering the study drug.",
       "competing_risk": false
     },
     {
       "text": "Has symptomatic uncontrolled brain or leptomeningeal metastases",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from harm by ensuring they have a confirmed diagnosis of a serious condition that may require specific management.",
+      "justification": "This criterion protects patients from potential harm by ensuring they have a confirmed diagnosis of a specific condition.",
       "competing_risk": false
     },
     {
       "text": "Has a known additional malignancy that progressed or required active treatment within the last 2 years because reoccurrence of another malignancy would confound interpretation by RECIST 1.1 criteria. Exceptions include basal cell carcinoma of the skin, squamous cell carcinoma of the skin that has undergone potentially curative therapy, or in situ cancer that is considered to be low risk for progression by the investigator",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from harm by ensuring they have a confirmed diagnosis of a serious condition that may require specific management.",
+      "justification": "This criterion protects patients from potential harm by ensuring they have a confirmed diagnosis of a specific condition.",
       "competing_risk": true
     },
     {
       "text": "Has any impairment of gastrointestinal function or gastrointestinal disease that may significantly alter the absorption of study drugs",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that patients can tolerate the study's interventions and adhere to its protocols.",
+      "justification": "This criterion ensures patient safety and feasibility of administering the study drug.",
       "competing_risk": false
     },
     {
       "text": "Has severe liver fibrosis",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from harm by ensuring they have a confirmed diagnosis of a serious condition that may require specific management.",
+      "justification": "This criterion protects patients from potential harm by ensuring they have a confirmed diagnosis of a specific condition.",
       "competing_risk": false
     },
     {
       "text": "Has cirrhosis or current unstable liver or biliary disease",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from harm by ensuring they have a confirmed diagnosis of a serious condition that may require specific management.",
+      "justification": "This criterion protects patients from potential harm by ensuring they have a confirmed diagnosis of a specific condition.",
       "competing_risk": true
     },
     {
       "text": "Has known hypersensitivity to any of the study interventions or any of their excipients",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from harm by ensuring they are not allergic to the study's interventions.",
+      "justification": "This criterion protects patients from potential harm by ensuring they have no known allergies to the study's components.",
+      "competing_risk": false
+    },
+    {
+      "text": "Has known WRN syndrome",
+      "reasoning_category": "Safety",
+      "justification": "This criterion protects patients from harm by excluding those with a known genetic disorder.",
+      "competing_risk": false
+    },
+    {
+      "text": "Has an active autoimmune disease that has required systemic treatment in the past 2 years",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures feasibility by limiting the study population to those with a history of autoimmune disease requiring systemic treatment, which may impact data quality and recruitment.",
+      "competing_risk": false
+    },
+    {
+      "text": "Has experienced any of the following with prior immunotherapy: any immune mediated adverse events (imAE) of Grade \u22653, immune-related severe neurologic events of any grade, exfoliative dermatitis of any grade (Stevens-Johnson Syndrome, toxic epidermal necrolysis, or Drug rash with eosinophilia and systemic signs syndrome /[DRESS/] syndrome), or myocarditis of any grade.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion prioritizes patient safety by excluding individuals who have experienced severe immune-mediated adverse events after prior immunotherapy.",
+      "competing_risk": false
+    },
+    {
+      "text": "Has any history of interstitial lung disease or pneumonitis",
+      "reasoning_category": "Safety",
+      "justification": "This criterion protects patients from harm by excluding those with a history of interstitial lung disease or pneumonitis, which can be life-threatening.",
       "competing_risk": false
     }
   ],
+  "criteria_metadata": {
+    "total_parsed": 24,
+    "classified": 24,
+    "batches": 2,
+    "batch_size": 20
+  },
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
@@ -314,6 +344,7 @@
     "control_type": "None (Single-Arm)",
     "superiority_type": "Unclear"
   },
+  "indication": "solid_tumor",
   "randomization": {
     "randomization_type": "Not described",
     "allocation_ratio": "1:1:1",
@@ -349,8 +380,8 @@
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
   "summary": {
-    "Safety": 10,
-    "Statistical Power": 2,
-    "Feasibility": 8
+    "Safety": 14,
+    "Statistical Power": 4,
+    "Feasibility": 6
   }
 }

@@ -5,53 +5,59 @@
   "eligibility": [
     {
       "text": "Eastern Cooperative Oncology Group (ECOG) performance status score of 0 or 1",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patients can participate in the trial and are able to tolerate the study's demands.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion protects patients from harm by ensuring they are able to tolerate the study's demands.",
       "competing_risk": false
     },
     {
       "text": "Have unresectable and/or metastatic solid tumors (with or without MSI-H/dMMR) refractory to or intolerant to previous SoC therapy or for which no SoC therapy exists",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study population is representative of a specific patient group and allows for comparison with historical data.",
+      "justification": "This criterion ensures the study population is representative of a specific patient group and maximizes the likelihood of detecting treatment effects.",
       "competing_risk": true
     },
     {
       "text": "Presence of measurable disease according to RECIST version 1.1 except for Part A (Dose Escalation)",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study population is representative of a specific patient group and allows for comparison with historical data.",
+      "justification": "This criterion ensures that patients have a measurable disease, which is essential for detecting treatment effects.",
       "competing_risk": false
     },
     {
       "text": "Adequate bone marrow / hematologic, end-organ, and cardiovascular function",
-      "reasoning_category": "Safety",
-      "justification": "This criterion ensures the study population is healthy enough to tolerate potential side effects of the treatment.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures the study can be conducted safely and with minimal risk of complications.",
       "competing_risk": false
     },
     {
       "text": "Resolution of all acute (or toxic) adverse effects of prior therapies, radiation therapy, or surgical procedures to Grade \u2264 1 (except fatigue, alopecia, and peripheral neuropathy)",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the study population is healthy enough to tolerate potential side effects of the treatment.",
+      "justification": "This criterion ensures patients are free from severe side effects that could interfere with the study's objectives.",
       "competing_risk": false
     },
     {
       "text": "Clinically significant cardiovascular disease.",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the study population is healthy enough to tolerate potential side effects of the treatment.",
+      "justification": "This criterion protects patients from harm by excluding those who may be at increased risk of adverse events related to cardiovascular disease.",
       "competing_risk": false
     },
     {
       "text": "Patients with known WRN syndrome",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the study population is healthy enough to tolerate potential side effects of the treatment.",
+      "justification": "This criterion prioritizes patient safety by excluding individuals with a known genetic predisposition for specific health risks.",
       "competing_risk": false
     },
     {
       "text": "Pregnancy, breastfeeding, or intention of becoming pregnant during the study.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion excludes women who are pregnant or planning to become pregnant during the study. This is a feasibility consideration for ensuring data quality and participant safety.",
+      "justification": "This criterion ensures that the study is conducted safely and ethically by excluding women who are pregnant or planning to become pregnant.",
       "competing_risk": false
     }
   ],
+  "criteria_metadata": {
+    "total_parsed": 8,
+    "classified": 8,
+    "batches": 1,
+    "batch_size": 20
+  },
   "population": {
     "sex": "ALL",
     "age_range": "18 Years - 99 Years",
@@ -218,6 +224,7 @@
     "control_type": "None (Single-Arm)",
     "superiority_type": "Unclear"
   },
+  "indication": "solid_tumor",
   "randomization": {
     "randomization_type": "Not described",
     "allocation_ratio": "1:1:1",
@@ -249,8 +256,8 @@
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
   "summary": {
-    "Feasibility": 2,
+    "Safety": 4,
     "Statistical Power": 2,
-    "Safety": 4
+    "Feasibility": 2
   }
 }

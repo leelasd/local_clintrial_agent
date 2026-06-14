@@ -12,28 +12,34 @@
     {
       "text": "Pathologically documented, previously treated, locally-advanced and unresectable or metastatic NSCLC with KRAS p.G12C mutation confirmed through central testing or have documentation of KRAS p.G12C mutation through Amgen Study 20190294 prior to enrollment",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study population is homogeneous and allows for a direct comparison between treatment groups.",
+      "justification": "This criterion ensures the study population is homogeneous and allows for comparison with historical data.",
       "competing_risk": false
     },
     {
       "text": "Active brain metastases",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by excluding those with active brain metastases, which could pose risks to their health.",
+      "justification": "This criterion protects patients from potential harm by excluding those with a high risk of complications.",
       "competing_risk": false
     },
     {
       "text": "Myocardial infarction within 6 months of study day 1",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from known harm by excluding those who have experienced a myocardial infarction in the recent past, which could increase their risk of complications.",
+      "justification": "This criterion excludes individuals who may be at increased risk for adverse events related to myocardial infarction.",
       "competing_risk": false
     },
     {
       "text": "Gastrointestinal (GI) tract disease causing the inability to take oral medication",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures data quality and patient adherence by excluding those who cannot tolerate oral medication due to GI issues.",
+      "justification": "This criterion ensures data quality and patient adherence by excluding individuals who may have difficulty taking medications orally.",
       "competing_risk": false
     }
   ],
+  "criteria_metadata": {
+    "total_parsed": 5,
+    "classified": 5,
+    "batches": 1,
+    "batch_size": 20
+  },
   "population": {
     "sex": "ALL",
     "age_range": "18 Years - 100 Years",
@@ -53,17 +59,21 @@
     "estimated_n_per_arm": 172,
     "num_arms": 2,
     "primary_endpoint_type": "PFS (Progression-Free Survival)",
-    "estimated_control_event_rate": 0.85,
+    "estimated_control_event_rate": 0.8,
+    "indication_params_used": {
+      "control_median_months": 4.5,
+      "event_rate": 0.8
+    },
     "power_analysis": {
       "alpha": 0.05,
       "power_target": 0.8,
       "test_type": "Two-sided (log-rank)",
-      "detectable_hazard_ratio": 0.721,
-      "hr_reduction": "28%",
-      "expected_events": 293,
-      "control_median_months": 3.5,
-      "implied_treatment_median_months": 4.9,
-      "median_improvement_months": 1.4,
+      "detectable_hazard_ratio": 0.714,
+      "hr_reduction": "29%",
+      "expected_events": 276,
+      "control_median_months": 4.5,
+      "implied_treatment_median_months": 6.3,
+      "median_improvement_months": 1.8,
       "assessment": "Borderline"
     }
   },
@@ -85,6 +95,7 @@
     "control_type": "Active Comparator",
     "superiority_type": "Superiority"
   },
+  "indication": "nsclc",
   "randomization": {
     "randomization_type": "Simple",
     "allocation_ratio": "1:1",
@@ -114,6 +125,5 @@
     "Feasibility": 2,
     "Statistical Power": 1,
     "Safety": 2
-  },
-  "drug": "Sotorasib (CodeBreaK 200) - Phase 3 NSCLC"
+  }
 }

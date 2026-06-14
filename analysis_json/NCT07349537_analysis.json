@@ -2,25 +2,85 @@
   "nct_id": "NCT07349537",
   "title": "Study of RMC-5127 in Patients With Advanced KRAS G12V-Mutant Solid Tumors",
   "phase": "PHASE1",
-  "drug": "RMC-5127 (KRAS G12V) - Phase 1",
-  "trial_design": {
-    "design_type": "Single-Arm",
-    "control_type": "None (Single-Arm)",
-    "superiority_type": "Unclear"
-  },
-  "trial_integrity": {
-    "masking_level": "Open-label",
-    "blinding_validation_method": "Not specified",
-    "concomitant_therapy_controls": "Standardized background care"
-  },
-  "randomization": {
-    "randomization_type": "Not described",
-    "allocation_ratio": "1:1:1",
-    "stratification_factors": [
-      "Center",
-      "Age"
-    ],
-    "randomization_description": "Stratified by Center, Age. "
+  "eligibility": [
+    {
+      "text": "At least 18 years old and has provided informed consent.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures compliance with legal requirements for clinical trials involving human subjects.",
+      "competing_risk": false
+    },
+    {
+      "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion limits the trial to patients who are able to tolerate treatment and participate in the study.",
+      "competing_risk": false
+    },
+    {
+      "text": "Pathologically documented, locally advanced or metastatic KRAS G12V-mutated solid tumor malignancy.",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures that patients are selected for a specific disease group and allows for comparison of treatment effects.",
+      "competing_risk": true
+    },
+    {
+      "text": "Received and progressed or been intolerant to prior standard therapy (including targeted therapy) appropriate for tumor type and stage.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures that patients have a history of treatment failure, which may affect their ability to tolerate the study drug.",
+      "competing_risk": true
+    },
+    {
+      "text": "Measurable per RECIST v1.1",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures that patients are selected for a specific disease group and allows for comparison of treatment effects.",
+      "competing_risk": false
+    },
+    {
+      "text": "Adequate organ function (bone marrow, liver, kidney, coagulation). ",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures that patients are healthy enough to tolerate the study drug and its potential side effects.",
+      "competing_risk": false
+    },
+    {
+      "text": "Able to take oral medications.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures that patients can receive the study drug as prescribed.",
+      "competing_risk": false
+    },
+    {
+      "text": "Primary central nervous system (CNS) tumors",
+      "reasoning_category": "Safety",
+      "justification": "This criterion limits the trial to patients with specific types of cancer, ensuring their safety and suitability for treatment.",
+      "competing_risk": true
+    },
+    {
+      "text": "Prior therapy with KRAS G12V inhibitor or direct RAS-targeted therapy (eg. degraders and/or inhibitors).",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures that patients have a history of treatment failure, which may affect their ability to tolerate the study drug.",
+      "competing_risk": false
+    },
+    {
+      "text": "Any conditions that may affect the ability to take or absorb study drug.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures that patients are healthy enough to receive the study drug and its potential side effects.",
+      "competing_risk": false
+    },
+    {
+      "text": "Major surgery within 28 days prior to receiving study drug(s).",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures that patients have recovered sufficiently from previous surgeries, which may affect their ability to participate in the study.",
+      "competing_risk": false
+    },
+    {
+      "text": "Patient is unable or unwilling to comply with protocol-required study visits or procedures.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures that patients are able to adhere to the study's requirements and participate in its protocols.",
+      "competing_risk": false
+    }
+  ],
+  "criteria_metadata": {
+    "total_parsed": 12,
+    "classified": 12,
+    "batches": 1,
+    "batch_size": 20
   },
   "population": {
     "sex": "ALL",
@@ -124,6 +184,26 @@
       "is_primary": false
     }
   ],
+  "trial_integrity": {
+    "masking_level": "Open-label",
+    "blinding_validation_method": "Not specified",
+    "concomitant_therapy_controls": "Standardized background care"
+  },
+  "trial_design": {
+    "design_type": "Single-Arm",
+    "control_type": "None (Single-Arm)",
+    "superiority_type": "Unclear"
+  },
+  "indication": "solid_tumor",
+  "randomization": {
+    "randomization_type": "Not described",
+    "allocation_ratio": "1:1:1",
+    "stratification_factors": [
+      "Center",
+      "Age"
+    ],
+    "randomization_description": "Stratified by Center, Age. "
+  },
   "adaptive_designs": {
     "has_adaptive_features": true,
     "adaptive_types": [
@@ -145,80 +225,6 @@
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
-  "eligibility": [
-    {
-      "text": "At least 18 years old and has provided informed consent.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures compliance with legal requirements for clinical trials involving human subjects.",
-      "competing_risk": false
-    },
-    {
-      "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1.",
-      "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure the patient's ability to tolerate treatment and participate in the trial.",
-      "competing_risk": false
-    },
-    {
-      "text": "Pathologically documented, locally advanced or metastatic KRAS G12V-mutated solid tumor malignancy.",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures that the study population is homogeneous and allows for a meaningful comparison of treatment effects.",
-      "competing_risk": true
-    },
-    {
-      "text": "Received and progressed or been intolerant to prior standard therapy (including targeted therapy) appropriate for tumor type and stage.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that the patient has a history of treatment failure, which may impact their ability to tolerate study drug.",
-      "competing_risk": true
-    },
-    {
-      "text": "Measurable per RECIST v1.1",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion helps ensure that the study population is homogeneous and allows for a meaningful comparison of treatment effects.",
-      "competing_risk": false
-    },
-    {
-      "text": "Adequate organ function (bone marrow, liver, kidney, coagulation). ",
-      "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure that the patient's body can tolerate the study drug and its potential side effects.",
-      "competing_risk": false
-    },
-    {
-      "text": "Able to take oral medications.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that the patient is able to swallow the study drug, which may be a requirement for some drugs.",
-      "competing_risk": false
-    },
-    {
-      "text": "Primary central nervous system (CNS) tumors",
-      "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure that the patient's brain is healthy enough to tolerate study drug and its potential side effects.",
-      "competing_risk": true
-    },
-    {
-      "text": "Prior therapy with KRAS G12V inhibitor or direct RAS-targeted therapy (eg. degraders and/or inhibitors).",
-      "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure that the patient has a history of treatment failure, which may impact their ability to tolerate study drug.",
-      "competing_risk": false
-    },
-    {
-      "text": "Any conditions that may affect the ability to take or absorb study drug.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure that the patient's body can tolerate the study drug and its potential side effects.",
-      "competing_risk": false
-    },
-    {
-      "text": "Major surgery within 28 days prior to receiving study drug(s).",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure that the patient's body is fully recovered from previous surgery, which may impact their ability to tolerate study drug.",
-      "competing_risk": false
-    },
-    {
-      "text": "Patient is unable or unwilling to comply with protocol-required study visits or procedures.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure that the patient can follow the study's protocols and adhere to its requirements.",
-      "competing_risk": false
-    }
-  ],
   "summary": {
     "Feasibility": 6,
     "Safety": 4,
