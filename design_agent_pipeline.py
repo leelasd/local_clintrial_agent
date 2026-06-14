@@ -5,6 +5,68 @@ import ollama
 from collections import Counter
 from scipy import stats
 
+INDICATION_PARAMS = {
+    'psoriasis': {
+        'control_rate_dichotomous': 0.10,
+        'median_os_months': None,
+        'median_pfs_months': None,
+        'event_rate': None,
+    },
+    'nsclc': {
+        'control_rate_dichotomous': 0.30,
+        'median_os_months': 12.0,
+        'median_pfs_months': 4.5,
+        'event_rate': 0.80,
+    },
+    'pdac': {
+        'control_rate_dichotomous': 0.05,
+        'median_os_months': 6.0,
+        'median_pfs_months': 3.5,
+        'event_rate': 0.85,
+    },
+    'msi_h_tumor': {
+        'control_rate_dichotomous': 0.15,
+        'median_os_months': 18.0,
+        'median_pfs_months': 5.0,
+        'event_rate': 0.75,
+    },
+    'solid_tumor': {
+        'control_rate_dichotomous': 0.15,
+        'median_os_months': 10.0,
+        'median_pfs_months': 4.0,
+        'event_rate': 0.80,
+    },
+}
+
+DEFAULT_INDICATION_PARAMS = {
+    'control_rate_dichotomous': 0.10,
+    'median_os_months': 6.0,
+    'median_pfs_months': 3.5,
+    'event_rate': 0.85,
+}
+
+
+def infer_indication(protocol):
+    """Infer therapeutic indication from protocol conditions and title."""
+    conditions = protocol.get('conditionModule', {}).get('conditions', [])
+    title = protocol.get('identificationModule', {}).get('briefTitle', '')
+    combined = ' '.join(conditions + [title]).lower()
+
+    indication_keywords = {
+        'psoriasis': ['psoriasis', 'plaque psoriasis', 'pso', 'pasi', 'spga'],
+        'nsclc': ['non-small cell lung', 'nsclc', 'lung cancer', 'kras g12c', 'egfr', 'alk'],
+        'pdac': ['pancreatic', 'pdac', 'pancreas', 'pancreatic ductal'],
+        'msi_h_tumor': ['msi-h', 'microsatellite instability', 'msi high', 'mismatch repair deficient', 'dmmr'],
+        'solid_tumor': ['solid tumor', 'advanced solid', 'metastatic solid', 'refractory solid'],
+    }
+
+    for indication, keywords in indication_keywords.items():
+        if any(k in combined for k in keywords):
+            return indication
+
+    return None
+
+
 def classify_design_from_api(protocol):
     """Classify trial design type from API's structured data."""
     design = protocol.get('designModule', {})
@@ -153,8 +215,19 @@ def analyze_study_population(protocol):
         'enrollment_type': enrollment_type
     }
 
-def analyze_sample_size(protocol, endpoints):
-    """Compute sample size and power analysis using actual enrollment and primary endpoint."""
+def analyze_sample_size(protocol, endpoints, indication_params=None):
+    """Compute sample size and power analysis using actual enrollment and primary endpoint.
+    
+    Args:
+        protocol: Protocol section from ClinicalTrials.gov API
+        endpoints: List of classified endpoints
+        indication_params: Dict with keys like 'control_rate_dichotomous',
+            'median_os_months', 'median_pfs_months', 'event_rate'.
+            If None, falls back to DEFAULT_INDICATION_PARAMS.
+    """
+    if indication_params is None:
+        indication_params = DEFAULT_INDICATION_PARAMS
+    
     design_mod = protocol.get('designModule', {})
     arms = protocol.get('armsInterventionsModule', {})
     arm_groups = arms.get('armGroups', [])
@@ -218,12 +291,17 @@ def analyze_sample_size(protocol, endpoints):
     is_dichotomous = any(k in primary_text.lower() for k in dichotomous_keywords)
     
     if is_survival and n_per_arm > 1:
+        is_os = any(k in primary_text.lower() for k in ['overall survival', 'os'])
+        median_key = 'median_os_months' if is_os else 'median_pfs_months'
         return _analyze_survival_power(primary_text, enrollment, n_per_arm, num_arms,
-                                       alpha, power_target, z_alpha, z_beta)
+                                       alpha, power_target, z_alpha, z_beta,
+                                       control_median_months=indication_params.get(median_key),
+                                       event_rate=indication_params.get('event_rate'))
     
     if is_dichotomous and n_per_arm > 1:
         return _analyze_dichotomous_power(primary_text, enrollment, n_per_arm, num_arms,
-                                           alpha, power_target, z_alpha, z_beta, primary_type)
+                                           alpha, power_target, z_alpha, z_beta, primary_type,
+                                           estimated_control_rate=indication_params.get('control_rate_dichotomous', 0.10))
     
     # Non-dichotomous, non-survival endpoint
     return {
@@ -244,10 +322,9 @@ def analyze_sample_size(protocol, endpoints):
 
 
 def _analyze_dichotomous_power(primary_text, enrollment, n_per_arm, num_arms,
-                                alpha, power_target, z_alpha, z_beta, primary_type):
+                                alpha, power_target, z_alpha, z_beta, primary_type,
+                                estimated_control_rate=0.10):
     """Power analysis for dichotomous (proportion-based) endpoints."""
-    # For psoriasis trials, typical placebo response rate for sPGA/PASI is ~10-15%
-    estimated_control_rate = 0.10
     
     def compute_detectable_diff(n, p0, za, zb):
         for delta_p in [x / 100 for x in range(1, 50)]:
@@ -289,6 +366,7 @@ def _analyze_dichotomous_power(primary_text, enrollment, n_per_arm, num_arms,
         'num_arms': num_arms,
         'primary_endpoint_type': 'Dichotomous (Proportion)',
         'estimated_control_event_rate': estimated_control_rate,
+        'indication_params_used': {'control_rate_dichotomous': estimated_control_rate},
         'power_analysis': {
             'alpha': alpha,
             'power_target': power_target,
@@ -301,7 +379,8 @@ def _analyze_dichotomous_power(primary_text, enrollment, n_per_arm, num_arms,
 
 
 def _analyze_survival_power(primary_text, enrollment, n_per_arm, num_arms,
-                             alpha, power_target, z_alpha, z_beta):
+                             alpha, power_target, z_alpha, z_beta,
+                             control_median_months=None, event_rate=None):
     """Power analysis for time-to-event (survival) endpoints using Schoenfeld formula.
     
     Uses the event-count based approach:
@@ -315,19 +394,13 @@ def _analyze_survival_power(primary_text, enrollment, n_per_arm, num_arms,
     is_os = any(k in primary_text.lower() for k in ['overall survival', 'os'])
     endpoint_label = 'OS (Overall Survival)' if is_os else 'PFS (Progression-Free Survival)'
     
-    # Historical benchmarks for second-line PDAC
-    control_median_months = 6.0  # typical mOS for 2L PDAC
-    if not is_os:
-        control_median_months = 3.5  # typical mPFS for 2L PDAC
-    
-    # Proportion randomized to one of the treatment arms
-    # For 2 arms (1 treatment + 1 control): p = 0.5
+    # Use provided values or fall back to defaults
+    if control_median_months is None:
+        control_median_months = 6.0 if is_os else 3.5
+    if event_rate is None:
+        event_rate = 0.85
+
     p_alloc = 1.0 / num_arms
-    
-    # Expected total events as fraction of patients
-    # For a trial with ~3 year follow-up in advanced cancer,
-    # most patients will have the event
-    event_rate = 0.85
     
     expected_events = enrollment * event_rate
     denom = expected_events * p_alloc * (1 - p_alloc)
@@ -378,6 +451,10 @@ def _analyze_survival_power(primary_text, enrollment, n_per_arm, num_arms,
         'num_arms': num_arms,
         'primary_endpoint_type': endpoint_label,
         'estimated_control_event_rate': event_rate,
+        'indication_params_used': {
+            'control_median_months': control_median_months,
+            'event_rate': event_rate,
+        },
         'power_analysis': {
             'alpha': alpha,
             'power_target': power_target,
@@ -803,8 +880,19 @@ def analyze_trial(nct_id):
     print(f"  Recruitment Yield: {population['recruitment_yield_estimate']}")
     print(f"  Enrollment: {population['enrollment_count']} ({population['enrollment_type']})")
     
-    # --- STEP 1c: Sample size / power analysis ---
-    sample_size = analyze_sample_size(protocol, endpoints)
+    # --- STEP 1c: Sample size / power analysis (indication-parameterized) ---
+    indication = infer_indication(protocol)
+    if indication and indication in INDICATION_PARAMS:
+        indication_params = INDICATION_PARAMS[indication]
+        print(f"\n  Indication detected: {indication} (using indication-specific power params)")
+    else:
+        indication_params = DEFAULT_INDICATION_PARAMS
+        if indication is None:
+            print(f"\n  Indication: unknown (using default power params)")
+        else:
+            print(f"\n  Indication: {indication} (not in lookup, using default power params)")
+    
+    sample_size = analyze_sample_size(protocol, endpoints, indication_params=indication_params)
     if sample_size:
         pa = sample_size['power_analysis']
         print(f"\nSample Size / Power:")
@@ -842,7 +930,7 @@ def analyze_trial(nct_id):
     print(f"  Class-specific effects: {', '.join(safety_ae['class_effects_known'][:5]) if safety_ae['class_effects_known'] else 'None detected'}")
     print(f"  Safety monitoring: {safety_ae['safety_monitoring']}")
     
-    # --- STEP 2: LLM classification of eligibility ---
+    # --- STEP 2: LLM classification of eligibility (batched) ---
     eligibility_text = protocol['eligibilityModule']['eligibilityCriteria']
     
     with open('agent_prompt.txt', 'r') as f:
@@ -855,9 +943,10 @@ def analyze_trial(nct_id):
         if clean_line and len(clean_line) > 10 and not clean_line.endswith(':'):
             criteria_lines.append(clean_line)
     
-    print(f"\nTotal criteria: {len(criteria_lines)}")
+    criteria_total = len(criteria_lines)
+    print(f"\nTotal criteria: {criteria_total}")
     
-    # Create batch prompt with design context included
+    # Build design context (shared across all batches)
     design_context = f"""
 TRIAL DESIGN CONTEXT (extracted from structured API data):
 - Design: {api_design['design_type']}
@@ -869,7 +958,16 @@ TRIAL DESIGN CONTEXT (extracted from structured API data):
 - Phases: {api_design['phases']}
 """
 
-    batch_prompt = f"""{agent_prompt}
+    BATCH_SIZE = 20
+    num_batches = math.ceil(criteria_total / BATCH_SIZE) if criteria_total > 0 else 0
+    eligibility = []
+    
+    for batch_idx in range(num_batches):
+        batch_start = batch_idx * BATCH_SIZE
+        batch_end = min(batch_start + BATCH_SIZE, criteria_total)
+        batch_criteria = criteria_lines[batch_start:batch_end]
+        
+        batch_prompt = f"""{agent_prompt}
 
 {design_context}
 
@@ -886,11 +984,11 @@ Use the trial design context above to inform your classifications. For example:
 
 CRITERIA LIST:
 """
-    
-    for i, criterion in enumerate(criteria_lines[:20], 1):
-        batch_prompt += f"{i}. {criterion}\n"
-    
-    batch_prompt += """
+        
+        for i, criterion in enumerate(batch_criteria, 1):
+            batch_prompt += f"{i}. {criterion}\n"
+        
+        batch_prompt += """
 IMPORTANT: Respond ONLY in English. Use proper JSON syntax with no escape characters.
 
 Respond with ONLY a valid JSON array. Each object must have:
@@ -906,41 +1004,45 @@ Format:
 
 Do not use escape characters. Write the JSON directly.
 """
-    
-    print("\nSending batch to LLM for eligibility classification...")
-    response = ollama.chat(
-        model='gemma2:2b-instruct-q4_K_M',
-        messages=[{'role': 'user', 'content': batch_prompt}],
-        options={'temperature': 0.1, 'num_predict': 4096}
-    )
-    
-    response_text = response['message']['content'].strip()
-    
-    # Parse JSON
-    try:
-        if '```json' in response_text:
-            start = response_text.find('```json') + 7
-            end = response_text.find('```', start)
-            json_text = response_text[start:end].strip()
-        elif '```' in response_text:
-            start = response_text.find('```') + 3
-            end = response_text.find('```', start)
-            json_text = response_text[start:end].strip()
-        else:
-            start = response_text.find('[')
-            end = response_text.rfind(']') + 1
-            json_text = response_text[start:end]
         
-        json_text = json_text.replace('\\^', '^').replace('\\<', '<').replace('\\>', '>')
-        # Strip any remaining stray backslashes that would break JSON
-        json_text = json_text.replace('\\', '/')
-        eligibility = json.loads(json_text)
-        print(f"  ✓ Parsed {len(eligibility)} criteria")
+        batch_label = f"batch {batch_idx + 1}/{num_batches}" if num_batches > 1 else "batch"
+        print(f"\nSending {batch_label} ({len(batch_criteria)} criteria) to LLM for eligibility classification...")
+        response = ollama.chat(
+            model='gemma2:2b-instruct-q4_K_M',
+            messages=[{'role': 'user', 'content': batch_prompt}],
+            options={'temperature': 0.1, 'num_predict': 4096}
+        )
         
-    except json.JSONDecodeError as e:
-        print(f"  ✗ JSON parse error: {e}")
-        print(f"  Problem text (first 200 chars): {json_text[:200]}")
-        eligibility = []
+        response_text = response['message']['content'].strip()
+        
+        # Parse JSON
+        try:
+            if '```json' in response_text:
+                start = response_text.find('```json') + 7
+                end = response_text.find('```', start)
+                json_text = response_text[start:end].strip()
+            elif '```' in response_text:
+                start = response_text.find('```') + 3
+                end = response_text.find('```', start)
+                json_text = response_text[start:end].strip()
+            else:
+                start = response_text.find('[')
+                end = response_text.rfind(']') + 1
+                json_text = response_text[start:end]
+            
+            json_text = json_text.replace('\\^', '^').replace('\\<', '<').replace('\\>', '>')
+            json_text = json_text.replace('\\', '/')
+            batch_results = json.loads(json_text)
+            eligibility.extend(batch_results)
+            print(f"  ✓ Parsed {len(batch_results)} criteria from {batch_label}")
+            
+        except json.JSONDecodeError as e:
+            print(f"  ✗ JSON parse error in {batch_label}: {e}")
+            print(f"  Problem text (first 200 chars): {json_text[:200]}")
+    
+    criteria_classified = len(eligibility)
+    if criteria_total != criteria_classified:
+        print(f"\n  ⚠ Classified {criteria_classified}/{criteria_total} criteria ({criteria_total - criteria_classified} unclassified)")
     
     # --- Normalize LLM output (handle typos, variant field names) ---
     competing_keywords = ['cancer', 'malignancy', 'neoplasm', 'tumor', 'liver disease', 
@@ -999,6 +1101,12 @@ Do not use escape characters. Write the JSON directly.
         "title": title,
         "phase": phase,
         "eligibility": eligibility,
+        "criteria_metadata": {
+            "total_parsed": criteria_total,
+            "classified": criteria_classified,
+            "batches": num_batches,
+            "batch_size": BATCH_SIZE
+        },
         "population": population,
         "sample_size": sample_size,
         "endpoints": endpoints,
@@ -1008,6 +1116,7 @@ Do not use escape characters. Write the JSON directly.
             "control_type": api_design['control_type'],
             "superiority_type": api_design['superiority_type']
         },
+        "indication": indication,
         "randomization": randomization,
         "adaptive_designs": adaptive,
         "safety_adverse_events": safety_ae,
@@ -1015,7 +1124,7 @@ Do not use escape characters. Write the JSON directly.
     }
     
     # Save
-    output_file = f"{nct_id}_analysis.json"
+    output_file = f"analysis_json/{nct_id}_analysis.json"
     with open(output_file, 'w') as f:
         json.dump(final_output, indent=2, fp=f)
     print(f"\n✓ Saved to {output_file}")
@@ -1083,6 +1192,6 @@ if __name__ == '__main__':
     
     # Save combined comparison
     comparison = {r['nct_id']: r for r in all_results}
-    with open('tyk2_comparison.json', 'w') as f:
+    with open('analysis_json/tyk2_comparison.json', 'w') as f:
         json.dump(comparison, indent=2, fp=f)
-    print(f"\n✓ Detailed comparison saved to tyk2_comparison.json")
+    print(f"\n✓ Detailed comparison saved to analysis_json/tyk2_comparison.json")
