@@ -35,16 +35,27 @@ python search_tyk2_trials.py
 ## Data Flow
 1. Fetch trial data from `https://clinicaltrials.gov/api/v2/studies/{NCT_ID}`
 2. **Step 1**: Classify trial design from structured API data (allocation, intervention model, arm types)
-3. **Step 2**: Extract `eligibilityModule.eligibilityCriteria` text
-4. **Step 3**: Batch prompt LLM with criteria list + design context, classify into Safety/Statistical Power/Feasibility
-5. Normalize LLM output (handle typos, variant field names, category synonyms)
-6. Normalize masking to conventional terms (QUADRUPLE → Double-blind)
-7. Output `{NCT_ID}_analysis.json`
+3. **Step 2**: Infer therapeutic indication from conditions/title (psoriasis, nsclc, pdac, msi_h_tumor, solid_tumor)
+4. **Step 3**: Extract `eligibilityModule.eligibilityCriteria` text
+5. **Step 4**: Batch prompt LLM with criteria list + design context, classify into Safety/Statistical Power/Feasibility. Criteria are chunked into batches of 20 and sent sequentially to avoid truncation.
+6. Normalize LLM output (handle typos, variant field names, category synonyms)
+7. Normalize masking to conventional terms (QUADRUPLE → Double-blind)
+8. Power analysis uses indication-specific parameters (control event rate, control median survival, event rate)
+9. Output `analysis_json/{NCT_ID}_analysis.json`
 
 ## Output Files
-- `{NCT_ID}_analysis.json` - Single trial analysis with trial_design, trial_integrity, eligibility classification
-- `model_comparison.json` - Multi-model comparison results
-- `tyk2_trials.json` - Search results
+- `analysis_json/{NCT_ID}_analysis.json` - Single trial analysis with trial_design, trial_integrity, eligibility classification
+- `analysis_json/model_comparison.json` - Multi-model comparison results
+- `analysis_json/tyk2_trials.json` - Search results
+
+## Indication-Specific Power Parameters
+| Indication | Control Rate (Dichotomous) | Median OS (mo) | Median PFS (mo) | Event Rate |
+|---|---|---|---|---|
+| psoriasis | 0.10 | — | — | — |
+| nsclc | 0.30 | 12.0 | 4.5 | 0.80 |
+| pdac | 0.05 | 6.0 | 3.5 | 0.85 |
+| msi_h_tumor | 0.15 | 18.0 | 5.0 | 0.75 |
+| solid_tumor | 0.15 | 10.0 | 4.0 | 0.80 |
 
 ## Trial Design Classification (from API)
 - **design_type**: Parallel RCT, Crossover, Factorial, Single-Arm, Adaptive Design, etc.

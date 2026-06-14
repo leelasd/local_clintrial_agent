@@ -13,40 +13,46 @@
       {
         "text": ". Moderate to severe disease.",
         "reasoning_category": "Statistical Power",
-        "justification": "Moderate to severe disease severity is likely to be associated with greater treatment response and thus, a stronger signal for efficacy.",
+        "justification": "This criterion helps ensure the study population is representative of patients with moderate to severe psoriasis, maximizing the likelihood of detecting a treatment effect.",
         "competing_risk": false
       },
       {
         "text": ". Candidate for phototherapy or systemic therapy.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures the patient's eligibility for specific treatments, which may be required for treatment success.",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures participants are eligible for potential treatments, allowing for comparison with placebo and active comparator groups.",
         "competing_risk": false
       },
       {
         "text": ". Other forms of psoriasis.",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with other types of psoriasis, potentially protecting them from harm or ensuring data quality.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion may be a feasibility concern as it could limit the study population to specific types of psoriasis, potentially impacting generalizability.",
         "competing_risk": false
       },
       {
         "text": ". History of recent infection.",
         "reasoning_category": "Safety",
-        "justification": "This criterion may protect patients from potential complications related to infections and ensure data quality.",
+        "justification": "This criterion is likely included to protect patients from potential complications related to infections during treatment.",
         "competing_risk": false
       },
       {
         "text": ". Prior exposure to TAK-279 or active comparator.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures that the study population is not confounded by prior treatment with TAK-279 or an active comparator, potentially impacting data quality.",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures that participants have not previously received the drug, preventing confounding effects and ensuring safety.",
         "competing_risk": false
       },
       {
         "text": "Other protocol defined inclusion/exclusion criteria apply.",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures that the study population is not confounded by prior treatment with TAK-279 or an active comparator, potentially impacting data quality.",
+        "reasoning_category": "Feasibility",
+        "justification": "This is a general category for any additional criteria that may impact feasibility or data quality.",
         "competing_risk": false
       }
     ],
+    "criteria_metadata": {
+      "total_parsed": 7,
+      "classified": 7,
+      "batches": 1,
+      "batch_size": 20
+    },
     "population": {
       "sex": "ALL",
       "age_range": "18 Years+",
@@ -67,6 +73,9 @@
       "num_arms": 3,
       "primary_endpoint_type": "Dichotomous (Proportion)",
       "estimated_control_event_rate": 0.1,
+      "indication_params_used": {
+        "control_rate_dichotomous": 0.1
+      },
       "power_analysis": {
         "alpha": 0.05,
         "power_target": 0.8,
@@ -382,6 +391,7 @@
       "control_type": "Placebo",
       "superiority_type": "Superiority"
     },
+    "indication": "psoriasis",
     "randomization": {
       "randomization_type": "Simple",
       "allocation_ratio": "1:1:1",
@@ -413,9 +423,9 @@
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
     "summary": {
-      "Statistical Power": 2,
+      "Statistical Power": 3,
       "Feasibility": 2,
-      "Safety": 3
+      "Safety": 2
     },
     "drug": "Zasocitinib (TAK-279)"
   },
@@ -427,7 +437,7 @@
       {
         "text": "Plaque psoriasis for at least 6 months",
         "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures a sufficient sample size to detect treatment effects.",
+        "justification": "This criterion ensures a sufficient sample size and allows for comparison of treatment effects over time.",
         "competing_risk": false
       },
       {
@@ -439,34 +449,40 @@
       {
         "text": "Candidate for phototherapy or systemic therapy",
         "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures that participants are eligible for potential treatments and allows for comparison with placebo.",
+        "justification": "This criterion ensures that participants are eligible for treatment and allows for comparison of treatment effects in this population.",
         "competing_risk": false
       },
       {
         "text": "Other forms of psoriasis",
         "reasoning_category": "Feasibility",
-        "justification": "This criterion may be a feasibility factor, as it could limit the study population to those with specific types of psoriasis.",
+        "justification": "This criterion may be a feasibility factor, as it could limit the study's generalizability to other types of psoriasis.",
         "competing_risk": false
       },
       {
         "text": "History of recent infection",
         "reasoning_category": "Safety",
-        "justification": "This criterion is likely included for safety reasons, as infections can be a risk factor for certain treatments.",
+        "justification": "This criterion protects patients from potential complications related to infections.",
         "competing_risk": false
       },
       {
         "text": "Prior exposure to BMS-986165",
         "reasoning_category": "Safety",
-        "justification": "This criterion ensures that participants are not already receiving treatment with BMS-986165, potentially leading to adverse effects.",
+        "justification": "This criterion ensures that participants are not already receiving treatment with BMS-986165, potentially leading to adverse effects or interactions.",
         "competing_risk": false
       },
       {
         "text": "Other inclusion/exclusion criteria may apply.",
         "reasoning_category": "Feasibility",
-        "justification": "This criterion is a general safety measure and could be used for feasibility reasons as well.",
+        "justification": "This criterion is a general safety measure and does not directly relate to the study's primary objectives. It could be a feasibility factor, as it allows for flexibility in participant selection.",
         "competing_risk": false
       }
     ],
+    "criteria_metadata": {
+      "total_parsed": 7,
+      "classified": 7,
+      "batches": 1,
+      "batch_size": 20
+    },
     "population": {
       "sex": "ALL",
       "age_range": "18 Years+",
@@ -487,6 +503,9 @@
       "num_arms": 2,
       "primary_endpoint_type": "Dichotomous (Proportion)",
       "estimated_control_event_rate": 0.1,
+      "indication_params_used": {
+        "control_rate_dichotomous": 0.1
+      },
       "power_analysis": {
         "alpha": 0.05,
         "power_target": 0.8,
@@ -586,6 +605,7 @@
       "control_type": "Placebo",
       "superiority_type": "Superiority"
     },
+    "indication": "psoriasis",
     "randomization": {
       "randomization_type": "Simple",
       "allocation_ratio": "1:1",
@@ -627,64 +647,70 @@
       {
         "text": "Diagnosis of plaque psoriasis, with or without psoriatic arthritis (PsA), for at least 26 weeks prior to the first administration of study intervention",
         "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures a sufficient duration of disease for detecting treatment effects.",
+        "justification": "This criterion ensures a sufficient duration of disease and helps in detecting treatment effects.",
         "competing_risk": false
       },
       {
         "text": "Total body surface area (BSA) greater than or equal to (>=)10 percent (%) at screening and baseline",
         "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures a minimum BSA threshold for study inclusion, impacting feasibility of data collection.",
+        "justification": "This criterion ensures the study population is large enough for statistical analysis.",
         "competing_risk": false
       },
       {
         "text": "Total psoriasis area and severity index (PASI) >=12 at screening and baseline",
         "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures a sufficient level of disease severity for detecting treatment effects.",
+        "justification": "This criterion helps in identifying patients with a high disease burden, maximizing the likelihood of detecting treatment effects.",
         "competing_risk": false
       },
       {
         "text": "Total investigator global assessment (IGA) >=3 at screening and baseline",
-        "reasoning_category": "Safety",
-        "justification": "This criterion assesses the severity of psoriasis, potentially indicating a higher risk of complications or adverse events.",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion helps in identifying patients with a high disease severity, maximizing the likelihood of detecting treatment effects.",
         "competing_risk": false
       },
       {
         "text": "Candidate for phototherapy or systemic treatment for plaque psoriasis",
         "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures that participants are eligible for potential treatments, impacting feasibility of data collection and study design.",
+        "justification": "This criterion ensures that participants are eligible for potential treatments and helps in recruitment.",
         "competing_risk": false
       },
       {
         "text": "Nonplaque form of psoriasis (for example, erythrodermic, guttate, or pustular)",
         "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures a specific type of psoriasis is included for treatment effect detection.",
+        "justification": "This criterion ensures a homogenous group for treatment effect analysis.",
         "competing_risk": false
       },
       {
         "text": "Current drug-induced psoriasis (for example, a new onset of psoriasis or an exacerbation of psoriasis from beta blockers, calcium channel blockers, or lithium)",
         "reasoning_category": "Safety",
-        "justification": "This criterion ensures that participants are not experiencing psoriasis due to medication, potentially impacting safety and treatment efficacy.",
+        "justification": "This criterion helps in identifying patients who are at risk for adverse events related to the study intervention.",
         "competing_risk": false
       },
       {
         "text": "A current diagnosis or signs or symptoms of severe, progressive, or uncontrolled renal, liver, cardiac, vascular, pulmonary, gastrointestinal, endocrine, neurologic, hematologic, rheumatologic, psychiatric, or metabolic disturbances",
         "reasoning_category": "Safety",
-        "justification": "This criterion ensures that participants are healthy enough to participate in the study and avoid potential complications.",
+        "justification": "This criterion helps in identifying patients who are at risk for adverse events related to the study intervention.",
         "competing_risk": false
       },
       {
         "text": "Known allergies, hypersensitivity, or intolerance to JNJ-77242113, deucravacitinib or to any of the excipients or components of the study intervention",
         "reasoning_category": "Safety",
-        "justification": "This criterion ensures that participants are not allergic to the study medication.",
+        "justification": "This criterion helps in identifying patients who are at risk for adverse events related to the study intervention.",
         "competing_risk": false
       },
       {
         "text": "Major surgical procedure, (for example, requiring general anesthesia) within 8 weeks before screening, or will not have fully recovered from surgical procedure, or has a surgical procedure planned during the time the participant is expected to participate in the study",
         "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures that participants are physically capable of participating in the study.",
+        "justification": "This criterion helps in ensuring that participants are healthy enough for the study.",
         "competing_risk": false
       }
     ],
+    "criteria_metadata": {
+      "total_parsed": 10,
+      "classified": 10,
+      "batches": 1,
+      "batch_size": 20
+    },
     "population": {
       "sex": "ALL",
       "age_range": "18 Years+",
@@ -705,6 +731,9 @@
       "num_arms": 3,
       "primary_endpoint_type": "Dichotomous (Proportion)",
       "estimated_control_event_rate": 0.1,
+      "indication_params_used": {
+        "control_rate_dichotomous": 0.1
+      },
       "power_analysis": {
         "alpha": 0.05,
         "power_target": 0.8,
@@ -942,6 +971,7 @@
       "control_type": "Placebo",
       "superiority_type": "Superiority"
     },
+    "indication": "psoriasis",
     "randomization": {
       "randomization_type": "Blocked",
       "allocation_ratio": "1:1:1",
@@ -974,9 +1004,9 @@
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
     "summary": {
-      "Statistical Power": 3,
+      "Statistical Power": 4,
       "Feasibility": 3,
-      "Safety": 4
+      "Safety": 3
     },
     "drug": "JNJ-77242113"
   }

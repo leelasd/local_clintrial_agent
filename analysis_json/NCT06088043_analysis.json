@@ -12,40 +12,46 @@
     {
       "text": ". Moderate to severe disease.",
       "reasoning_category": "Statistical Power",
-      "justification": "Moderate to severe disease severity is likely to be associated with greater treatment response and thus, a stronger signal for efficacy.",
+      "justification": "This criterion helps ensure the study population is representative of patients with moderate to severe psoriasis, maximizing the likelihood of detecting a treatment effect.",
       "competing_risk": false
     },
     {
       "text": ". Candidate for phototherapy or systemic therapy.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the patient's eligibility for specific treatments, which may be required for treatment success.",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures participants are eligible for potential treatments, allowing for comparison with placebo and active comparator groups.",
       "competing_risk": false
     },
     {
       "text": ". Other forms of psoriasis.",
-      "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients with other types of psoriasis, potentially protecting them from harm or ensuring data quality.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion may be a feasibility concern as it could limit the study population to specific types of psoriasis, potentially impacting generalizability.",
       "competing_risk": false
     },
     {
       "text": ". History of recent infection.",
       "reasoning_category": "Safety",
-      "justification": "This criterion may protect patients from potential complications related to infections and ensure data quality.",
+      "justification": "This criterion is likely included to protect patients from potential complications related to infections during treatment.",
       "competing_risk": false
     },
     {
       "text": ". Prior exposure to TAK-279 or active comparator.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that the study population is not confounded by prior treatment with TAK-279 or an active comparator, potentially impacting data quality.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures that participants have not previously received the drug, preventing confounding effects and ensuring safety.",
       "competing_risk": false
     },
     {
       "text": "Other protocol defined inclusion/exclusion criteria apply.",
-      "reasoning_category": "Safety",
-      "justification": "This criterion ensures that the study population is not confounded by prior treatment with TAK-279 or an active comparator, potentially impacting data quality.",
+      "reasoning_category": "Feasibility",
+      "justification": "This is a general category for any additional criteria that may impact feasibility or data quality.",
       "competing_risk": false
     }
   ],
+  "criteria_metadata": {
+    "total_parsed": 7,
+    "classified": 7,
+    "batches": 1,
+    "batch_size": 20
+  },
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
@@ -66,6 +72,9 @@
     "num_arms": 3,
     "primary_endpoint_type": "Dichotomous (Proportion)",
     "estimated_control_event_rate": 0.1,
+    "indication_params_used": {
+      "control_rate_dichotomous": 0.1
+    },
     "power_analysis": {
       "alpha": 0.05,
       "power_target": 0.8,
@@ -381,6 +390,7 @@
     "control_type": "Placebo",
     "superiority_type": "Superiority"
   },
+  "indication": "psoriasis",
   "randomization": {
     "randomization_type": "Simple",
     "allocation_ratio": "1:1:1",
@@ -412,8 +422,8 @@
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
   "summary": {
-    "Statistical Power": 2,
+    "Statistical Power": 3,
     "Feasibility": 2,
-    "Safety": 3
+    "Safety": 2
   }
 }

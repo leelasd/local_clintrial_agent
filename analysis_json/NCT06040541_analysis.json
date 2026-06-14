@@ -2,25 +2,67 @@
   "nct_id": "NCT06040541",
   "title": "Study of RMC-9805 in Participants With KRAS G12D-Mutant Solid Tumors",
   "phase": "PHASE1",
-  "drug": "RMC-9805 (KRAS G12D) - Phase 1",
-  "trial_design": {
-    "design_type": "Single-Arm",
-    "control_type": "None (Single-Arm)",
-    "superiority_type": "Unclear"
-  },
-  "trial_integrity": {
-    "masking_level": "Open-label",
-    "blinding_validation_method": "Not specified",
-    "concomitant_therapy_controls": "Standardized background care"
-  },
-  "randomization": {
-    "randomization_type": "Not described",
-    "allocation_ratio": "1:1",
-    "stratification_factors": [
-      "Center",
-      "Age"
-    ],
-    "randomization_description": "Stratified by Center, Age. "
+  "eligibility": [
+    {
+      "text": "Pathologically documented, locally advanced or metastatic solid tumor with a KRAS G12D-mutation",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion is designed to select patients who are likely to benefit from the intervention by targeting a specific genetic mutation.",
+      "competing_risk": true
+    },
+    {
+      "text": "Received and progressed or been intolerant to prior standard therapy (including targeted therapy) appropriate for tumor type and stage",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures the patient has received previous treatment, which may impact their ability to tolerate the intervention.",
+      "competing_risk": true
+    },
+    {
+      "text": "ECOG performance status 0 or 1",
+      "reasoning_category": "Safety",
+      "justification": "This criterion helps ensure patients are able to participate in the trial and adhere to treatment plans.",
+      "competing_risk": false
+    },
+    {
+      "text": "Adequate organ function",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures the patient's health allows them to tolerate the intervention and its potential side effects.",
+      "competing_risk": false
+    },
+    {
+      "text": "Primary central nervous system (CNS) tumors",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion helps ensure patients are selected for a specific population that may benefit from the intervention.",
+      "competing_risk": true
+    },
+    {
+      "text": "Known or suspected leptomeningeal or active brain metastases or spinal cord compression",
+      "reasoning_category": "Safety",
+      "justification": "This criterion excludes patients who might experience complications due to their condition, ensuring safety.",
+      "competing_risk": false
+    },
+    {
+      "text": "Known or suspected impairment of gastrointestinal function that may prohibit ability to swallow or absorb an oral medication",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures the patient's digestive system can handle the intervention.",
+      "competing_risk": false
+    },
+    {
+      "text": "Participant was previously treated with an investigational KRAS G12D inhibitor, pan- or multi-RAS inhibitor, or had prior therapy with any direct RAS-targeted therapy (eg, degraders and inhibitors)",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures the patient has not already received a similar treatment that may interfere with the intervention's effectiveness.",
+      "competing_risk": false
+    },
+    {
+      "text": "Other inclusion/exclusion criteria may apply.",
+      "reasoning_category": "Feasibility",
+      "justification": "This is a general statement, and its specific meaning depends on the context of the trial. It could be related to feasibility or safety.",
+      "competing_risk": false
+    }
+  ],
+  "criteria_metadata": {
+    "total_parsed": 9,
+    "classified": 9,
+    "batches": 1,
+    "batch_size": 20
   },
   "population": {
     "sex": "ALL",
@@ -124,6 +166,26 @@
       "is_primary": false
     }
   ],
+  "trial_integrity": {
+    "masking_level": "Open-label",
+    "blinding_validation_method": "Not specified",
+    "concomitant_therapy_controls": "Standardized background care"
+  },
+  "trial_design": {
+    "design_type": "Single-Arm",
+    "control_type": "None (Single-Arm)",
+    "superiority_type": "Unclear"
+  },
+  "indication": "solid_tumor",
+  "randomization": {
+    "randomization_type": "Not described",
+    "allocation_ratio": "1:1",
+    "stratification_factors": [
+      "Center",
+      "Age"
+    ],
+    "randomization_description": "Stratified by Center, Age. "
+  },
   "adaptive_designs": {
     "has_adaptive_features": true,
     "adaptive_types": [
@@ -145,62 +207,6 @@
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
-  "eligibility": [
-    {
-      "text": "Pathologically documented, locally advanced or metastatic solid tumor with a KRAS G12D-mutation",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion is designed to select patients who are likely to benefit from the intervention by targeting a specific genetic mutation.",
-      "competing_risk": true
-    },
-    {
-      "text": "Received and progressed or been intolerant to prior standard therapy (including targeted therapy) appropriate for tumor type and stage",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that patients have received previous treatment options, which may impact their ability to tolerate the study drug.",
-      "competing_risk": true
-    },
-    {
-      "text": "ECOG performance status 0 or 1",
-      "reasoning_category": "Safety",
-      "justification": "This criterion assesses the patient's physical and mental capacity to participate in the trial, ensuring their safety during treatment.",
-      "competing_risk": false
-    },
-    {
-      "text": "Adequate organ function",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that patients have sufficient organ function to tolerate the study drug and its potential side effects.",
-      "competing_risk": false
-    },
-    {
-      "text": "Primary central nervous system (CNS) tumors",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion is likely to be included in a trial aiming to assess the efficacy of treatment for CNS tumors, as it helps identify patients who are more likely to respond to the intervention.",
-      "competing_risk": true
-    },
-    {
-      "text": "Known or suspected leptomeningeal or active brain metastases or spinal cord compression",
-      "reasoning_category": "Safety",
-      "justification": "This criterion is designed to exclude patients with conditions that could be exacerbated by treatment, ensuring their safety.",
-      "competing_risk": false
-    },
-    {
-      "text": "Known or suspected impairment of gastrointestinal function that may prohibit ability to swallow or absorb an oral medication",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the patient's ability to tolerate the study drug, which is essential for successful treatment.",
-      "competing_risk": false
-    },
-    {
-      "text": "Participant was previously treated with an investigational KRAS G12D inhibitor, pan- or multi-RAS inhibitor, or had prior therapy with any direct RAS-targeted therapy (eg, degraders and inhibitors)",
-      "reasoning_category": "Safety",
-      "justification": "This criterion aims to exclude patients who have already experienced adverse effects from similar treatments.",
-      "competing_risk": false
-    },
-    {
-      "text": "Other inclusion/exclusion criteria may apply.",
-      "reasoning_category": "Feasibility",
-      "justification": "This is a general statement that could encompass various factors related to the study's design and objectives, including feasibility considerations.",
-      "competing_risk": false
-    }
-  ],
   "summary": {
     "Statistical Power": 2,
     "Feasibility": 4,

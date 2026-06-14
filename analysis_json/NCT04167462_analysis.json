@@ -6,7 +6,7 @@
     {
       "text": "Plaque psoriasis for at least 6 months",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a sufficient sample size to detect treatment effects.",
+      "justification": "This criterion ensures a sufficient sample size and allows for comparison of treatment effects over time.",
       "competing_risk": false
     },
     {
@@ -18,34 +18,40 @@
     {
       "text": "Candidate for phototherapy or systemic therapy",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures that participants are eligible for potential treatments and allows for comparison with placebo.",
+      "justification": "This criterion ensures that participants are eligible for treatment and allows for comparison of treatment effects in this population.",
       "competing_risk": false
     },
     {
       "text": "Other forms of psoriasis",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion may be a feasibility factor, as it could limit the study population to those with specific types of psoriasis.",
+      "justification": "This criterion may be a feasibility factor, as it could limit the study's generalizability to other types of psoriasis.",
       "competing_risk": false
     },
     {
       "text": "History of recent infection",
       "reasoning_category": "Safety",
-      "justification": "This criterion is likely included for safety reasons, as infections can be a risk factor for certain treatments.",
+      "justification": "This criterion protects patients from potential complications related to infections.",
       "competing_risk": false
     },
     {
       "text": "Prior exposure to BMS-986165",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures that participants are not already receiving treatment with BMS-986165, potentially leading to adverse effects.",
+      "justification": "This criterion ensures that participants are not already receiving treatment with BMS-986165, potentially leading to adverse effects or interactions.",
       "competing_risk": false
     },
     {
       "text": "Other inclusion/exclusion criteria may apply.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion is a general safety measure and could be used for feasibility reasons as well.",
+      "justification": "This criterion is a general safety measure and does not directly relate to the study's primary objectives. It could be a feasibility factor, as it allows for flexibility in participant selection.",
       "competing_risk": false
     }
   ],
+  "criteria_metadata": {
+    "total_parsed": 7,
+    "classified": 7,
+    "batches": 1,
+    "batch_size": 20
+  },
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
@@ -66,6 +72,9 @@
     "num_arms": 2,
     "primary_endpoint_type": "Dichotomous (Proportion)",
     "estimated_control_event_rate": 0.1,
+    "indication_params_used": {
+      "control_rate_dichotomous": 0.1
+    },
     "power_analysis": {
       "alpha": 0.05,
       "power_target": 0.8,
@@ -165,6 +174,7 @@
     "control_type": "Placebo",
     "superiority_type": "Superiority"
   },
+  "indication": "psoriasis",
   "randomization": {
     "randomization_type": "Simple",
     "allocation_ratio": "1:1",

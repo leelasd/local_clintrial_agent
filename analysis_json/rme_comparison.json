@@ -3,25 +3,109 @@
     "nct_id": "NCT03634982",
     "title": "Dose Escalation of RMC-4630 Monotherapy in Relapsed/Refractory Solid Tumors",
     "phase": "PHASE1",
-    "drug": "RMC-4630 monotherapy (SHP2) - Phase 1",
-    "trial_design": {
-      "design_type": "Single-Arm",
-      "control_type": "None (Single-Arm)",
-      "superiority_type": "Unclear"
-    },
-    "trial_integrity": {
-      "masking_level": "Open-label",
-      "blinding_validation_method": "Not specified",
-      "concomitant_therapy_controls": "Standardized background care"
-    },
-    "randomization": {
-      "randomization_type": "Not described",
-      "allocation_ratio": "1:1",
-      "stratification_factors": [
-        "Center",
-        "Age"
-      ],
-      "randomization_description": "Stratified by Center, Age. "
+    "eligibility": [
+      {
+        "text": "Participant (male or female) \u226518 years of age",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures a manageable participant pool and is not related to safety, efficacy, or feasibility.",
+        "competing_risk": false
+      },
+      {
+        "text": "Participants who have advanced solid tumors that have failed, are intolerant to, or are considered ineligible for standard of care anticancer treatments including approved drugs for oncogenic drivers in their tumor type",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures a population with a high likelihood of treatment response and is related to the study's primary objective.",
+        "competing_risk": true
+      },
+      {
+        "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 to 1",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures patients are able to tolerate treatment and participate in the study safely.",
+        "competing_risk": false
+      },
+      {
+        "text": "Participants in the Dose-Expansion Component must have one of the following genotypic aberrations: KRAS amplifications, KRASG12C (NSCLC), BRAF Class 3, or NF1 LOF (NSCLC and gynecological cancers) mutations",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures a population with specific genetic characteristics that are likely to respond to the intervention.",
+        "competing_risk": true
+      },
+      {
+        "text": "Adequate hematologic, hepatic and renal function",
+        "reasoning_category": "Safety",
+        "justification": "This criterion protects patients from potential adverse effects of treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Participant able to understand and voluntarily sign the informed consent form (ICF) and able to comply with the study visit schedule and other protocol requirements.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures patient comprehension and compliance, which are essential for successful trial participation.",
+        "competing_risk": false
+      },
+      {
+        "text": "Participants willing to agree to not father a child/become pregnant and comply with effective contraception criteria",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the safety of potential future pregnancies and is related to the study's ethical considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "Known or suspected leptomeningeal or brain metastases or spinal cord compression",
+        "reasoning_category": "Safety",
+        "justification": "This criterion excludes patients with conditions that could be exacerbated by treatment and is related to the study's safety objectives.",
+        "competing_risk": false
+      },
+      {
+        "text": "Primary central nervous system (CNS) tumors",
+        "reasoning_category": "Safety",
+        "justification": "This criterion excludes patients with CNS tumors, which may pose a risk of complications from treatment.",
+        "competing_risk": true
+      },
+      {
+        "text": "Clinically significant cardiac disease",
+        "reasoning_category": "Safety",
+        "justification": "This criterion excludes patients with pre-existing heart conditions that could be exacerbated by treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Active, clinically significant interstitial lung disease or pneumonitis",
+        "reasoning_category": "Safety",
+        "justification": "This criterion excludes patients with lung diseases that may worsen due to treatment and is related to the study's safety objectives.",
+        "competing_risk": false
+      },
+      {
+        "text": "History or current evidence of retinal pigment epithelial detachment (RPED), central serous retinopathy, retinal vein occlusion (RVO), or predisposing factors to RPED or RVO",
+        "reasoning_category": "Safety",
+        "justification": "This criterion excludes patients with eye conditions that could be exacerbated by treatment and is related to the study's safety objectives.",
+        "competing_risk": false
+      },
+      {
+        "text": "Known HIV infection",
+        "reasoning_category": "Safety",
+        "justification": "This criterion excludes patients with a known HIV infection, which may pose a risk of complications from treatment.",
+        "competing_risk": true
+      },
+      {
+        "text": "Active/chronic hepatitis B or C infection",
+        "reasoning_category": "Safety",
+        "justification": "This criterion excludes patients with active or chronic infections that could be exacerbated by treatment and is related to the study's safety objectives.",
+        "competing_risk": true
+      },
+      {
+        "text": "Any other unstable or clinically significant concurrent medical condition that would, in the opinion of the investigator, jeopardize the safety of a participant, impact their expected survival through the end of the study participation, and/or impact their ability to comply with the protocol prior/concomitant therapy",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures patient safety by excluding those with conditions that could be exacerbated by treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Females who are pregnant or breastfeeding",
+        "reasoning_category": "Safety",
+        "justification": "This criterion excludes women of childbearing potential to prevent unintended pregnancies during the study.",
+        "competing_risk": false
+      }
+    ],
+    "criteria_metadata": {
+      "total_parsed": 16,
+      "classified": 16,
+      "batches": 1,
+      "batch_size": 20
     },
     "population": {
       "sex": "ALL",
@@ -107,6 +191,26 @@
         "is_primary": false
       }
     ],
+    "trial_integrity": {
+      "masking_level": "Open-label",
+      "blinding_validation_method": "Not specified",
+      "concomitant_therapy_controls": "Standardized background care"
+    },
+    "trial_design": {
+      "design_type": "Single-Arm",
+      "control_type": "None (Single-Arm)",
+      "superiority_type": "Unclear"
+    },
+    "indication": "solid_tumor",
+    "randomization": {
+      "randomization_type": "Not described",
+      "allocation_ratio": "1:1",
+      "stratification_factors": [
+        "Center",
+        "Age"
+      ],
+      "randomization_description": "Stratified by Center, Age. "
+    },
     "adaptive_designs": {
       "has_adaptive_features": true,
       "adaptive_types": [
@@ -122,139 +226,145 @@
       "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
       "ae_types_detected": [],
       "class_effects_known": [
-        "Infections (general)",
-        "AST elevation"
+        "AST elevation",
+        "Infections (general)"
       ],
       "safety_endpoints": [],
       "sae_stopping_rules": "Not specified in protocol text",
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
-    "eligibility": [
-      {
-        "text": "Participant (male or female) \u226518 years of age",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures a specific age range for participant recruitment, which is a feasibility consideration.",
-        "competing_risk": false
-      },
-      {
-        "text": "Participants who have advanced solid tumors that have failed, are intolerant to, or are considered ineligible for standard of care anticancer treatments including approved drugs for oncogenic drivers in their tumor type",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures the study population is representative of a specific patient group with advanced solid tumors and excludes those who have not met these criteria.",
-        "competing_risk": true
-      },
-      {
-        "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 to 1",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the study population is healthy enough to participate in the trial and minimizes potential risks.",
-        "competing_risk": false
-      },
-      {
-        "text": "Participants in the Dose-Expansion Component must have one of the following genotypic aberrations: KRAS amplifications, KRASG12C (NSCLC), BRAF Class 3, or NF1 LOF (NSCLC and gynecological cancers) mutations",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures a specific population for the Dose-Expansion Component, which is likely to be more responsive to treatment.",
-        "competing_risk": true
-      },
-      {
-        "text": "Adequate hematologic, hepatic and renal function",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the study population has a healthy enough body to participate in the trial and minimizes potential risks.",
-        "competing_risk": false
-      },
-      {
-        "text": "Participant able to understand and voluntarily sign the informed consent form (ICF) and able to comply with the study visit schedule and other protocol requirements.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures the participant is capable of understanding the trial's risks and benefits.",
-        "competing_risk": false
-      },
-      {
-        "text": "Participants willing to agree to not father a child/become pregnant and comply with effective contraception criteria",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the study population is not at risk of pregnancy during the trial.",
-        "competing_risk": false
-      },
-      {
-        "text": "Known or suspected leptomeningeal or brain metastases or spinal cord compression",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with conditions that could be exacerbated by the study treatment.",
-        "competing_risk": false
-      },
-      {
-        "text": "Primary central nervous system (CNS) tumors",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with CNS tumors, which may be sensitive to the study treatment.",
-        "competing_risk": true
-      },
-      {
-        "text": "Clinically significant cardiac disease",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with heart conditions that could be exacerbated by the study treatment.",
-        "competing_risk": false
-      },
-      {
-        "text": "Active, clinically significant interstitial lung disease or pneumonitis",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with lung diseases that could be exacerbated by the study treatment.",
-        "competing_risk": false
-      },
-      {
-        "text": "History or current evidence of retinal pigment epithelial detachment (RPED), central serous retinopathy, retinal vein occlusion (RVO), or predisposing factors to RPED or RVO",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with eye conditions that could be exacerbated by the study treatment.",
-        "competing_risk": false
-      },
-      {
-        "text": "Known HIV infection",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with HIV, which may be sensitive to the study treatment.",
-        "competing_risk": true
-      },
-      {
-        "text": "Active/chronic hepatitis B or C infection",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with liver conditions that could be exacerbated by the study treatment.",
-        "competing_risk": true
-      },
-      {
-        "text": "Any other unstable or clinically significant concurrent medical condition that would, in the opinion of the investigator, jeopardize the safety of a participant, impact their expected survival through the end of the study participation, and/or impact their ability to comply with the protocol prior/concomitant therapy",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures that participants are healthy enough to participate in the trial.",
-        "competing_risk": false
-      },
-      {
-        "text": "Females who are pregnant or breastfeeding",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes women who could be at risk of pregnancy during the study.",
-        "competing_risk": false
-      }
-    ],
     "summary": {
       "Feasibility": 2,
       "Statistical Power": 2,
       "Safety": 12
-    }
+    },
+    "drug": "RMC-4630 monotherapy"
   },
   "NCT03989115": {
     "nct_id": "NCT03989115",
     "title": "Dose-Esc/Exp RMC4630 & Cobi in Relapsed/Refractory Solid Tumors & RMC4630& Osi in EGFR+ Locally Adv/Meta NSCLC",
     "phase": "PHASE1",
-    "drug": "RMC-4630 + Cobimetinib (SHP2) - Phase 1/2",
-    "trial_design": {
-      "design_type": "Single-Arm",
-      "control_type": "None (Single-Arm)",
-      "superiority_type": "Unclear"
-    },
-    "trial_integrity": {
-      "masking_level": "Open-label",
-      "blinding_validation_method": "Not specified",
-      "concomitant_therapy_controls": "Standardized background care"
-    },
-    "randomization": {
-      "randomization_type": "Not described",
-      "allocation_ratio": "1:1",
-      "stratification_factors": [
-        "Age"
-      ],
-      "randomization_description": "Stratified by Age. "
+    "eligibility": [
+      {
+        "text": "Age \u226518 years",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures eligibility for the trial and is not related to safety or efficacy.",
+        "competing_risk": false
+      },
+      {
+        "text": "For RMC-4630 + Cobimetinib only - Participants who have advanced solid tumors that have failed, are intolerant to, or are considered ineligible for standard of care anti-cancer treatments including approved drugs for oncogenic drivers in their tumor type.",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+        "competing_risk": true
+      },
+      {
+        "text": "For RMC-4630 + Osimertinib only - Locally advanced or metastatic EGFR mutant NSCLC not amenable to curative surgery or radiotherapy",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with statistical power considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "For RMC-4630 + Cobimetinib only - Participants must have one of the following genotypic aberrations: KRAS mutations and amplifications, BRAF Class 3 mutations, or NF1 LOF mutations",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with statistical power considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "For RMC-4630 + Osimertinib only - Evidence of radiological documentation of progression with osimertinib monotherapy or an osimertinib containing regimen. Participants should not be considered a current candidate for 1st generation EGFR TKI's by the investigator.",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with statistical power considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "Eastern Cooperative Oncology Group (ECOG) performance status of \u22641",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "Adequate hematological, hepatic, and renal function",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with feasibility considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "Capable of giving signed informed consent form (ICF). Willing and able to compile with study requirements and restrictions",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with feasibility considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "Life expectancy >12 weeks",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "Female of childbearing potential and males with partners of childbearing potential must comply with effective contraception criteria.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with feasibility considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "Primary central nervous system (CNS) tumors.",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+        "competing_risk": true
+      },
+      {
+        "text": "Known or suspected leptomeningeal or brain metastases or spinal cord compression.",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "For RMC-4630 + osimertinib arm only - Known or suspected Small cell, squamous, or pleomorphic lung transformations",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "Clinically significant cardiac disease",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "Active, clinically signi\ufb01cant interstitial lung disease or pneumonitis",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "History or current evidence of retinal pigment epithelial detachment (RPED), central serous retinopathy, retinal vein occlusion, or predisposing factors to RPED or RVO",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "Known HIV infection or active/chronic hepatitis B or C infection.",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+        "competing_risk": true
+      },
+      {
+        "text": "Any other unstable or clinically signi\ufb01cant concurrent medical condition that would, in the opinion of the investigator, jeopardize the safety of a participant, impact their expected survival through the end of the study participation, and/or impact their ability to comply with the protocol prior/concomitant therapy",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+        "competing_risk": false
+      },
+      {
+        "text": "Females who are pregnant or breastfeeding",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures the patient is eligible for treatment and aligns with feasibility considerations.",
+        "competing_risk": false
+      }
+    ],
+    "criteria_metadata": {
+      "total_parsed": 19,
+      "classified": 19,
+      "batches": 1,
+      "batch_size": 20
     },
     "population": {
       "sex": "ALL",
@@ -340,6 +450,25 @@
         "is_primary": false
       }
     ],
+    "trial_integrity": {
+      "masking_level": "Open-label",
+      "blinding_validation_method": "Not specified",
+      "concomitant_therapy_controls": "Standardized background care"
+    },
+    "trial_design": {
+      "design_type": "Single-Arm",
+      "control_type": "None (Single-Arm)",
+      "superiority_type": "Unclear"
+    },
+    "indication": "nsclc",
+    "randomization": {
+      "randomization_type": "Not described",
+      "allocation_ratio": "1:1",
+      "stratification_factors": [
+        "Age"
+      ],
+      "randomization_description": "Stratified by Age. "
+    },
     "adaptive_designs": {
       "has_adaptive_features": true,
       "adaptive_types": [
@@ -355,158 +484,97 @@
       "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
       "ae_types_detected": [],
       "class_effects_known": [
-        "Infections (general)",
-        "AST elevation"
+        "AST elevation",
+        "Infections (general)"
       ],
       "safety_endpoints": [],
       "sae_stopping_rules": "Not specified in protocol text",
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
-    "eligibility": [
-      {
-        "text": "Age \u226518 years",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures eligibility for the trial and is a standard inclusion criteria.",
-        "competing_risk": false
-      },
-      {
-        "text": "For RMC-4630 + Cobimetinib only - Participants who have advanced solid tumors that have failed, are intolerant to, or are considered ineligible for standard of care anti-cancer treatments including approved drugs for oncogenic drivers in their tumor type.",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient is eligible for treatment and has a specific condition.",
-        "competing_risk": true
-      },
-      {
-        "text": "For RMC-4630 + Osimertinib only - Locally advanced or metastatic EGFR mutant NSCLC not amenable to curative surgery or radiotherapy",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures the patient is eligible for treatment and has a specific condition.",
-        "competing_risk": false
-      },
-      {
-        "text": "For RMC-4630 + Cobimetinib only - Participants must have one of the following genotypic aberrations: KRAS mutations and amplifications, BRAF Class 3 mutations, or NF1 LOF mutations",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures the patient is eligible for treatment based on specific genetic markers.",
-        "competing_risk": false
-      },
-      {
-        "text": "For RMC-4630 + Osimertinib only - Evidence of radiological documentation of progression with osimertinib monotherapy or an osimertinib containing regimen. Participants should not be considered a current candidate for 1st generation EGFR TKI's by the investigator.",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures the patient is eligible for treatment based on specific progression criteria.",
-        "competing_risk": false
-      },
-      {
-        "text": "Eastern Cooperative Oncology Group (ECOG) performance status of \u22641",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient has a certain level of health and is able to participate in the trial.",
-        "competing_risk": false
-      },
-      {
-        "text": "Adequate hematological, hepatic, and renal function",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures the patient's ability to tolerate treatment and comply with protocol requirements.",
-        "competing_risk": false
-      },
-      {
-        "text": "Capable of giving signed informed consent form (ICF). Willing and able to compile with study requirements and restrictions",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures the patient is capable of understanding and consenting to the trial.",
-        "competing_risk": false
-      },
-      {
-        "text": "Life expectancy >12 weeks",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient has a sufficient life expectancy for participation in the trial.",
-        "competing_risk": false
-      },
-      {
-        "text": "Female of childbearing potential and males with partners of childbearing potential must comply with effective contraception criteria.",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient is not pregnant or breastfeeding.",
-        "competing_risk": false
-      },
-      {
-        "text": "Primary central nervous system (CNS) tumors.",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient has a specific condition that may impact treatment response.",
-        "competing_risk": true
-      },
-      {
-        "text": "Known or suspected leptomeningeal or brain metastases or spinal cord compression.",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient is not at risk of complications from these conditions.",
-        "competing_risk": false
-      },
-      {
-        "text": "For RMC-4630 + osimertinib arm only - Known or suspected Small cell, squamous, or pleomorphic lung transformations",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient is not at risk of complications from these conditions.",
-        "competing_risk": false
-      },
-      {
-        "text": "Clinically significant cardiac disease",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient has a specific condition that may impact treatment response.",
-        "competing_risk": false
-      },
-      {
-        "text": "Active, clinically signi\ufb01cant interstitial lung disease or pneumonitis",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient is not at risk of complications from these conditions.",
-        "competing_risk": false
-      },
-      {
-        "text": "History or current evidence of retinal pigment epithelial detachment (RPED), central serous retinopathy, retinal vein occlusion, or predisposing factors to RPED or RVO",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient is not at risk of complications from these conditions.",
-        "competing_risk": false
-      },
-      {
-        "text": "Known HIV infection or active/chronic hepatitis B or C infection.",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient is not at risk of complications from these infections.",
-        "competing_risk": true
-      },
-      {
-        "text": "Any other unstable or clinically signi\ufb01cant concurrent medical condition that would, in the opinion of the investigator, jeopardize the safety of a participant, impact their expected survival through the end of the study participation, and/or impact their ability to comply with the protocol prior/concomitant therapy",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient is not at risk of complications from these conditions.",
-        "competing_risk": false
-      },
-      {
-        "text": "Females who are pregnant or breastfeeding",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient is not at risk of complications from pregnancy or breastfeeding.",
-        "competing_risk": false
-      }
-    ],
     "summary": {
-      "Feasibility": 3,
-      "Safety": 13,
+      "Feasibility": 5,
+      "Safety": 11,
       "Statistical Power": 3
-    }
+    },
+    "drug": "RMC-4630 + Cobimetinib"
   },
   "NCT05054725": {
     "nct_id": "NCT05054725",
     "title": "Combination Study of RMC-4630 and Sotorasib for NSCLC Subjects With KRASG12C Mutation After Failure of Prior Standard Therapies",
     "phase": "PHASE2",
-    "drug": "RMC-4630 + Sotorasib (SHP2+KRAS G12C) - Phase 2",
-    "trial_design": {
-      "design_type": "Adaptive Design",
-      "control_type": "None (Single-Arm)",
-      "superiority_type": "Unclear"
-    },
-    "trial_integrity": {
-      "masking_level": "Open-label",
-      "blinding_validation_method": "Not specified",
-      "concomitant_therapy_controls": "Standardized background care"
-    },
-    "randomization": {
-      "randomization_type": "Not described",
-      "allocation_ratio": "1:1",
-      "stratification_factors": [
-        "Center",
-        "Age"
-      ],
-      "randomization_description": "Stratified by Center, Age. "
+    "eligibility": [
+      {
+        "text": "Subject must be \u226518 years of age.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures the trial can recruit participants within a specific age range, which is important for feasibility.",
+        "competing_risk": false
+      },
+      {
+        "text": "Subject must have pathologically documented, locally advanced or metastatic KRASG12C NSCLC (not amenable to curative surgery) that has progressed on prior standard therapies (no more than 3 prior lines of therapies are allowed)",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the study population is homogeneous and likely to show a treatment effect.",
+        "competing_risk": false
+      },
+      {
+        "text": "Exclusion Criteria",
+        "reasoning_category": "Safety",
+        "justification": "This criterion serves as an exclusion criteria, not directly related to statistical power or feasibility.",
+        "competing_risk": false
+      },
+      {
+        "text": "Primary central nervous system (CNS) tumors",
+        "reasoning_category": "Safety",
+        "justification": "This criterion protects patients from potential harm by excluding those with CNS tumors.",
+        "competing_risk": true
+      },
+      {
+        "text": "Known or suspected leptomeningeal or brain metastases or spinal cord compression",
+        "reasoning_category": "Safety",
+        "justification": "This criterion prioritizes patient safety by excluding individuals at risk of complications from these conditions.",
+        "competing_risk": false
+      },
+      {
+        "text": "Clinically significant cardiac disease",
+        "reasoning_category": "Safety",
+        "justification": "This criterion protects patients from potential harm by excluding those with pre-existing cardiac issues.",
+        "competing_risk": false
+      },
+      {
+        "text": "Known impairment of GI function that would alter the absorption",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures patient compliance and data quality, as it may impact treatment efficacy.",
+        "competing_risk": false
+      },
+      {
+        "text": "Active autoimmune disease requiring systemic treatment within past 2 years",
+        "reasoning_category": "Safety",
+        "justification": "This criterion protects patients from potential harm by excluding those with active autoimmune diseases that could interfere with treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "History of severe allergic reactions to any of the study intervention components",
+        "reasoning_category": "Safety",
+        "justification": "This criterion prioritizes patient safety by excluding individuals with a history of severe allergic reactions to potential study interventions.",
+        "competing_risk": false
+      },
+      {
+        "text": "Major surgical procedures within 28 days or non-study-related minor procedures within 7 days of treatment.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures patient safety and data quality by excluding individuals who may experience complications from surgery or other medical interventions.",
+        "competing_risk": false
+      },
+      {
+        "text": "Prior therapy with KRASG12C inhibitor and/or SHP2 inhibitor",
+        "reasoning_category": "Safety",
+        "justification": "This criterion prioritizes patient safety by excluding individuals who have received prior treatment with KRASG12C inhibitors or SHP2 inhibitors.",
+        "competing_risk": false
+      }
+    ],
+    "criteria_metadata": {
+      "total_parsed": 11,
+      "classified": 11,
+      "batches": 1,
+      "batch_size": 20
     },
     "population": {
       "sex": "ALL",
@@ -527,13 +595,16 @@
       "estimated_n_per_arm": 23,
       "num_arms": 2,
       "primary_endpoint_type": "Dichotomous (Proportion)",
-      "estimated_control_event_rate": 0.1,
+      "estimated_control_event_rate": 0.3,
+      "indication_params_used": {
+        "control_rate_dichotomous": 0.3
+      },
       "power_analysis": {
         "alpha": 0.05,
         "power_target": 0.8,
         "test_type": "Two-sided",
-        "detectable_absolute_difference": 0.38,
-        "estimated_power_for_20pct_improvement": 0.396,
+        "detectable_absolute_difference": 0.42,
+        "estimated_power_for_20pct_improvement": 0.282,
         "assessment": "Severely Underpowered"
       }
     },
@@ -605,6 +676,26 @@
         "is_primary": false
       }
     ],
+    "trial_integrity": {
+      "masking_level": "Open-label",
+      "blinding_validation_method": "Not specified",
+      "concomitant_therapy_controls": "Standardized background care"
+    },
+    "trial_design": {
+      "design_type": "Adaptive Design",
+      "control_type": "None (Single-Arm)",
+      "superiority_type": "Unclear"
+    },
+    "indication": "nsclc",
+    "randomization": {
+      "randomization_type": "Not described",
+      "allocation_ratio": "1:1",
+      "stratification_factors": [
+        "Center",
+        "Age"
+      ],
+      "randomization_description": "Stratified by Center, Age. "
+    },
     "adaptive_designs": {
       "has_adaptive_features": false,
       "adaptive_types": [],
@@ -618,111 +709,97 @@
       "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
       "ae_types_detected": [],
       "class_effects_known": [
-        "AST elevation",
-        "ALT elevation"
+        "ALT elevation",
+        "AST elevation"
       ],
       "safety_endpoints": [],
       "sae_stopping_rules": "Not specified in protocol text",
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
-    "eligibility": [
-      {
-        "text": "Subject must be \u226518 years of age.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures eligibility for participation is within a legal and ethical framework.",
-        "competing_risk": false
-      },
-      {
-        "text": "Subject must have pathologically documented, locally advanced or metastatic KRASG12C NSCLC (not amenable to curative surgery) that has progressed on prior standard therapies (no more than 3 prior lines of therapies are allowed)",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures the study population is representative of a specific patient group with a defined disease progression and treatment history.",
-        "competing_risk": false
-      },
-      {
-        "text": "Exclusion Criteria",
-        "reasoning_category": "Safety",
-        "justification": "The inclusion criteria are not explicitly stated, but this text indicates that the study will exclude patients based on specific criteria. This is a safety measure to ensure patient well-being.",
-        "competing_risk": false
-      },
-      {
-        "text": "Primary central nervous system (CNS) tumors",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with CNS tumors, which could pose significant risks and complications. This is a safety measure to protect the patient.",
-        "competing_risk": true
-      },
-      {
-        "text": "Known or suspected leptomeningeal or brain metastases or spinal cord compression",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with known or suspected leptomeningeal or brain metastases or spinal cord compression, which could pose significant risks and complications. This is a safety measure to protect the patient.",
-        "competing_risk": false
-      },
-      {
-        "text": "Clinically significant cardiac disease",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with clinically significant cardiac disease, which could pose significant risks and complications. This is a safety measure to protect the patient.",
-        "competing_risk": false
-      },
-      {
-        "text": "Known impairment of GI function that would alter the absorption",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures patients have adequate digestive function, which is crucial for drug absorption. This is a feasibility measure to ensure data quality.",
-        "competing_risk": false
-      },
-      {
-        "text": "Active autoimmune disease requiring systemic treatment within past 2 years",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with active autoimmune diseases, which could pose significant risks and complications. This is a safety measure to protect the patient.",
-        "competing_risk": false
-      },
-      {
-        "text": "History of severe allergic reactions to any of the study intervention components",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with a history of severe allergic reactions, which could pose significant risks and complications. This is a safety measure to protect the patient.",
-        "competing_risk": false
-      },
-      {
-        "text": "Major surgical procedures within 28 days or non-study-related minor procedures within 7 days of treatment.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures patients have sufficient recovery time before starting the study. This is a feasibility measure to ensure data quality.",
-        "competing_risk": false
-      },
-      {
-        "text": "Prior therapy with KRASG12C inhibitor and/or SHP2 inhibitor",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients who have received prior treatment with KRASG12C inhibitors or SHP2 inhibitors, which could pose significant risks and complications. This is a safety measure to protect the patient.",
-        "competing_risk": false
-      }
-    ],
     "summary": {
       "Feasibility": 3,
       "Statistical Power": 1,
       "Safety": 7
-    }
+    },
+    "drug": "RMC-4630 + Sotorasib"
   },
   "NCT05462717": {
     "nct_id": "NCT05462717",
     "title": "Dose Escalation and Dose Expansion Study of RMC-6291 Monotherapy in Subjects With Advanced KRASG12C Mutant Solid Tumors",
     "phase": "PHASE1",
-    "drug": "RMC-6291 monotherapy (KRAS G12D) - Phase 1",
-    "trial_design": {
-      "design_type": "Single-Arm",
-      "control_type": "None (Single-Arm)",
-      "superiority_type": "Unclear"
-    },
-    "trial_integrity": {
-      "masking_level": "Open-label",
-      "blinding_validation_method": "Not specified",
-      "concomitant_therapy_controls": "Standardized background care"
-    },
-    "randomization": {
-      "randomization_type": "Not described",
-      "allocation_ratio": "1:1",
-      "stratification_factors": [
-        "Center",
-        "Prior Treatment",
-        "Age"
-      ],
-      "randomization_description": "Stratified by Center, Prior Treatment, Age. "
+    "eligibility": [
+      {
+        "text": "Subject must be \u226518 years of age.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures the trial can recruit participants within a specific age range.",
+        "competing_risk": false
+      },
+      {
+        "text": "Subject must have pathologically documented, locally advanced or metastatic KRASG12C-mutated solid tumor malignancy (not amenable to curative surgery) that has previously been treated with standard-of-care therapies for respective tumor types, is intolerant to, or is considered ineligible for standard-of-care anticancer treatments.",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the study population is representative of a specific patient group likely to respond to treatment.",
+        "competing_risk": true
+      },
+      {
+        "text": "ECOG performance status 0 or 1",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures patients are able to tolerate and participate in the trial.",
+        "competing_risk": false
+      },
+      {
+        "text": "Prior treatment with a KRASG12C (OFF) inhibitor allowed for dose escalation and for NSCLC in dose expansion",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the study population is representative of patients who have previously received standard-of-care treatments.",
+        "competing_risk": false
+      },
+      {
+        "text": "Adequate organ function",
+        "reasoning_category": "Safety",
+        "justification": "This criterion protects patients from potential harm by ensuring they are healthy enough to participate in the trial.",
+        "competing_risk": false
+      },
+      {
+        "text": "Primary central nervous system (CNS) tumors",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion limits the study population to a specific group of patients, potentially impacting recruitment and data quality.",
+        "competing_risk": true
+      },
+      {
+        "text": "Active brain metastases",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures patient safety by excluding those with active brain lesions that could be affected by the treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Known impairment of GI function that would alter the absorption",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from the treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Major surgical procedures within 28 days or non-study-related minor procedures within 7 days of treatment.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from the treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Prior therapy with KRASG12C (ON) inhibitor",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures patient safety by excluding those who have previously received a KRASG12C inhibitor, which could potentially interact with the study treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Other inclusion/exclusion criteria may apply.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion allows for flexibility in the trial design and ensures that all necessary criteria are met to ensure patient safety and data quality.",
+        "competing_risk": false
+      }
+    ],
+    "criteria_metadata": {
+      "total_parsed": 11,
+      "classified": 11,
+      "batches": 1,
+      "batch_size": 20
     },
     "population": {
       "sex": "ALL",
@@ -826,6 +903,27 @@
         "is_primary": false
       }
     ],
+    "trial_integrity": {
+      "masking_level": "Open-label",
+      "blinding_validation_method": "Not specified",
+      "concomitant_therapy_controls": "Standardized background care"
+    },
+    "trial_design": {
+      "design_type": "Single-Arm",
+      "control_type": "None (Single-Arm)",
+      "superiority_type": "Unclear"
+    },
+    "indication": "solid_tumor",
+    "randomization": {
+      "randomization_type": "Not described",
+      "allocation_ratio": "1:1",
+      "stratification_factors": [
+        "Center",
+        "Prior Treatment",
+        "Age"
+      ],
+      "randomization_description": "Stratified by Center, Prior Treatment, Age. "
+    },
     "adaptive_designs": {
       "has_adaptive_features": true,
       "adaptive_types": [
@@ -841,110 +939,85 @@
       "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
       "ae_types_detected": [],
       "class_effects_known": [
-        "AST elevation",
-        "ALT elevation"
+        "ALT elevation",
+        "AST elevation"
       ],
       "safety_endpoints": [],
       "sae_stopping_rules": "Not specified in protocol text",
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
-    "eligibility": [
-      {
-        "text": "Subject must be \u226518 years of age.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures the trial is conducted with a population that can legally participate.",
-        "competing_risk": false
-      },
-      {
-        "text": "Subject must have pathologically documented, locally advanced or metastatic KRASG12C-mutated solid tumor malignancy (not amenable to curative surgery) that has previously been treated with standard-of-care therapies for respective tumor types, is intolerant to, or is considered ineligible for standard-of-care anticancer treatments.",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures the study population is representative of a specific patient group likely to respond to treatment.",
-        "competing_risk": true
-      },
-      {
-        "text": "ECOG performance status 0 or 1",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients are able to tolerate and participate in the trial.",
-        "competing_risk": false
-      },
-      {
-        "text": "Prior treatment with a KRASG12C (OFF) inhibitor allowed for dose escalation and for NSCLC in dose expansion",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures patients have received prior treatment, allowing for comparison of the new treatment to previous therapies.",
-        "competing_risk": false
-      },
-      {
-        "text": "Adequate organ function",
-        "reasoning_category": "Safety",
-        "justification": "This criterion protects patients from potential harm by ensuring they can tolerate the study's interventions.",
-        "competing_risk": false
-      },
-      {
-        "text": "Primary central nervous system (CNS) tumors",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion limits the trial to a specific patient population, potentially impacting recruitment and data quality.",
-        "competing_risk": true
-      },
-      {
-        "text": "Active brain metastases",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients are not at risk of complications from the study's interventions.",
-        "competing_risk": false
-      },
-      {
-        "text": "Known impairment of GI function that would alter the absorption",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion limits the trial to a specific patient population, potentially impacting recruitment and data quality.",
-        "competing_risk": false
-      },
-      {
-        "text": "Major surgical procedures within 28 days or non-study-related minor procedures within 7 days of treatment.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures patients are not at risk of complications from the study's interventions.",
-        "competing_risk": false
-      },
-      {
-        "text": "Prior therapy with KRASG12C (ON) inhibitor",
-        "reasoning_category": "Safety",
-        "justification": "This criterion protects patients from potential harm by ensuring they are not already receiving treatment that could interact with the study's interventions.",
-        "competing_risk": false
-      },
-      {
-        "text": "Other inclusion/exclusion criteria may apply.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion allows for flexibility in patient selection, potentially impacting recruitment and data quality.",
-        "competing_risk": false
-      }
-    ],
     "summary": {
       "Feasibility": 5,
       "Statistical Power": 2,
       "Safety": 4
-    }
+    },
+    "drug": "RMC-6291"
   },
   "NCT06040541": {
     "nct_id": "NCT06040541",
     "title": "Study of RMC-9805 in Participants With KRAS G12D-Mutant Solid Tumors",
     "phase": "PHASE1",
-    "drug": "RMC-9805 (KRAS G12D) - Phase 1",
-    "trial_design": {
-      "design_type": "Single-Arm",
-      "control_type": "None (Single-Arm)",
-      "superiority_type": "Unclear"
-    },
-    "trial_integrity": {
-      "masking_level": "Open-label",
-      "blinding_validation_method": "Not specified",
-      "concomitant_therapy_controls": "Standardized background care"
-    },
-    "randomization": {
-      "randomization_type": "Not described",
-      "allocation_ratio": "1:1",
-      "stratification_factors": [
-        "Center",
-        "Age"
-      ],
-      "randomization_description": "Stratified by Center, Age. "
+    "eligibility": [
+      {
+        "text": "Pathologically documented, locally advanced or metastatic solid tumor with a KRAS G12D-mutation",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion is designed to select patients who are likely to benefit from the intervention by targeting a specific genetic mutation.",
+        "competing_risk": true
+      },
+      {
+        "text": "Received and progressed or been intolerant to prior standard therapy (including targeted therapy) appropriate for tumor type and stage",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures the patient has received previous treatment, which may impact their ability to tolerate the intervention.",
+        "competing_risk": true
+      },
+      {
+        "text": "ECOG performance status 0 or 1",
+        "reasoning_category": "Safety",
+        "justification": "This criterion helps ensure patients are able to participate in the trial and adhere to treatment plans.",
+        "competing_risk": false
+      },
+      {
+        "text": "Adequate organ function",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures the patient's health allows them to tolerate the intervention and its potential side effects.",
+        "competing_risk": false
+      },
+      {
+        "text": "Primary central nervous system (CNS) tumors",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion helps ensure patients are selected for a specific population that may benefit from the intervention.",
+        "competing_risk": true
+      },
+      {
+        "text": "Known or suspected leptomeningeal or active brain metastases or spinal cord compression",
+        "reasoning_category": "Safety",
+        "justification": "This criterion excludes patients who might experience complications due to their condition, ensuring safety.",
+        "competing_risk": false
+      },
+      {
+        "text": "Known or suspected impairment of gastrointestinal function that may prohibit ability to swallow or absorb an oral medication",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures the patient's digestive system can handle the intervention.",
+        "competing_risk": false
+      },
+      {
+        "text": "Participant was previously treated with an investigational KRAS G12D inhibitor, pan- or multi-RAS inhibitor, or had prior therapy with any direct RAS-targeted therapy (eg, degraders and inhibitors)",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures the patient has not already received a similar treatment that may interfere with the intervention's effectiveness.",
+        "competing_risk": false
+      },
+      {
+        "text": "Other inclusion/exclusion criteria may apply.",
+        "reasoning_category": "Feasibility",
+        "justification": "This is a general statement, and its specific meaning depends on the context of the trial. It could be related to feasibility or safety.",
+        "competing_risk": false
+      }
+    ],
+    "criteria_metadata": {
+      "total_parsed": 9,
+      "classified": 9,
+      "batches": 1,
+      "batch_size": 20
     },
     "population": {
       "sex": "ALL",
@@ -1048,6 +1121,26 @@
         "is_primary": false
       }
     ],
+    "trial_integrity": {
+      "masking_level": "Open-label",
+      "blinding_validation_method": "Not specified",
+      "concomitant_therapy_controls": "Standardized background care"
+    },
+    "trial_design": {
+      "design_type": "Single-Arm",
+      "control_type": "None (Single-Arm)",
+      "superiority_type": "Unclear"
+    },
+    "indication": "solid_tumor",
+    "randomization": {
+      "randomization_type": "Not described",
+      "allocation_ratio": "1:1",
+      "stratification_factors": [
+        "Center",
+        "Age"
+      ],
+      "randomization_description": "Stratified by Center, Age. "
+    },
     "adaptive_designs": {
       "has_adaptive_features": true,
       "adaptive_types": [
@@ -1069,91 +1162,96 @@
       "sae_stopping_rules": "Not specified in protocol text",
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
-    "eligibility": [
-      {
-        "text": "Pathologically documented, locally advanced or metastatic solid tumor with a KRAS G12D-mutation",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion is designed to select patients who are likely to benefit from the intervention by targeting a specific genetic mutation.",
-        "competing_risk": true
-      },
-      {
-        "text": "Received and progressed or been intolerant to prior standard therapy (including targeted therapy) appropriate for tumor type and stage",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures that patients have received previous treatment options, which may impact their ability to tolerate the study drug.",
-        "competing_risk": true
-      },
-      {
-        "text": "ECOG performance status 0 or 1",
-        "reasoning_category": "Safety",
-        "justification": "This criterion assesses the patient's physical and mental capacity to participate in the trial, ensuring their safety during treatment.",
-        "competing_risk": false
-      },
-      {
-        "text": "Adequate organ function",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures that patients have sufficient organ function to tolerate the study drug and its potential side effects.",
-        "competing_risk": false
-      },
-      {
-        "text": "Primary central nervous system (CNS) tumors",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion is likely to be included in a trial aiming to assess the efficacy of treatment for CNS tumors, as it helps identify patients who are more likely to respond to the intervention.",
-        "competing_risk": true
-      },
-      {
-        "text": "Known or suspected leptomeningeal or active brain metastases or spinal cord compression",
-        "reasoning_category": "Safety",
-        "justification": "This criterion is designed to exclude patients with conditions that could be exacerbated by treatment, ensuring their safety.",
-        "competing_risk": false
-      },
-      {
-        "text": "Known or suspected impairment of gastrointestinal function that may prohibit ability to swallow or absorb an oral medication",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures the patient's ability to tolerate the study drug, which is essential for successful treatment.",
-        "competing_risk": false
-      },
-      {
-        "text": "Participant was previously treated with an investigational KRAS G12D inhibitor, pan- or multi-RAS inhibitor, or had prior therapy with any direct RAS-targeted therapy (eg, degraders and inhibitors)",
-        "reasoning_category": "Safety",
-        "justification": "This criterion aims to exclude patients who have already experienced adverse effects from similar treatments.",
-        "competing_risk": false
-      },
-      {
-        "text": "Other inclusion/exclusion criteria may apply.",
-        "reasoning_category": "Feasibility",
-        "justification": "This is a general statement that could encompass various factors related to the study's design and objectives, including feasibility considerations.",
-        "competing_risk": false
-      }
-    ],
     "summary": {
       "Statistical Power": 2,
       "Feasibility": 4,
       "Safety": 3
-    }
+    },
+    "drug": "RMC-9805"
   },
   "NCT07349537": {
     "nct_id": "NCT07349537",
     "title": "Study of RMC-5127 in Patients With Advanced KRAS G12V-Mutant Solid Tumors",
     "phase": "PHASE1",
-    "drug": "RMC-5127 (KRAS G12V) - Phase 1",
-    "trial_design": {
-      "design_type": "Single-Arm",
-      "control_type": "None (Single-Arm)",
-      "superiority_type": "Unclear"
-    },
-    "trial_integrity": {
-      "masking_level": "Open-label",
-      "blinding_validation_method": "Not specified",
-      "concomitant_therapy_controls": "Standardized background care"
-    },
-    "randomization": {
-      "randomization_type": "Not described",
-      "allocation_ratio": "1:1:1",
-      "stratification_factors": [
-        "Center",
-        "Age"
-      ],
-      "randomization_description": "Stratified by Center, Age. "
+    "eligibility": [
+      {
+        "text": "At least 18 years old and has provided informed consent.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures compliance with legal requirements for clinical trials involving human subjects.",
+        "competing_risk": false
+      },
+      {
+        "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1.",
+        "reasoning_category": "Safety",
+        "justification": "This criterion limits the trial to patients who are able to tolerate treatment and participate in the study.",
+        "competing_risk": false
+      },
+      {
+        "text": "Pathologically documented, locally advanced or metastatic KRAS G12V-mutated solid tumor malignancy.",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures that patients are selected for a specific disease group and allows for comparison of treatment effects.",
+        "competing_risk": true
+      },
+      {
+        "text": "Received and progressed or been intolerant to prior standard therapy (including targeted therapy) appropriate for tumor type and stage.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures that patients have a history of treatment failure, which may affect their ability to tolerate the study drug.",
+        "competing_risk": true
+      },
+      {
+        "text": "Measurable per RECIST v1.1",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures that patients are selected for a specific disease group and allows for comparison of treatment effects.",
+        "competing_risk": false
+      },
+      {
+        "text": "Adequate organ function (bone marrow, liver, kidney, coagulation). ",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures that patients are healthy enough to tolerate the study drug and its potential side effects.",
+        "competing_risk": false
+      },
+      {
+        "text": "Able to take oral medications.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures that patients can receive the study drug as prescribed.",
+        "competing_risk": false
+      },
+      {
+        "text": "Primary central nervous system (CNS) tumors",
+        "reasoning_category": "Safety",
+        "justification": "This criterion limits the trial to patients with specific types of cancer, ensuring their safety and suitability for treatment.",
+        "competing_risk": true
+      },
+      {
+        "text": "Prior therapy with KRAS G12V inhibitor or direct RAS-targeted therapy (eg. degraders and/or inhibitors).",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures that patients have a history of treatment failure, which may affect their ability to tolerate the study drug.",
+        "competing_risk": false
+      },
+      {
+        "text": "Any conditions that may affect the ability to take or absorb study drug.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures that patients are healthy enough to receive the study drug and its potential side effects.",
+        "competing_risk": false
+      },
+      {
+        "text": "Major surgery within 28 days prior to receiving study drug(s).",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures that patients have recovered sufficiently from previous surgeries, which may affect their ability to participate in the study.",
+        "competing_risk": false
+      },
+      {
+        "text": "Patient is unable or unwilling to comply with protocol-required study visits or procedures.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures that patients are able to adhere to the study's requirements and participate in its protocols.",
+        "competing_risk": false
+      }
+    ],
+    "criteria_metadata": {
+      "total_parsed": 12,
+      "classified": 12,
+      "batches": 1,
+      "batch_size": 20
     },
     "population": {
       "sex": "ALL",
@@ -1257,6 +1355,26 @@
         "is_primary": false
       }
     ],
+    "trial_integrity": {
+      "masking_level": "Open-label",
+      "blinding_validation_method": "Not specified",
+      "concomitant_therapy_controls": "Standardized background care"
+    },
+    "trial_design": {
+      "design_type": "Single-Arm",
+      "control_type": "None (Single-Arm)",
+      "superiority_type": "Unclear"
+    },
+    "indication": "solid_tumor",
+    "randomization": {
+      "randomization_type": "Not described",
+      "allocation_ratio": "1:1:1",
+      "stratification_factors": [
+        "Center",
+        "Age"
+      ],
+      "randomization_description": "Stratified by Center, Age. "
+    },
     "adaptive_designs": {
       "has_adaptive_features": true,
       "adaptive_types": [
@@ -1278,109 +1396,78 @@
       "sae_stopping_rules": "Not specified in protocol text",
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
-    "eligibility": [
-      {
-        "text": "At least 18 years old and has provided informed consent.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures compliance with legal requirements for clinical trials involving human subjects.",
-        "competing_risk": false
-      },
-      {
-        "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1.",
-        "reasoning_category": "Safety",
-        "justification": "This criterion helps ensure the patient's ability to tolerate treatment and participate in the trial.",
-        "competing_risk": false
-      },
-      {
-        "text": "Pathologically documented, locally advanced or metastatic KRAS G12V-mutated solid tumor malignancy.",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures that the study population is homogeneous and allows for a meaningful comparison of treatment effects.",
-        "competing_risk": true
-      },
-      {
-        "text": "Received and progressed or been intolerant to prior standard therapy (including targeted therapy) appropriate for tumor type and stage.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures that the patient has a history of treatment failure, which may impact their ability to tolerate study drug.",
-        "competing_risk": true
-      },
-      {
-        "text": "Measurable per RECIST v1.1",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion helps ensure that the study population is homogeneous and allows for a meaningful comparison of treatment effects.",
-        "competing_risk": false
-      },
-      {
-        "text": "Adequate organ function (bone marrow, liver, kidney, coagulation). ",
-        "reasoning_category": "Safety",
-        "justification": "This criterion helps ensure that the patient's body can tolerate the study drug and its potential side effects.",
-        "competing_risk": false
-      },
-      {
-        "text": "Able to take oral medications.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures that the patient is able to swallow the study drug, which may be a requirement for some drugs.",
-        "competing_risk": false
-      },
-      {
-        "text": "Primary central nervous system (CNS) tumors",
-        "reasoning_category": "Safety",
-        "justification": "This criterion helps ensure that the patient's brain is healthy enough to tolerate study drug and its potential side effects.",
-        "competing_risk": true
-      },
-      {
-        "text": "Prior therapy with KRAS G12V inhibitor or direct RAS-targeted therapy (eg. degraders and/or inhibitors).",
-        "reasoning_category": "Safety",
-        "justification": "This criterion helps ensure that the patient has a history of treatment failure, which may impact their ability to tolerate study drug.",
-        "competing_risk": false
-      },
-      {
-        "text": "Any conditions that may affect the ability to take or absorb study drug.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion helps ensure that the patient's body can tolerate the study drug and its potential side effects.",
-        "competing_risk": false
-      },
-      {
-        "text": "Major surgery within 28 days prior to receiving study drug(s).",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion helps ensure that the patient's body is fully recovered from previous surgery, which may impact their ability to tolerate study drug.",
-        "competing_risk": false
-      },
-      {
-        "text": "Patient is unable or unwilling to comply with protocol-required study visits or procedures.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion helps ensure that the patient can follow the study's protocols and adhere to its requirements.",
-        "competing_risk": false
-      }
-    ],
     "summary": {
       "Feasibility": 6,
       "Safety": 4,
       "Statistical Power": 2
-    }
+    },
+    "drug": "RMC-5127"
   },
   "NCT05379985": {
     "nct_id": "NCT05379985",
     "title": "Study of RMC-6236 in Patients With Advanced Solid Tumors Harboring Specific Mutations in RAS",
     "phase": "PHASE1",
-    "drug": "RMC-6236 daraxonrasib (RAS multi) - Phase 1/2",
-    "trial_design": {
-      "design_type": "Single-Arm",
-      "control_type": "None (Single-Arm)",
-      "superiority_type": "Unclear"
-    },
-    "trial_integrity": {
-      "masking_level": "Open-label",
-      "blinding_validation_method": "Not specified",
-      "concomitant_therapy_controls": "Standardized background care"
-    },
-    "randomization": {
-      "randomization_type": "Not described",
-      "allocation_ratio": "1:1",
-      "stratification_factors": [
-        "Center",
-        "Age"
-      ],
-      "randomization_description": "Stratified by Center, Age. "
+    "eligibility": [
+      {
+        "text": "Histologically confirmed advanced solid tumor with specific KRAS G12 mutations (dose escalation) or RAS mutations (dose optimization/expansion) identified through deoxyribonucleic acid (DNA) sequencing. PDAC with wild-type RAS (expansion).",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the study population is representative of a specific group for which treatment efficacy is being assessed.",
+        "competing_risk": true
+      },
+      {
+        "text": "Treatment naive or have received prior standard therapy appropriate for tumor type and stage",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the study population is comparable to historical controls, maximizing the likelihood of detecting a treatment effect.",
+        "competing_risk": true
+      },
+      {
+        "text": "Have Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures participants can tolerate the study's demands, promoting data quality and compliance.",
+        "competing_risk": false
+      },
+      {
+        "text": "Adequate organ function",
+        "reasoning_category": "Safety",
+        "justification": "This criterion protects patients from potential harm by ensuring they have sufficient physiological capacity to handle treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Primary central nervous system (CNS) tumors",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the study population is representative of a specific group for which treatment efficacy is being assessed.",
+        "competing_risk": true
+      },
+      {
+        "text": "Active, untreated brain metastases",
+        "reasoning_category": "Safety",
+        "justification": "This criterion protects patients from potential harm by ensuring they are not already experiencing neurological complications that could be exacerbated by the study treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Known or suspected impairment of gastrointestinal function that may prohibit ability to swallow or absorb an oral medication",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures participants can tolerate the study's demands, promoting data quality and compliance.",
+        "competing_risk": false
+      },
+      {
+        "text": "History of any other unstable or clinically significant concurrent medical condition that would, in the opinion of the investigator, jeopardize the safety of a participant, impact their expected survival through the end of the study participation, and/or impact their ability to comply with the protocol prior/concomitant therapy",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures participants are not at increased risk for complications or adverse events related to the study treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Other inclusion/exclusion criteria may apply.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion acknowledges that additional factors might influence participant eligibility and data quality, requiring further assessment.",
+        "competing_risk": false
+      }
+    ],
+    "criteria_metadata": {
+      "total_parsed": 9,
+      "classified": 9,
+      "batches": 1,
+      "batch_size": 20
     },
     "population": {
       "sex": "ALL",
@@ -1484,6 +1571,26 @@
         "is_primary": false
       }
     ],
+    "trial_integrity": {
+      "masking_level": "Open-label",
+      "blinding_validation_method": "Not specified",
+      "concomitant_therapy_controls": "Standardized background care"
+    },
+    "trial_design": {
+      "design_type": "Single-Arm",
+      "control_type": "None (Single-Arm)",
+      "superiority_type": "Unclear"
+    },
+    "indication": "solid_tumor",
+    "randomization": {
+      "randomization_type": "Not described",
+      "allocation_ratio": "1:1",
+      "stratification_factors": [
+        "Center",
+        "Age"
+      ],
+      "randomization_description": "Stratified by Center, Age. "
+    },
     "adaptive_designs": {
       "has_adaptive_features": true,
       "adaptive_types": [
@@ -1505,91 +1612,96 @@
       "sae_stopping_rules": "Not specified in protocol text",
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
-    "eligibility": [
-      {
-        "text": "Histologically confirmed advanced solid tumor with specific KRAS G12 mutations (dose escalation) or RAS mutations (dose optimization/expansion) identified through deoxyribonucleic acid (DNA) sequencing. PDAC with wild-type RAS (expansion).",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures the study population is representative of a specific patient group for which treatment efficacy is being evaluated.",
-        "competing_risk": true
-      },
-      {
-        "text": "Treatment naive or have received prior standard therapy appropriate for tumor type and stage",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures the study population is comparable to historical control groups, maximizing the likelihood of detecting treatment effects.",
-        "competing_risk": true
-      },
-      {
-        "text": "Have Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients are physically capable of participating in the study and undergoing treatment.",
-        "competing_risk": false
-      },
-      {
-        "text": "Adequate organ function",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures that participants have sufficient physiological capacity to tolerate the study's interventions and follow-up procedures.",
-        "competing_risk": false
-      },
-      {
-        "text": "Primary central nervous system (CNS) tumors",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion helps ensure a specific population for which treatment efficacy is being evaluated.",
-        "competing_risk": true
-      },
-      {
-        "text": "Active, untreated brain metastases",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures that participants are free of certain conditions that could pose risks to their health and participation in the study.",
-        "competing_risk": false
-      },
-      {
-        "text": "Known or suspected impairment of gastrointestinal function that may prohibit ability to swallow or absorb an oral medication",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures that participants can safely receive and tolerate the study's interventions.",
-        "competing_risk": false
-      },
-      {
-        "text": "History of any other unstable or clinically significant concurrent medical condition that would, in the opinion of the investigator, jeopardize the safety of a participant, impact their expected survival through the end of the study participation, and/or impact their ability to comply with the protocol prior/concomitant therapy",
-        "reasoning_category": "Safety",
-        "justification": "This criterion prioritizes patient safety by excluding individuals who may be at increased risk for adverse events or complications.",
-        "competing_risk": false
-      },
-      {
-        "text": "Other inclusion/exclusion criteria may apply.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion acknowledges that additional factors might influence the study's feasibility and participant selection.",
-        "competing_risk": false
-      }
-    ],
     "summary": {
       "Statistical Power": 3,
-      "Safety": 3,
-      "Feasibility": 3
-    }
+      "Feasibility": 3,
+      "Safety": 3
+    },
+    "drug": "RMC-6236 (RAS multi)"
   },
   "NCT06162221": {
     "nct_id": "NCT06162221",
     "title": "Study of RAS(ON) Inhibitors in Patients With Advanced RAS-mutated NSCLC",
     "phase": "PHASE1",
-    "drug": "RAS(ON) inhibitors NSCLC (RMC multi) - Phase 1/2",
-    "trial_design": {
-      "design_type": "Single-Arm",
-      "control_type": "None (Single-Arm)",
-      "superiority_type": "Unclear"
-    },
-    "trial_integrity": {
-      "masking_level": "Open-label",
-      "blinding_validation_method": "Not specified",
-      "concomitant_therapy_controls": "Standardized background care"
-    },
-    "randomization": {
-      "randomization_type": "Not described",
-      "allocation_ratio": "1:1:1:1",
-      "stratification_factors": [
-        "Center",
-        "Age"
-      ],
-      "randomization_description": "Stratified by Center, Age. "
+    "eligibility": [
+      {
+        "text": "\u2265 18 years of age",
+        "reasoning_category": "Feasibility",
+        "justification": "Age is a standard feasibility criterion for clinical trials.",
+        "competing_risk": false
+      },
+      {
+        "text": "ECOG PS is 0 to 1",
+        "reasoning_category": "Statistical Power",
+        "justification": "The ECOG performance status reflects the patient's ability to perform daily activities, which can impact treatment response and thus the study's statistical power.",
+        "competing_risk": false
+      },
+      {
+        "text": "Adequate organ function as outlined by the study",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures patients have sufficient organ function to tolerate the trial's interventions and procedures, which is crucial for data quality.",
+        "competing_risk": false
+      },
+      {
+        "text": "Received prior standard therapy appropriate for tumor type and stage",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures patients have received standard treatment before entering the trial to avoid confounding factors that could affect the study's results.",
+        "competing_risk": true
+      },
+      {
+        "text": "Must have pathologically documented, locally advanced or metastatic KRAS G12C-mutated solid tumor malignancy (not amenable to curative surgery)",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the study population is homogeneous and allows for a direct comparison of treatment effects.",
+        "competing_risk": true
+      },
+      {
+        "text": "Must have pathologically documented, locally advanced or metastatic RAS-mutated NSCLC (Subprotocol B)",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the study population is homogeneous and allows for a direct comparison of treatment effects.",
+        "competing_risk": false
+      },
+      {
+        "text": "Must have pathologically documented, locally advanced or metastatic RAS G12D-mutated NSCLC (Subprotocol C and Subprotocol D)",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the study population is homogeneous and allows for a direct comparison of treatment effects.",
+        "competing_risk": false
+      },
+      {
+        "text": "Primary central nervous system (CNS) tumors",
+        "reasoning_category": "Safety",
+        "justification": "This criterion prioritizes patient safety by excluding individuals with CNS tumors, which are known to be particularly sensitive to treatment and may pose a risk of complications.",
+        "competing_risk": true
+      },
+      {
+        "text": "Impaired gastrointestinal (GI) function that may significantly alter the absorption of RMC drugs",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures patients have adequate GI function to absorb the study drug, which is crucial for data quality and treatment efficacy.",
+        "competing_risk": false
+      },
+      {
+        "text": "Major surgery < 28 days of first dose",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures patients have sufficient recovery time after surgery before starting the trial, which is crucial for data quality and treatment efficacy.",
+        "competing_risk": false
+      },
+      {
+        "text": "Active or history of interstitial lung disease (ILD) or pneumonitis requiring steroids",
+        "reasoning_category": "Safety",
+        "justification": "This criterion prioritizes patient safety by excluding individuals with ILD or pneumonitis, which are known to be particularly sensitive to treatment and may pose a risk of complications.",
+        "competing_risk": false
+      },
+      {
+        "text": "Other inclusion/exclusion criteria may apply.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion acknowledges that additional criteria might be necessary for the study's success, which is crucial for data quality and treatment efficacy.",
+        "competing_risk": false
+      }
+    ],
+    "criteria_metadata": {
+      "total_parsed": 12,
+      "classified": 12,
+      "batches": 1,
+      "batch_size": 20
     },
     "population": {
       "sex": "ALL",
@@ -1669,6 +1781,26 @@
         "is_primary": false
       }
     ],
+    "trial_integrity": {
+      "masking_level": "Open-label",
+      "blinding_validation_method": "Not specified",
+      "concomitant_therapy_controls": "Standardized background care"
+    },
+    "trial_design": {
+      "design_type": "Single-Arm",
+      "control_type": "None (Single-Arm)",
+      "superiority_type": "Unclear"
+    },
+    "indication": "nsclc",
+    "randomization": {
+      "randomization_type": "Not described",
+      "allocation_ratio": "1:1:1:1",
+      "stratification_factors": [
+        "Center",
+        "Age"
+      ],
+      "randomization_description": "Stratified by Center, Age. "
+    },
     "adaptive_designs": {
       "has_adaptive_features": true,
       "adaptive_types": [
@@ -1691,109 +1823,78 @@
       "sae_stopping_rules": "Not specified in protocol text",
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
-    "eligibility": [
-      {
-        "text": "\u2265 18 years of age",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures eligibility for the trial is within a defined age range, which is a feasibility consideration.",
-        "competing_risk": false
-      },
-      {
-        "text": "ECOG PS is 0 to 1",
-        "reasoning_category": "Safety",
-        "justification": "This criterion reflects the patient's ability to tolerate treatment and manage their condition, aligning with safety considerations.",
-        "competing_risk": false
-      },
-      {
-        "text": "Adequate organ function as outlined by the study",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures patients have sufficient organ function for trial participation, impacting feasibility.",
-        "competing_risk": false
-      },
-      {
-        "text": "Received prior standard therapy appropriate for tumor type and stage",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures the patient has received standard treatment before entering the trial, which is a safety consideration.",
-        "competing_risk": true
-      },
-      {
-        "text": "Must have pathologically documented, locally advanced or metastatic KRAS G12C-mutated solid tumor malignancy (not amenable to curative surgery)",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures the patient's tumor type and stage are suitable for the trial, impacting statistical power.",
-        "competing_risk": true
-      },
-      {
-        "text": "Must have pathologically documented, locally advanced or metastatic RAS-mutated NSCLC",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures the patient's tumor type and stage are suitable for the trial, impacting statistical power.",
-        "competing_risk": false
-      },
-      {
-        "text": "Must have pathologically documented, locally advanced or metastatic RAS G12D-mutated NSCLC",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures the patient's tumor type and stage are suitable for the trial, impacting statistical power.",
-        "competing_risk": false
-      },
-      {
-        "text": "Primary central nervous system (CNS) tumors",
-        "reasoning_category": "Safety",
-        "justification": "This criterion reflects the potential impact of treatment on the CNS, aligning with safety considerations.",
-        "competing_risk": true
-      },
-      {
-        "text": "Impaired gastrointestinal (GI) function that may significantly alter the absorption of RMC drugs",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures patients have adequate GI function for drug absorption, impacting feasibility.",
-        "competing_risk": false
-      },
-      {
-        "text": "Major surgery < 28 days of first dose",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures sufficient time has passed since major surgery to minimize potential complications, impacting feasibility.",
-        "competing_risk": false
-      },
-      {
-        "text": "Active or history of interstitial lung disease (ILD) or pneumonitis requiring steroids",
-        "reasoning_category": "Safety",
-        "justification": "This criterion reflects the potential impact of treatment on the lungs, aligning with safety considerations.",
-        "competing_risk": false
-      },
-      {
-        "text": "Other inclusion/exclusion criteria may apply.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion acknowledges that additional criteria might be necessary for trial participation, impacting feasibility.",
-        "competing_risk": false
-      }
-    ],
     "summary": {
       "Feasibility": 5,
-      "Safety": 4,
-      "Statistical Power": 3
-    }
+      "Statistical Power": 4,
+      "Safety": 3
+    },
+    "drug": "RAS(ON) NSCLC"
   },
   "NCT06445062": {
     "nct_id": "NCT06445062",
     "title": "Study of RAS(ON) Inhibitors in Patients With Gastrointestinal Solid Tumors",
     "phase": "PHASE1",
-    "drug": "RAS(ON) inhibitors GI (RMC multi) - Phase 1/2",
-    "trial_design": {
-      "design_type": "Single-Arm",
-      "control_type": "None (Single-Arm)",
-      "superiority_type": "Unclear"
-    },
-    "trial_integrity": {
-      "masking_level": "Open-label",
-      "blinding_validation_method": "Not specified",
-      "concomitant_therapy_controls": "Standardized background care"
-    },
-    "randomization": {
-      "randomization_type": "Not described",
-      "allocation_ratio": "1:1:1:1:1:1",
-      "stratification_factors": [
-        "Center",
-        "Age"
-      ],
-      "randomization_description": "Stratified by Center, Age. "
+    "eligibility": [
+      {
+        "text": "\u2265 18 years of age",
+        "reasoning_category": "Feasibility",
+        "justification": "Age is a standard feasibility criterion for clinical trials.",
+        "competing_risk": false
+      },
+      {
+        "text": "ECOG PS is 0 to 1",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures patients are not too ill to participate in the trial, which protects them from harm.",
+        "competing_risk": false
+      },
+      {
+        "text": "Adequate organ function as outlined by the study",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion is a feasibility factor ensuring patients can tolerate the treatment and participate in the trial.",
+        "competing_risk": false
+      },
+      {
+        "text": "Pathologically or cytologically documented pancreatic carcinoma or poorly differentiated pancreatic carcinoma with metastatic disease or RAS-mutated, histologically or cytologically confirmed colorectal adenocarcinoma with documented unresectable or metastatic disease (Subprotocol A, B, and C)",
+        "reasoning_category": "Safety",
+        "justification": "This criterion is a safety criterion as it excludes patients with specific cancers.",
+        "competing_risk": false
+      },
+      {
+        "text": "Presence of RAS G12D mutation (Subprotocol D, E, F)",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the study population is suitable for evaluating the treatment's effectiveness in patients with specific mutations.",
+        "competing_risk": false
+      },
+      {
+        "text": "Primary central nervous system (CNS) tumors",
+        "reasoning_category": "Safety",
+        "justification": "This criterion excludes patients who may be at risk of complications from the treatment, protecting them from harm.",
+        "competing_risk": true
+      },
+      {
+        "text": "Impaired gastrointestinal (GI) function that may significantly alter the absorption of RMC drugs",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures patients can tolerate the treatment and participate in the trial, as it affects drug absorption.",
+        "competing_risk": false
+      },
+      {
+        "text": "Major surgery within 28 days of first dose",
+        "reasoning_category": "Safety",
+        "justification": "This criterion protects patients from harm by ensuring they have adequate time to recover before starting the treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Other inclusion/exclusion criteria may apply.",
+        "reasoning_category": "Feasibility",
+        "justification": "This is a general feasibility criterion, as it allows for flexibility in the trial design and ensures that all patients meet the study's requirements.",
+        "competing_risk": false
+      }
+    ],
+    "criteria_metadata": {
+      "total_parsed": 9,
+      "classified": 9,
+      "batches": 1,
+      "batch_size": 20
     },
     "population": {
       "sex": "ALL",
@@ -1879,6 +1980,26 @@
         "is_primary": false
       }
     ],
+    "trial_integrity": {
+      "masking_level": "Open-label",
+      "blinding_validation_method": "Not specified",
+      "concomitant_therapy_controls": "Standardized background care"
+    },
+    "trial_design": {
+      "design_type": "Single-Arm",
+      "control_type": "None (Single-Arm)",
+      "superiority_type": "Unclear"
+    },
+    "indication": "solid_tumor",
+    "randomization": {
+      "randomization_type": "Not described",
+      "allocation_ratio": "1:1:1:1:1:1",
+      "stratification_factors": [
+        "Center",
+        "Age"
+      ],
+      "randomization_description": "Stratified by Center, Age. "
+    },
     "adaptive_designs": {
       "has_adaptive_features": true,
       "adaptive_types": [
@@ -1901,88 +2022,96 @@
       "sae_stopping_rules": "Not specified in protocol text",
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
-    "eligibility": [
-      {
-        "text": "\u2265 18 years of age",
-        "reasoning_category": "Feasibility",
-        "justification": "Age is a standard feasibility criterion for clinical trials.",
-        "competing_risk": false
-      },
-      {
-        "text": "ECOG PS is 0 to 1",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients are not too ill to participate in the trial, protecting them from potential harm.",
-        "competing_risk": false
-      },
-      {
-        "text": "Adequate organ function as outlined by the study",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures patients have sufficient organ function for treatment and data collection.",
-        "competing_risk": false
-      },
-      {
-        "text": "Pathologically or cytologically documented pancreatic carcinoma or poorly differentiated pancreatic carcinoma with metastatic disease or RAS-mutated, histologically or cytologically confirmed colorectal adenocarcinoma with documented unresectable or metastatic disease (Subprotocol A, B, and C)",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients have a specific type of cancer that is the focus of the trial.",
-        "competing_risk": false
-      },
-      {
-        "text": "Presence of RAS G12D mutation (Subprotocol D, E, F)",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures patients have a specific genetic mutation that is being studied for treatment efficacy.",
-        "competing_risk": false
-      },
-      {
-        "text": "Primary central nervous system (CNS) tumors",
-        "reasoning_category": "Safety",
-        "justification": "This criterion excludes patients with CNS tumors, protecting them from potential harm and ensuring the study's focus on specific cancers.",
-        "competing_risk": true
-      },
-      {
-        "text": "Impaired gastrointestinal (GI) function that may significantly alter the absorption of RMC drugs",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures patients have adequate GI function to absorb the medication, impacting feasibility.",
-        "competing_risk": false
-      },
-      {
-        "text": "Major surgery within 28 days of first dose",
-        "reasoning_category": "Safety",
-        "justification": "This criterion protects patients from potential harm by ensuring they are not undergoing major surgery before starting treatment.",
-        "competing_risk": false
-      },
-      {
-        "text": "Other inclusion/exclusion criteria may apply.",
-        "reasoning_category": "Feasibility",
-        "justification": "This is a general statement that could encompass various factors impacting feasibility, such as patient compliance or adherence to study protocols.",
-        "competing_risk": false
-      }
-    ],
     "summary": {
       "Feasibility": 4,
       "Safety": 4,
       "Statistical Power": 1
-    }
+    },
+    "drug": "RAS(ON) GI"
   },
   "NCT06625320": {
     "nct_id": "NCT06625320",
     "title": "Phase 3 Study of Daraxonrasib (RMC-6236) in Patients With Previously Treated Metastatic Pancreatic Ductal Adenocarcinoma (PDAC)",
     "phase": "PHASE3",
-    "drug": "RMC-6236 daraxonrasib PDAC (RAS multi) - Phase 3",
-    "trial_design": {
-      "design_type": "Parallel RCT",
-      "control_type": "Active Comparator",
-      "superiority_type": "Superiority"
-    },
-    "trial_integrity": {
-      "masking_level": "Open-label",
-      "blinding_validation_method": "Not specified",
-      "concomitant_therapy_controls": "Standardized background care"
-    },
-    "randomization": {
-      "randomization_type": "Simple",
-      "allocation_ratio": "1:1",
-      "stratification_factors": [],
-      "randomization_description": "Simple randomization."
+    "eligibility": [
+      {
+        "text": "At least 18 years old and has provided informed consent.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures compliance with legal requirements for clinical trials involving human subjects.",
+        "competing_risk": false
+      },
+      {
+        "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1.",
+        "reasoning_category": "Safety",
+        "justification": "This criterion helps ensure patients are physically capable of participating in the trial and managing potential side effects.",
+        "competing_risk": false
+      },
+      {
+        "text": "Histologically or cytologically confirmed PDAC with metastatic disease.",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures a homogeneous patient population for comparison to the control group, maximizing the likelihood of detecting treatment effects.",
+        "competing_risk": false
+      },
+      {
+        "text": "Measurable disease per RECIST 1.1.",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion helps ensure a consistent and measurable endpoint for comparison between groups.",
+        "competing_risk": false
+      },
+      {
+        "text": "Adequate organ function (bone marrow, liver, kidney, coagulation)",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures patients have sufficient physiological capacity to tolerate the study treatment and potential side effects.",
+        "competing_risk": false
+      },
+      {
+        "text": "Documented RAS mutation status, either mutant or wild-type. RAS mutations defined as nonsynonymous mutations in KRAS, NRAS, or HRAS at codons 12, 13, or 61 (G12, G13, or Q61).",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures a consistent and measurable endpoint for comparison between groups.",
+        "competing_risk": false
+      },
+      {
+        "text": "Able to take oral medications.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion helps ensure patients can effectively receive the study treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Prior therapy with direct RAS-targeted therapy (eg. degraders and/or inhibitors).",
+        "reasoning_category": "Safety",
+        "justification": "This criterion ensures a consistent baseline for comparison between groups, minimizing confounding factors from prior treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "History of or known central nervous system metastatic disease.",
+        "reasoning_category": "Safety",
+        "justification": "This criterion helps ensure patients are physically capable of participating in the trial and managing potential side effects.",
+        "competing_risk": false
+      },
+      {
+        "text": "Any conditions that may affect the ability to take or absorb study treatment",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures patient compliance with protocol requirements, minimizing potential for non-compliance and data inconsistencies.",
+        "competing_risk": false
+      },
+      {
+        "text": "Major surgery within 4 weeks prior to randomization.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion helps ensure patients have sufficient recovery time before starting the study treatment, minimizing potential for complications or delays in data collection.",
+        "competing_risk": false
+      },
+      {
+        "text": "Patient is unable or unwilling to comply with protocol-required study visits or procedures.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion helps ensure patient compliance with the study protocol, minimizing potential for non-compliance and data inconsistencies.",
+        "competing_risk": false
+      }
+    ],
+    "criteria_metadata": {
+      "total_parsed": 12,
+      "classified": 12,
+      "batches": 1,
+      "batch_size": 20
     },
     "population": {
       "sex": "ALL",
@@ -2004,6 +2133,10 @@
       "num_arms": 2,
       "primary_endpoint_type": "PFS (Progression-Free Survival)",
       "estimated_control_event_rate": 0.85,
+      "indication_params_used": {
+        "control_median_months": 3.5,
+        "event_rate": 0.85
+      },
       "power_analysis": {
         "alpha": 0.05,
         "power_target": 0.8,
@@ -2091,6 +2224,23 @@
         "is_primary": false
       }
     ],
+    "trial_integrity": {
+      "masking_level": "Open-label",
+      "blinding_validation_method": "Not specified",
+      "concomitant_therapy_controls": "Standardized background care"
+    },
+    "trial_design": {
+      "design_type": "Parallel RCT",
+      "control_type": "Active Comparator",
+      "superiority_type": "Superiority"
+    },
+    "indication": "pdac",
+    "randomization": {
+      "randomization_type": "Simple",
+      "allocation_ratio": "1:1",
+      "stratification_factors": [],
+      "randomization_description": "Simple randomization."
+    },
     "adaptive_designs": {
       "has_adaptive_features": false,
       "adaptive_types": [],
@@ -2112,84 +2262,11 @@
       "sae_stopping_rules": "Not specified in protocol text",
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
-    "eligibility": [
-      {
-        "text": "At least 18 years old and has provided informed consent.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures compliance with legal requirements for clinical trials involving human subjects.",
-        "competing_risk": false
-      },
-      {
-        "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1.",
-        "reasoning_category": "Safety",
-        "justification": "This criterion helps ensure patients are physically capable of participating in the trial and managing potential side effects.",
-        "competing_risk": false
-      },
-      {
-        "text": "Histologically or cytologically confirmed PDAC with metastatic disease.",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures a homogeneous patient population for comparison to the control group, maximizing the likelihood of detecting treatment effects.",
-        "competing_risk": false
-      },
-      {
-        "text": "Measurable disease per RECIST 1.1.",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion helps ensure a consistent and measurable endpoint for comparison between groups.",
-        "competing_risk": false
-      },
-      {
-        "text": "Adequate organ function (bone marrow, liver, kidney, coagulation)",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients have sufficient physiological capacity to tolerate the study treatment and potential side effects.",
-        "competing_risk": false
-      },
-      {
-        "text": "Documented RAS mutation status, either mutant or wild-type. RAS mutations defined as nonsynonymous mutations in KRAS, NRAS, or HRAS at codons 12, 13, or 61 (G12, G13, or Q61).",
-        "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures a specific patient population for comparison to the control group.",
-        "competing_risk": false
-      },
-      {
-        "text": "Able to take oral medications.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion helps ensure patients can effectively receive study treatment and manage potential side effects.",
-        "competing_risk": false
-      },
-      {
-        "text": "Prior therapy with direct RAS-targeted therapy (eg. degraders and/or inhibitors).",
-        "reasoning_category": "Safety",
-        "justification": "This criterion helps ensure patients have a history of prior treatment to avoid confounding factors.",
-        "competing_risk": false
-      },
-      {
-        "text": "History of or known central nervous system metastatic disease.",
-        "reasoning_category": "Safety",
-        "justification": "This criterion helps ensure patients are not at risk for complications related to the study treatment.",
-        "competing_risk": false
-      },
-      {
-        "text": "Any conditions that may affect the ability to take or absorb study treatment",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures patient compliance and data quality by addressing potential barriers to treatment adherence.",
-        "competing_risk": false
-      },
-      {
-        "text": "Major surgery within 4 weeks prior to randomization.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion helps ensure patients have sufficient recovery time before study participation, potentially impacting their ability to adhere to the protocol.",
-        "competing_risk": false
-      },
-      {
-        "text": "Patient is unable or unwilling to comply with protocol-required study visits or procedures.",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion helps ensure patient compliance and data quality by addressing potential barriers to treatment adherence.",
-        "competing_risk": false
-      }
-    ],
     "summary": {
       "Feasibility": 5,
       "Safety": 4,
       "Statistical Power": 3
-    }
+    },
+    "drug": "RMC-6236 PDAC Phase 3"
   }
 }
