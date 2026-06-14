@@ -1,0 +1,15 @@
+[project]
+name = "clinical-trial-agent"
+version = "0.2.0"
+description = "Clinical trial analysis pipeline using LLM agents to classify eligibility criteria from ClinicalTrials.gov"
+requires-python = ">=3.12"
+dependencies = [
+    "ollama>=0.6",
+    "requests>=2.34",
+    "scipy>=1.17",
+    "numpy>=2.4",
+    "matplotlib>=3.9",
+]
+
+[project.scripts]
+clinical-agent = "design_agent_pipeline:main"

@@ -1,9 +1,17 @@
-# Local environment
+# Python
 .venv/
 __pycache__/
+*.pyc
+*.pyo
 
 # Textbook (full text, not tracked)
 textbook/
 
 # Legacy test scripts and JSONs
 legacy_tests/
+
+# Session logs
+session-*.md
+
+# OS
+.DS_Store

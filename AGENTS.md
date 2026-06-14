@@ -6,7 +6,8 @@ Clinical trial analysis using LLM agents to classify eligibility criteria from C
 ## Environment
 - Python 3.12 in `.venv` (managed by `uv`)
 - Requires local Ollama with models: `gemma2:2b-instruct-q4_K_M`, `gemma3:1b-it-qat`
-- Dependencies not tracked (no requirements.txt) - uses: `requests`, `ollama`
+- Dependencies tracked in `pyproject.toml` + `uv.lock` - uses: `requests`, `ollama`, `scipy`, `matplotlib`, `numpy`
+- Setup: `uv venv .venv --python 3.12 && source .venv/bin/activate && uv sync`
 
 ## Key Files
 - `agent_prompt.txt` - LLM prompt defining classification schema (Safety/Statistical Power/Feasibility) and trial design fields

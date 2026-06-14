@@ -142,8 +142,8 @@ ax2.set_ylim(0, 22)
 ax2.grid(True, alpha=0.3, axis='y')
 
 plt.tight_layout()
-plt.savefig('power_analysis.png', dpi=200, bbox_inches='tight')
-print("✓ Saved power_analysis.png")
+plt.savefig('images/power_analysis.png', dpi=200, bbox_inches='tight')
+print("✓ Saved images/power_analysis.png")
 
 
 # ============================================================
@@ -187,8 +187,8 @@ ax3.annotate('80% Power threshold', xy=(0.5, 0.81), fontsize=9, color='gray')
 ax3.annotate('90% Power', xy=(0.5, 0.91), fontsize=8, color='gray')
 
 plt.tight_layout()
-plt.savefig('power_vs_effect.png', dpi=200, bbox_inches='tight')
-print("✓ Saved power_vs_effect.png")
+plt.savefig('images/power_vs_effect.png', dpi=200, bbox_inches='tight')
+print("✓ Saved images/power_vs_effect.png")
 
 
 # ============================================================
