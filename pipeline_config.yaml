@@ -505,6 +505,8 @@ pharmacogenetic_assessment:
   # Screen failure rate = 1 - prevalence (assuming perfect test sensitivity).
   genetic_biomarker_prevalence:
     KRAS_G12C: 0.13           # ~13% in NSCLC adenocarcinoma, ~2-4% in other solid tumors
+    KRAS_G12D: 0.05           # ~5% in NSCLC, ~30-40% in pancreatic cancer
+    RAS_mutation_any: 0.30    # ~30% of all cancers (KRAS/NRAS/HRAS codon 12/13/61)
     dMMR_MSI_H: 0.15          # ~15% in CRC, ~20% endometrial, ~2-5% other solid tumors
     EGFR_ex19del: 0.10        # ~10% in NSCLC (exon 19 deletion)
     EGFR_L858R: 0.08          # ~8% in NSCLC (L858R point mutation)
@@ -553,33 +555,27 @@ pharmacogenetic_drugs:
     genes:
       ERBB2: [Treatment response - HER2 amplification]
   kras_g12c_inhibitor:
-    drug_names: [sotorasib, adagrasib, lumakras, krazati, divarasib, gdc-6036, jbj-1000]
+    drug_names: [sotorasib, adagrasib, lumakras, krazati, divarasib, gdc-6036, jbj-1000, rmc-6291, elironrasib]
     genes:
       KRAS: [Treatment response - KRAS G12C mutation required]
-    # ~87% screen fail rate for G12C+ requirement in NSCLC
+  kras_g12d_inhibitor:
+    drug_names: [rmc-9805, zoldonrasib]
+    genes:
+      KRAS: [Treatment response - KRAS G12D mutation required]
+  ras_multi_inhibitor:
+    drug_names: [rmc-6236, daraxonrasib, ras(ON)]
+    genes:
+      KRAS: [Treatment response - RAS multi-selective inhibition]
+      NRAS: [Treatment response - RAS multi-selective inhibition]
+      HRAS: [Treatment response - RAS multi-selective inhibition]
+  shp2_inhibitor:
+    drug_names: [rmc-4630]
+    genes:
+      PTPN11: [Treatment response - SHP2 inhibition, upstream of RAS]
   wrn_inhibitor:
     drug_names: [gsk4418959, ndi-219216, vvd-133214, bay-3665972]
     genes:
       WRN: [Treatment response - WRN helicase inhibition in dMMR/MSI-H tumors]
-    # ~80-85% screen fail rate for dMMR/MSI-H requirement across solid tumors
-  jak_inhibitor:
-    JAK1: [Treatment response - JAK-STAT signaling]
-    JAK2: [Treatment response - JAK-STAT signaling]
-    JAK3: [Treatment response - JAK-STAT signaling]
-  egfr_inhibitor:
-    EGFR: [Treatment response - mutation-dependent efficacy]
-    KRAS: [Resistance - mutation predicts non-response]
-  immunotherapy:
-    PD1: [Treatment response - immune checkpoint]
-    PDL1: [Treatment response - immune checkpoint]
-    CTLA4: [Treatment response - immune checkpoint]
-  statin:
-    SLCO1B1: [Safety - myopathy risk per textbook Ch 9 example]
-  bcr_abl_inhibitor:
-    BCR: [Treatment response - Philadelphia chromosome]
-    ABL1: [Treatment response - Philadelphia chromosome]
-  her2_targeted:
-    ERBB2: [Treatment response - HER2 amplification]
 
 # ==============================================================================
 # API

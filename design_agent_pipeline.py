@@ -813,6 +813,12 @@ def extract_genetic_biomarkers(protocol):
 GENETIC_BIOMARKER_PATTERNS = [
     (r'\bkras\s*p?\.?g12c\b', 'KRAS_G12C'),
     (r'\bkras\s*g12c\b', 'KRAS_G12C'),
+    (r'\b(kras|ras)\s*p?\.?g12d\b', 'KRAS_G12D'),
+    (r'\b(kras|ras)\s*g12d\b', 'KRAS_G12D'),
+    (r'\b(kras|nras|hras)\s*(mutation|mutant|mut)\b', 'RAS_mutation_any'),
+    (r'\b(mutation|mutant|mut)\s+in\s+(kras|nras|hras)\b', 'RAS_mutation_any'),
+    (r'\bpan.?ras\b', 'RAS_mutation_any'),
+    (r'\bcodons?\s*(12|13|61)\b', 'RAS_mutation_any'),
     (r'\bdmmr\b', 'dMMR_MSI_H'),
     (r'\bmsi-h\b', 'dMMR_MSI_H'),
     (r'\bmsi\s*high\b', 'dMMR_MSI_H'),
