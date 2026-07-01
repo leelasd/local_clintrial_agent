@@ -12,37 +12,37 @@
     {
       "text": ". Moderate to severe disease.",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion helps ensure the study population is representative of patients with moderate to severe psoriasis, maximizing the likelihood of detecting a treatment effect.",
+      "justification": "Moderate to severe disease severity is likely to be associated with greater treatment response and thus, better detection of a treatment effect.",
       "competing_risk": false
     },
     {
       "text": ". Candidate for phototherapy or systemic therapy.",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures participants are eligible for potential treatments, allowing for comparison with placebo and active comparator groups.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients are eligible for the intervention being tested, which is likely to be a key factor in study success and data quality.",
       "competing_risk": false
     },
     {
       "text": ". Other forms of psoriasis.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion may be a feasibility concern as it could limit the study population to specific types of psoriasis, potentially impacting generalizability.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion excludes individuals with other types of psoriasis, potentially protecting them from harm or ensuring the study's focus on plaque psoriasis.",
       "competing_risk": false
     },
     {
       "text": ". History of recent infection.",
       "reasoning_category": "Safety",
-      "justification": "This criterion is likely included to protect patients from potential complications related to infections during treatment.",
+      "justification": "This criterion is likely to protect patients from potential complications related to infections, particularly in a context where treatment efficacy might be impacted by immune system response.",
       "competing_risk": false
     },
     {
       "text": ". Prior exposure to TAK-279 or active comparator.",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures that participants have not previously received the drug, preventing confounding effects and ensuring safety.",
+      "justification": "This criterion ensures that patients have not previously received the intervention being tested, potentially preventing confounding effects on treatment efficacy.",
       "competing_risk": false
     },
     {
       "text": "Other protocol defined inclusion/exclusion criteria apply.",
       "reasoning_category": "Feasibility",
-      "justification": "This is a general category for any additional criteria that may impact feasibility or data quality.",
+      "justification": "This criterion is likely to ensure data quality and consistency across the study population.",
       "competing_risk": false
     }
   ],
@@ -422,8 +422,8 @@
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
   "summary": {
-    "Statistical Power": 3,
+    "Statistical Power": 2,
     "Feasibility": 2,
-    "Safety": 2
+    "Safety": 3
   }
 }

@@ -2,48 +2,25 @@ import requests
 import json
 import math
 import ollama
+import argparse
+from pathlib import Path
 from collections import Counter
 from scipy import stats
+import yaml
 
-INDICATION_PARAMS = {
-    'psoriasis': {
-        'control_rate_dichotomous': 0.10,
-        'median_os_months': None,
-        'median_pfs_months': None,
-        'event_rate': None,
-    },
-    'nsclc': {
-        'control_rate_dichotomous': 0.30,
-        'median_os_months': 12.0,
-        'median_pfs_months': 4.5,
-        'event_rate': 0.80,
-    },
-    'pdac': {
-        'control_rate_dichotomous': 0.05,
-        'median_os_months': 6.0,
-        'median_pfs_months': 3.5,
-        'event_rate': 0.85,
-    },
-    'msi_h_tumor': {
-        'control_rate_dichotomous': 0.15,
-        'median_os_months': 18.0,
-        'median_pfs_months': 5.0,
-        'event_rate': 0.75,
-    },
-    'solid_tumor': {
-        'control_rate_dichotomous': 0.15,
-        'median_os_months': 10.0,
-        'median_pfs_months': 4.0,
-        'event_rate': 0.80,
-    },
-}
 
-DEFAULT_INDICATION_PARAMS = {
-    'control_rate_dichotomous': 0.10,
-    'median_os_months': 6.0,
-    'median_pfs_months': 3.5,
-    'event_rate': 0.85,
-}
+def _load_config(config_path=None):
+    if config_path is None:
+        config_path = Path(__file__).parent / 'pipeline_config.yaml'
+    with open(config_path, 'r') as f:
+        return yaml.safe_load(f)
+
+
+CONFIG = _load_config()
+
+INDICATION_PARAMS = CONFIG['indication_params']
+
+DEFAULT_INDICATION_PARAMS = CONFIG['default_indication_params']
 
 
 def infer_indication(protocol):
@@ -52,13 +29,7 @@ def infer_indication(protocol):
     title = protocol.get('identificationModule', {}).get('briefTitle', '')
     combined = ' '.join(conditions + [title]).lower()
 
-    indication_keywords = {
-        'psoriasis': ['psoriasis', 'plaque psoriasis', 'pso', 'pasi', 'spga'],
-        'nsclc': ['non-small cell lung', 'nsclc', 'lung cancer', 'kras g12c', 'egfr', 'alk'],
-        'pdac': ['pancreatic', 'pdac', 'pancreas', 'pancreatic ductal'],
-        'msi_h_tumor': ['msi-h', 'microsatellite instability', 'msi high', 'mismatch repair deficient', 'dmmr'],
-        'solid_tumor': ['solid tumor', 'advanced solid', 'metastatic solid', 'refractory solid'],
-    }
+    indication_keywords = CONFIG['indication_keywords']
 
     for indication, keywords in indication_keywords.items():
         if any(k in combined for k in keywords):
@@ -133,7 +104,7 @@ def classify_design_from_api(protocol):
         (protocol.get('descriptionModule', {}).get('detailedDescription', '') or '') + ' ' +
         protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
     ).lower()
-    mentions_noninferiority = any(k in description_text for k in ['noninferiority', 'non-inferiority', 'non inferior'])
+    mentions_noninferiority = any(k in description_text for k in CONFIG['noninferiority_keywords'])
     
     if is_phase1:
         superiority_type = 'Unclear'
@@ -178,9 +149,7 @@ def analyze_study_population(protocol):
     
     # Detect whether criteria include significant competing risk exclusions
     criteria_text = elig.get('eligibilityCriteria', '').lower()
-    competing_keywords = ['cancer', 'malignancy', 'neoplasm', 'tumor', 'liver disease', 
-                          'renal disease', 'kidney disease', 'organ failure', 'transplant',
-                          'hiv', 'aids', 'hepatitis', 'cirrhosis', 'dialysis']
+    competing_keywords = CONFIG['competing_keywords']
     has_competing_risks = any(k in criteria_text for k in competing_keywords)
     
     # Estimate recruitment yield based on restrictiveness
@@ -192,9 +161,10 @@ def analyze_study_population(protocol):
     if healthy_vol:
         restrictive_count -= 1  # healthy volunteers are LESS restrictive
     
-    if restrictive_count >= 2:
+    _recruit_thresh = CONFIG['recruitment_yield']['restrictive_count_thresholds']
+    if restrictive_count >= _recruit_thresh['low']:
         recruitment_yield = 'Low (<5% screen-to-enroll)'
-    elif restrictive_count >= 1:
+    elif restrictive_count >= _recruit_thresh['moderate']:
         recruitment_yield = 'Moderate (5-20% screen-to-enroll)'
     else:
         recruitment_yield = 'High (>20% screen-to-enroll)'
@@ -273,21 +243,18 @@ def analyze_sample_size(protocol, endpoints, indication_params=None):
     primary_type = primary_endpoints[0]['endpoint_type'] if primary_endpoints else 'Unknown'
     
     # Common parameters
-    alpha = 0.05
-    power_target = 0.80
+    alpha = CONFIG['alpha']
+    power_target = CONFIG['power_target']
     z_alpha = stats.norm.ppf(1 - alpha / 2)
     z_beta = stats.norm.ppf(power_target)
     
     # Check if survival/time-to-event endpoint (PFS, OS)
     # Use word-boundary matching to avoid false positives (e.g. "os" matching inside "close")
     primary_lower = primary_text.lower() + ' '
-    survival_keywords = ['survival', 'progression-free ', 'overall survival',
-                         'time to progression', 'time to death', 'death from any cause',
-                         'disease progression', 'pfs ', 'os ']
+    survival_keywords = CONFIG['survival_keywords']
     is_survival = any(k in primary_lower for k in survival_keywords)
     
-    # Check if dichotomous (proportion-based endpoint)
-    dichotomous_keywords = ['percentage', 'proportion', 'number of', 'achieving', 'response', 'rate']
+    dichotomous_keywords = CONFIG['dichotomous_keywords']
     is_dichotomous = any(k in primary_text.lower() for k in dichotomous_keywords)
     
     if is_survival and n_per_arm > 1:
@@ -301,7 +268,7 @@ def analyze_sample_size(protocol, endpoints, indication_params=None):
     if is_dichotomous and n_per_arm > 1:
         return _analyze_dichotomous_power(primary_text, enrollment, n_per_arm, num_arms,
                                            alpha, power_target, z_alpha, z_beta, primary_type,
-                                           estimated_control_rate=indication_params.get('control_rate_dichotomous', 0.10))
+                                           estimated_control_rate=indication_params.get('control_rate_dichotomous', CONFIG['default_control_rate_dichotomous']))
     
     # Non-dichotomous, non-survival endpoint
     return {
@@ -323,7 +290,7 @@ def analyze_sample_size(protocol, endpoints, indication_params=None):
 
 def _analyze_dichotomous_power(primary_text, enrollment, n_per_arm, num_arms,
                                 alpha, power_target, z_alpha, z_beta, primary_type,
-                                estimated_control_rate=0.10):
+                                estimated_control_rate=CONFIG['default_control_rate_dichotomous']):
     """Power analysis for dichotomous (proportion-based) endpoints."""
     
     def compute_detectable_diff(n, p0, za, zb):
@@ -342,20 +309,22 @@ def _analyze_dichotomous_power(primary_text, enrollment, n_per_arm, num_arms,
     detectable_diff = compute_detectable_diff(n_per_arm, estimated_control_rate, z_alpha, z_beta)
     
     # Estimate power for a realistic 20% absolute improvement
-    p1_realistic = estimated_control_rate + 0.20
+    _realistic = CONFIG['realistic_improvement_absolute']
+    p1_realistic = estimated_control_rate + _realistic
     phat_realistic = (estimated_control_rate + p1_realistic) / 2
     se_realistic = math.sqrt(2 * phat_realistic * (1 - phat_realistic) / n_per_arm)
-    z_realistic = 0.20 / se_realistic if se_realistic > 0 else 0
+    z_realistic = _realistic / se_realistic if se_realistic > 0 else 0
     power_realistic = stats.norm.cdf(z_realistic - z_alpha)
     
     # Assessment
+    _thresh = CONFIG['dichotomous_power_assessment']
     if detectable_diff is None:
         assessment = 'Cannot determine'
-    elif detectable_diff <= 0.10:
+    elif detectable_diff <= _thresh['adequately_powered']:
         assessment = 'Adequately Powered'
-    elif detectable_diff <= 0.15:
+    elif detectable_diff <= _thresh['borderline']:
         assessment = 'Borderline'
-    elif detectable_diff <= 0.25:
+    elif detectable_diff <= _thresh['underpowered']:
         assessment = 'Underpowered'
     else:
         assessment = 'Severely Underpowered'
@@ -396,9 +365,9 @@ def _analyze_survival_power(primary_text, enrollment, n_per_arm, num_arms,
     
     # Use provided values or fall back to defaults
     if control_median_months is None:
-        control_median_months = 6.0 if is_os else 3.5
+        control_median_months = CONFIG['survival_defaults']['control_median_os_months'] if is_os else CONFIG['survival_defaults']['control_median_pfs_months']
     if event_rate is None:
-        event_rate = 0.85
+        event_rate = CONFIG['survival_defaults']['event_rate']
 
     p_alloc = 1.0 / num_arms
     
@@ -431,13 +400,12 @@ def _analyze_survival_power(primary_text, enrollment, n_per_arm, num_arms,
     # HR < 1 means treatment benefit; HR > 1 means control better
     # For a superiority trial, we want detectable_hr < 1
     
-    # Assessment (based on detectable HR)
-    # In oncology, HR of 0.65-0.80 is typical for Phase 3 trials
-    if detectable_hr <= 0.65:
+    _thresh = CONFIG['survival_power_assessment']
+    if detectable_hr <= _thresh['adequately_powered']:
         assessment = 'Adequately Powered'
-    elif detectable_hr <= 0.75:
+    elif detectable_hr <= _thresh['borderline']:
         assessment = 'Borderline'
-    elif detectable_hr <= 0.85:
+    elif detectable_hr <= _thresh['underpowered']:
         assessment = 'Underpowered'
     else:
         assessment = 'Severely Underpowered'
@@ -496,15 +464,7 @@ def analyze_randomization(protocol):
     
     # Infer stratification factors
     stratification_factors = []
-    factor_keywords = [
-        'site', 'center', 'study site', 'study center',
-        'region', 'geographic',
-        'baseline', 'disease severity', 'pasi', 'psoriasis severity',
-        'body weight', 'bmi',
-        'prior biologic', 'prior treatment', 'previous therapy',
-        'age', 'sex', 'gender',
-        'smoking',
-    ]
+    factor_keywords = CONFIG['stratification_factor_keywords']
     for factor in factor_keywords:
         if factor in description_text:
             stratification_factors.append(factor.title())
@@ -544,45 +504,7 @@ def analyze_adaptive_design(protocol, api_design):
     phases = api_design.get('phases', [])
     
     # Detect adaptive design types from keywords
-    adaptive_signals = {
-        'Group Sequential': [
-            'group sequential', 'interim analysis', 'interim look', 'interim monitoring',
-            'dsmb', 'data safety monitoring board', 'data monitoring committee',
-            'stopping rule', 'stopping boundary', 'early stopping', 'early termination',
-            'obrien', 'pocock', 'lan-demets'
-        ],
-        'Sample Size Re-estimation': [
-            'sample size re-estimation', 'sample size reestimation', 'sample size adjustment',
-            're-estimate sample size', 'adaptive sample size', 'event-driven', 'event driven',
-            'number of events', 'target number of events'
-        ],
-        'Response-Adaptive Randomization': [
-            'response-adaptive', 'response adaptive', 'adaptive randomization',
-            'outcome-adaptive', 'play the winner', 'minimization'
-        ],
-        'Basket Trial': [
-            'basket trial', 'basket design', 'histology-independent', 'tumor-agnostic',
-            'multiple tumor types', 'multiple indications', 'same genetic'
-        ],
-        'Umbrella Trial': [
-            'umbrella trial', 'umbrella design', 'multiple study drugs',
-            'multiple targeted therapies', 'subtype-matched'
-        ],
-        'Platform Trial': [
-            'platform trial', 'platform design', 'master protocol', 'basket/umbrella platform',
-            'add new arms', 'drop arm', 'add experimental arm', 'shared control',
-            'permanently open'
-        ],
-        'Dose-Finding / Phase I': [
-            '3+3', '3 plus 3', 'rolling six', 'bayesian', 'continual reassessment',
-            'crm design', 'dose escalation', 'dose de-escalation', 'dose finding',
-            'mtd', 'maximum tolerated dose'
-        ],
-        'Seamless Phase 2/3': [
-            'seamless phase 2', 'seamless phase 2/3', 'adaptive seamless',
-            'phase 2/3 adaptive', 'phase 2/3 seamless'
-        ],
-    }
+    adaptive_signals = CONFIG['adaptive_signals']
     
     adaptive_types = []
     for design_type, keywords in adaptive_signals.items():
@@ -595,21 +517,20 @@ def analyze_adaptive_design(protocol, api_design):
         adaptive_types.append('Dose-Finding / Phase I')
     
     # Look for specific stopping rules
+    _sr = CONFIG['stopping_rule_keywords']
     stopping_rules = 'Not mentioned'
-    if any(k in description_text for k in ['obrien', 'obrien-fleming', 'obrien fleming', "o'brien"]):
+    if any(k in description_text for k in _sr['obrien_fleming']):
         stopping_rules = "O'Brien-Fleming boundary"
-    elif any(k in description_text for k in ['pocock']):
+    elif any(k in description_text for k in _sr['pocock']):
         stopping_rules = 'Pocock boundary'
-    elif any(k in description_text for k in ['lan-demets', 'lan demets']):
+    elif any(k in description_text for k in _sr['lan_demets']):
         stopping_rules = "Lan-DeMets alpha spending function"
-    elif any(k in description_text for k in ['haybittle-peto', 'haybittle peto']):
+    elif any(k in description_text for k in _sr['haybittle_peto']):
         stopping_rules = 'Haybittle-Peto boundary'
-    elif any(k in description_text for k in ['stopping rule', 'stopping boundary']):
+    elif any(k in description_text for k in _sr['generic']):
         stopping_rules = 'Specified (details not available from text)'
     
-    interim_analysis = any(k in description_text for k in [
-        'interim analysis', 'interim look', 'interim monitoring', 'interim data'
-    ])
+    interim_analysis = any(k in description_text for k in CONFIG['interim_analysis_keywords'])
     
     has_adaptive = len(adaptive_types) > 0
     
@@ -625,15 +546,16 @@ def analyze_adaptive_design(protocol, api_design):
         description = 'Standard fixed-design trial. No adaptive features detected.'
     
     # Detect dose-escalation method for Phase 1 trials
+    _de = CONFIG['dose_escalation_keywords']
     dose_method = None
     if is_phase1:
-        if any(k in description_text for k in ['continual reassessment', 'crm']):
+        if any(k in description_text for k in _de['crm']):
             dose_method = 'Continual Reassessment Method (CRM)'
-        elif any(k in description_text for k in ['bayesian']):
+        elif any(k in description_text for k in _de['bayesian']):
             dose_method = 'Bayesian dose-escalation'
-        elif any(k in description_text for k in ['3+3', '3 plus 3']):
+        elif any(k in description_text for k in _de['traditional_3plus3']):
             dose_method = 'Traditional 3+3'
-        elif any(k in description_text for k in ['rolling six']):
+        elif any(k in description_text for k in _de['rolling_six']):
             dose_method = 'Rolling Six design'
         else:
             dose_method = 'Standard dose-escalation (not explicitly specified)'
@@ -660,65 +582,30 @@ def analyze_safety_adverse_events(protocol, endpoints):
     safety_outcomes = []
     for o in outcomes.get('secondaryOutcomes', []):
         text = o.get('measure', '')
-        if any(k in text.lower() for k in ['adverse event', 'safety', 'tolerab', 'serious adverse']):
+        if any(k in text.lower() for k in CONFIG['safety_outcome_keywords']):
             safety_outcomes.append(o)
     
     # --- Item 1: Extract known AE types from protocol text ---
-    # General AE terms commonly mentioned in protocols
-    general_ae_terms = {
-        'headache': 'Headache',
-        'nausea': 'Nausea',
-        'fatigue': 'Fatigue',
-        'diarrhea': 'Diarrhea',
-        'nasopharyngitis': 'Nasopharyngitis',
-        'upper respiratory': 'Upper Respiratory Tract Infection',
-        'uti': 'Urinary Tract Infection',
-        'injection site': 'Injection Site Reaction',
-        'arthralgia': 'Arthralgia',
-        'back pain': 'Back Pain',
-        'dizziness': 'Dizziness',
-        'rash': 'Rash',
-        'pruritus': 'Pruritus',
-        'cough': 'Cough',
-        'pyrexia': 'Pyrexia / Fever',
-        'anemia': 'Anemia',
-        'insomnia': 'Insomnia',
-    }
+    general_ae_terms = CONFIG['general_ae_terms']
     
-    # TYK2 inhibitor class-specific AEs (known from literature)
-    tyk2_class_effects = {
-        'herpes zoster': 'Herpes zoster (shingles)',
-        'zoster': 'Herpes zoster (shingles)',
-        'cpk': 'CPK elevation',
-        'creatine kinase': 'CPK elevation',
-        'acne': 'Acne',
-        'folliculitis': 'Folliculitis',
-        'neutropenia': 'Neutropenia',
-        'lipid': 'Lipid elevation (LDL/triglycerides)',
-        'transaminase': 'Liver enzyme elevation',
-        'alt': 'ALT elevation',
-        'ast': 'AST elevation',
-        'infection': 'Infections (general)',
-        'tuberculosis': 'Tuberculosis screening',
-        'tb': 'Tuberculosis screening',
-    }
-    
+    _dce = CONFIG['drug_class_effects']
     ae_types_detected = []
     for term, label in general_ae_terms.items():
         if term in description_text:
             ae_types_detected.append(label)
     
     class_effects = []
-    for term, label in tyk2_class_effects.items():
-        if term in description_text:
-            class_effects.append(label)
+    for drug_class, class_terms in _dce.items():
+        for term, label in class_terms.items():
+            if term in description_text:
+                class_effects.append(label)
     
     # --- Item 3: Categorize AE reporting method ---
-    # MedDRA detection
-    has_meddra = any(k in description_text for k in ['meddra', 'medical dictionary', 'system organ class', 'soc', 'preferred term'])
-    has_ctcae = any(k in description_text for k in ['ctcae', 'common terminology', 'grade ', 'ctcae v'])
-    has_elicited = any(k in description_text for k in ['checklist', 'elicited', 'solicited', 'questionnaire', 'asked about'])
-    has_volunteered = any(k in description_text for k in ['volunteer', 'spontaneous', 'open-ended', 'any health problem'])
+    _srk = CONFIG['safety_reporting_keywords']
+    has_meddra = any(k in description_text for k in _srk['meddra'])
+    has_ctcae = any(k in description_text for k in _srk['ctcae'])
+    has_elicited = any(k in description_text for k in _srk['elicited'])
+    has_volunteered = any(k in description_text for k in _srk['volunteered'])
     
     reporting_parts = []
     if has_meddra:
@@ -741,15 +628,8 @@ def analyze_safety_adverse_events(protocol, endpoints):
     
     # --- Item 4: SAE stopping rules and safety monitoring ---
     # Look for DSMB / Data Monitoring Committee
-    has_dsmb = any(k in description_text for k in [
-        'dsmb', 'data safety monitoring', 'data monitoring committee',
-        'independent data monitoring', 'safety monitoring board'
-    ])
-    has_sae_stopping = any(k in description_text for k in [
-        'discontinuation', 'withdrawn', 'stop treatment', 'dose modification',
-        'dose reduction', 'dose interruption', 'permanent discontinuation',
-        'treatment discontinuation'
-    ])
+    has_dsmb = any(k in description_text for k in CONFIG['dsmb_keywords'])
+    has_sae_stopping = any(k in description_text for k in CONFIG['sae_stopping_keywords'])
     
     # Try to extract the specific stopping rule language
     sae_stopping_rules = 'Not specified in protocol text'
@@ -785,7 +665,7 @@ def analyze_trial(nct_id):
     """Full pipeline: fetch, classify design from API, then LLM-classify eligibility."""
     
     # Fetch trial data
-    url = f"https://clinicaltrials.gov/api/v2/studies/{nct_id}"
+    url = f"{CONFIG['api_base_url']}/{nct_id}"
     response = requests.get(url)
     data = response.json()
     protocol = data['protocolSection']
@@ -822,17 +702,13 @@ def analyze_trial(nct_id):
     
     def classify_endpoint_type(measure, description):
         text = (measure + ' ' + (description or '')).lower()
-        safety_keywords = ['adverse event', 'tolerability', 'safety', 'clinically significant', 'laboratory', 'ecg', 'vital sign',
-                          'dlt', 'dose-limiting', 'maximum tolerated', 'mt']
-        qol_keywords = ['quality of life', 'qol', 'patient-reported', 'questionnaire', 'sf-36', 'eq-5d', 'dlqi', 'pssd', 'wpai']
-        clinical_keywords = ['death', 'mortality', 'survival', 'stroke', 'infarction', 'hospitalization', 'fracture',
-                            'overall survival', 'os']
-        biomarker_keywords = ['concentration', 'level', 'biomarker', 'gene', 'genetic', 'pcr', 'assay',
-                             'pharmacokinetic', 'pk', 'auc', 'cmax', 'tmax', 'half-life', 'terminal half-life']
-        surrogate_keywords = ['objective response', 'orr', 'disease control', 'dcr', 'duration of response',
-                             'progression-free', 'pfs', 'recist', 'tumor response', 'antitumor activity',
-                             'best overall response', 'confirmed response']
-        composite_keywords = ['composite', 'mace', 'combined', 'major adverse']
+        _ek = CONFIG['endpoint_keywords']
+        safety_keywords = _ek['safety']
+        qol_keywords = _ek['patient_reported']
+        clinical_keywords = _ek['clinical']
+        biomarker_keywords = _ek['biomarker']
+        surrogate_keywords = _ek['surrogate']
+        composite_keywords = _ek['composite']
         
         if any(k in text for k in safety_keywords):
             return 'Safety'
@@ -958,7 +834,7 @@ TRIAL DESIGN CONTEXT (extracted from structured API data):
 - Phases: {api_design['phases']}
 """
 
-    BATCH_SIZE = 20
+    BATCH_SIZE = CONFIG['llm']['batch_size']
     num_batches = math.ceil(criteria_total / BATCH_SIZE) if criteria_total > 0 else 0
     eligibility = []
     
@@ -1008,9 +884,9 @@ Do not use escape characters. Write the JSON directly.
         batch_label = f"batch {batch_idx + 1}/{num_batches}" if num_batches > 1 else "batch"
         print(f"\nSending {batch_label} ({len(batch_criteria)} criteria) to LLM for eligibility classification...")
         response = ollama.chat(
-            model='gemma2:2b-instruct-q4_K_M',
+            model=CONFIG['llm']['model'],
             messages=[{'role': 'user', 'content': batch_prompt}],
-            options={'temperature': 0.1, 'num_predict': 4096}
+            options={'temperature': CONFIG['llm']['temperature'], 'num_predict': CONFIG['llm']['num_predict']}
         )
         
         response_text = response['message']['content'].strip()
@@ -1045,9 +921,7 @@ Do not use escape characters. Write the JSON directly.
         print(f"\n  ⚠ Classified {criteria_classified}/{criteria_total} criteria ({criteria_total - criteria_classified} unclassified)")
     
     # --- Normalize LLM output (handle typos, variant field names) ---
-    competing_keywords = ['cancer', 'malignancy', 'neoplasm', 'tumor', 'liver disease', 
-                          'renal disease', 'kidney disease', 'organ failure', 'transplant',
-                          'hiv', 'aids', 'hepatitis', 'cirrhosis', 'dialysis']
+    competing_keywords = CONFIG['competing_keywords']
     for item in eligibility:
         # Normalize reasoning_category field
         for key in list(item.keys()):
@@ -1083,13 +957,7 @@ Do not use escape characters. Write the JSON directly.
     
     # Normalize masking to conventional textbook terms
     raw_masking = design_mod.get('designInfo', {}).get('maskingInfo', {}).get('masking', 'NONE')
-    masking_map = {
-        'NONE': 'Open-label',
-        'SINGLE': 'Single-blind',
-        'DOUBLE': 'Double-blind',
-        'TRIPLE': 'Double-blind',
-        'QUADRUPLE': 'Double-blind',
-    }
+    masking_map = CONFIG['masking_map']
     trial_integrity = {
         "masking_level": masking_map.get(raw_masking, raw_masking.title()),
         "blinding_validation_method": design_mod.get('designInfo', {}).get('maskingInfo', {}).get('maskingDescription', 'Not specified'),
@@ -1159,24 +1027,32 @@ Do not use escape characters. Write the JSON directly.
 
 
 if __name__ == '__main__':
-    trials = [
-        ('NCT06088043', 'Zasocitinib (TAK-279)'),
-        ('NCT04167462', 'Deucravacitinib (BMS-986165)'),
-        ('NCT06220604', 'JNJ-77242113'),
-    ]
+    parser = argparse.ArgumentParser(description='Clinical trial design analysis pipeline')
+    parser.add_argument('--trials', nargs='+', help='NCT IDs to analyze (space-separated)')
+    parser.add_argument('--comparison-name', default=None, help='Name for comparison JSON file')
+    args = parser.parse_args()
+    
+    trials = args.trials or CONFIG['default_trials']
+    comparison_name = args.comparison_name or CONFIG.get('default_comparison_name', 'portfolio')
     
     print("=" * 80)
-    print("TYK2 INHIBITOR TRIAL ANALYSIS")
+    print("CLINICAL TRIAL DESIGN ANALYSIS")
     print("=" * 80)
     
     all_results = []
-    for nct_id, drug in trials:
+    for entry in trials:
+        if isinstance(entry, dict):
+            nct_id, drug = entry['nct_id'], entry.get('drug')
+        elif isinstance(entry, tuple):
+            nct_id, drug = entry
+        else:
+            nct_id, drug = entry, None
         result = analyze_trial(nct_id)
-        result['drug'] = drug
+        result['drug'] = drug or result.get('drug', nct_id)
         all_results.append(result)
     
     print("\n" + "=" * 80)
-    print("POWER COMPARISON ACROSS TYK2 TRIALS")
+    print("POWER COMPARISON")
     print("=" * 80)
     print(f"\n{'Drug':<30} {'Enroll':<8} {'Arms':<6} {'N/Arm':<6} {'Detect Δ':<10} {'Power@20%':<10} {'Assessment':<20}")
     print("-" * 100)
@@ -1190,8 +1066,8 @@ if __name__ == '__main__':
             det, pwr = 'N/A', 'N/A'
         print(f"{r.get('drug', '')[:28]:<30} {ss['enrollment_actual'] if ss else 0:<8} {ss['num_arms'] if ss else 0:<6} {ss['estimated_n_per_arm'] if ss else 0:<6} {det:<10} {pwr:<10} {pa['assessment'] if ss else 'N/A':<20}")
     
-    # Save combined comparison
     comparison = {r['nct_id']: r for r in all_results}
-    with open('analysis_json/tyk2_comparison.json', 'w') as f:
+    comparison_path = f'analysis_json/{comparison_name}_comparison.json'
+    with open(comparison_path, 'w') as f:
         json.dump(comparison, indent=2, fp=f)
-    print(f"\n✓ Detailed comparison saved to analysis_json/tyk2_comparison.json")
+    print(f"\n✓ Detailed comparison saved to {comparison_path}")

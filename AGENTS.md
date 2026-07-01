@@ -1,70 +1,46 @@
 # Clinical Trial Analysis Workspace
 
-## Project Overview
-Clinical trial analysis using LLM agents to classify eligibility criteria from ClinicalTrials.gov and compare TYK2 inhibitor drugs.
+## Setup
+```bash
+uv venv .venv --python 3.12 && source .venv/bin/activate && uv sync
+```
+Requires local Ollama running with `gemma2:2b-instruct-q4_K_M`. The `gemma3:1b-it-qat` model is legacy-only.
 
-## Environment
-- Python 3.12 in `.venv` (managed by `uv`)
-- Requires local Ollama with models: `gemma2:2b-instruct-q4_K_M`, `gemma3:1b-it-qat`
-- Dependencies tracked in `pyproject.toml` + `uv.lock` - uses: `requests`, `ollama`, `scipy`, `matplotlib`, `numpy`
-- Setup: `uv venv .venv --python 3.12 && source .venv/bin/activate && uv sync`
-
-## Key Files
-- `agent_prompt.txt` - LLM prompt defining classification schema (Safety/Statistical Power/Feasibility) and trial design fields
-- `design_agent_pipeline.py` - **Current pipeline**: extracts design from API (design_type, control_type, superiority_type), normalizes masking to textbook terms, classifies eligibility via Gemma2
-- `llm_agent_pipeline.py` - Original single-trial pipeline (Gemma3)
-- `compare_models.py` - Compares LLM model performance across TYK2 trials
-- `search_tyk2_trials.py` - Queries ClinicalTrials.gov API for TYK2 trials
-
-## Running Scripts
+## Running
 ```bash
 source .venv/bin/activate
-
-# Current: analyze trial with design classification + eligibility
-python design_agent_pipeline.py
-
-# Legacy: original single-trial pipeline
-python llm_agent_pipeline.py
-
-# Compare TYK2 trials across models
-python compare_models.py
-
-# Search for TYK2 trials
-python search_tyk2_trials.py
+python design_agent_pipeline.py                          # default trials from config
+python design_agent_pipeline.py --trials NCT001 NCT002   # specific trials
+python design_agent_pipeline.py --comparison-name myco   # custom comparison name
+python -c "from design_agent_pipeline import analyze_trial; analyze_trial('NCT_ID')"  # single trial
+clinical-agent                                            # same as default (pyproject entry point)
+python power_visualization.py                            # generate power curve images
 ```
 
-## Data Flow
-1. Fetch trial data from `https://clinicaltrials.gov/api/v2/studies/{NCT_ID}`
-2. **Step 1**: Classify trial design from structured API data (allocation, intervention model, arm types)
-3. **Step 2**: Infer therapeutic indication from conditions/title (psoriasis, nsclc, pdac, msi_h_tumor, solid_tumor)
-4. **Step 3**: Extract `eligibilityModule.eligibilityCriteria` text
-5. **Step 4**: Batch prompt LLM with criteria list + design context, classify into Safety/Statistical Power/Feasibility. Criteria are chunked into batches of 20 and sent sequentially to avoid truncation.
-6. Normalize LLM output (handle typos, variant field names, category synonyms)
-7. Normalize masking to conventional terms (QUADRUPLE → Double-blind)
-8. Power analysis uses indication-specific parameters (control event rate, control median survival, event rate)
-9. Output `analysis_json/{NCT_ID}_analysis.json`
+## Architecture
+Single-file pipeline (`design_agent_pipeline.py`) driven by `pipeline_config.yaml`. No tests, no linting, no typechecking.
 
-## Output Files
-- `analysis_json/{NCT_ID}_analysis.json` - Single trial analysis with trial_design, trial_integrity, eligibility classification
-- `analysis_json/model_comparison.json` - Multi-model comparison results
-- `analysis_json/tyk2_trials.json` - Search results
+- **Config**: `pipeline_config.yaml` — all tunable constants (alpha, power targets, thresholds, keyword dicts, LLM params, default trials). Loaded at import via `_load_config()`. Each value annotated with textbook rationale or "oncology heuristic, not textbook-standard"
+- **Design, population, randomization, endpoints, adaptive, safety** — all algorithmic (no LLM), parsed from ClinicalTrials.gov v2 API structured data
+- **Eligibility criteria classification** — LLM (Ollama gemma2), batch size from config (`llm.batch_size`, default 20)
+- **Power analysis** — dispatches by endpoint type (dichotomous / survival / Phase 1 N/A), uses indication-specific parameters from config `indication_params` / `default_indication_params`
+- `agent_prompt.txt` — LLM prompt schema (Safety / Statistical Power / Feasibility categories + trial design fields)
 
-## Indication-Specific Power Parameters
-| Indication | Control Rate (Dichotomous) | Median OS (mo) | Median PFS (mo) | Event Rate |
-|---|---|---|---|---|
-| psoriasis | 0.10 | — | — | — |
-| nsclc | 0.30 | 12.0 | 4.5 | 0.80 |
-| pdac | 0.05 | 6.0 | 3.5 | 0.85 |
-| msi_h_tumor | 0.15 | 18.0 | 5.0 | 0.75 |
-| solid_tumor | 0.15 | 10.0 | 4.0 | 0.80 |
+## Key Gotchas
+- `pipeline_config.yaml` must be in the same directory as `design_agent_pipeline.py`; `_load_config()` resolves it via `Path(__file__).parent`
+- Masking is **normalized per textbook**: QUADRUPLE/TRIPLE → Double-blind, not "quadruple-blind" (configurable via `masking_map` in config)
+- `infer_indication()` returns `None` for unknown indications; power analysis falls back to `default_indication_params`
+- LLM output normalization handles known typos: `justigation` → `justification`, variant field names, category synonyms like `operational` → `Feasibility`
+- `__main__` no longer hardcodes trials — uses argparse `--trials` flag, falling back to `default_trials` in config
+- API URL configurable via `api_base_url` in config (default: `https://clinicaltrials.gov/api/v2/studies`)
+- Assessment thresholds (survival HR, dichotomous delta) are oncology-specific heuristics, not textbook-standard — documented in config comments
 
-## Trial Design Classification (from API)
-- **design_type**: Parallel RCT, Crossover, Factorial, Single-Arm, Adaptive Design, etc.
-- **control_type**: Placebo, Active Comparator, No Treatment, Standard of Care, None (Single-Arm)
-- **superiority_type**: Superiority, Noninferiority, Equivalence, Unclear
-- **masking**: Double-blind, Single-blind, Open-label (normalized from API values)
+## Output
+- `analysis_json/{NCT_ID}_analysis.json` — per-trial full analysis
+- `analysis_json/{portfolio}_comparison.json` — multi-trial comparisons (name from `--comparison-name` or config `default_comparison_name`)
+- `images/` — power curve PNGs
 
-## TYK2 Trials Analyzed
-- `NCT04167462` - Deucravacitinib (approved)
-- `NCT06220604` - JNJ-77242113
-- `NCT06088043` - Zasocitinib
+## Gitignored (do not read/write)
+- `textbook/` — PDF and markdown of reference textbook
+- `legacy_tests/` — old scripts
+- `session-*.md` — session logs

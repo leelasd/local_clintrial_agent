@@ -1,0 +1,490 @@
+# pipeline_config.yaml — De-hardcoded configuration for design_agent_pipeline.py
+# Each value is annotated with its rationale: textbook reference, oncology heuristic, or practical convention.
+
+# ==============================================================================
+# STATISTICAL PARAMETERS
+# ==============================================================================
+# Textbook Ch 8 line 6360-6367: "While the chosen level of α is somewhat arbitrary,
+# the ones used and accepted traditionally are 0.01, 0.025, or 0.05"
+alpha: 0.05
+
+# Textbook Ch 8 line 6395: "Typically, investigators like to have a power (1−β)
+# of at least 0.80"; line 14664: "should be designed with a power of 0.80–0.90"
+power_target: 0.80
+
+# ==============================================================================
+# POWER ASSESSMENT THRESHOLDS
+# These are ONCOLOGY-SPECIFIC HEURISTICS, NOT textbook-standard values.
+# No textbook chapter defines these cutoffs; they represent field convention
+# for interpreting detectable effect sizes in oncology trials.
+# ==============================================================================
+dichotomous_power_assessment:
+  # For detectable absolute difference (Δ) in proportion-based endpoints
+  adequately_powered: 0.10   # Δ ≤ 0.10 → Adequately Powered
+  borderline: 0.15           # Δ ≤ 0.15 → Borderline
+  underpowered: 0.25         # Δ ≤ 0.25 → Underpowered
+  # Δ > 0.25 → Severely Underpowered (implicit)
+
+survival_power_assessment:
+  # For detectable hazard ratio (HR) in time-to-event endpoints
+  # In oncology, HR of 0.65-0.80 is typical for Phase 3 trials
+  adequately_powered: 0.65   # HR ≤ 0.65 → Adequately Powered
+  borderline: 0.75           # HR ≤ 0.75 → Borderline
+  underpowered: 0.85         # HR ≤ 0.85 → Underpowered
+  # HR > 0.85 → Severely Underpowered (implicit)
+
+# ==============================================================================
+# SURVIVAL POWER DEFAULTS
+# Fallback values when indication_params doesn't supply them.
+# ==============================================================================
+# Textbook Ch 8 line 7197-7216: exponential model S(t)=exp(−λt)
+# These medians correspond to λ derived from typical oncology control arms.
+survival_defaults:
+  control_median_os_months: 6.0   # Fallback for OS when indication unknown
+  control_median_pfs_months: 3.5  # Fallback for PFS when indication unknown
+  event_rate: 0.85                 # Proportion of enrolled patients expected to have an event
+
+# Default control rate for dichotomous endpoints when indication_params doesn't specify one.
+# Matches default_indication_params.control_rate_dichotomous.
+# Oncology heuristic: 10% response rate is a common floor for placebo/sham arms.
+default_control_rate_dichotomous: 0.10
+
+# Absolute improvement to estimate "realistic" power (e.g., "Power@20% improvement").
+# This is a reporting convention, not a textbook value.
+realistic_improvement_absolute: 0.20
+
+# ==============================================================================
+# INDICATION-SPECIFIC PARAMETERS
+# Each entry maps to an indication key used by infer_indication().
+# Textbook basis: power calculations require indication-specific control event
+# rates, median survival times, and event rates (Ch 8 line 6323-6326).
+# ==============================================================================
+indication_params:
+  psoriasis:
+    control_rate_dichotomous: 0.10
+    median_os_months: null      # Psoriasis rarely uses OS endpoint
+    median_pfs_months: null
+    event_rate: null
+  nsclc:
+    control_rate_dichotomous: 0.30
+    median_os_months: 12.0
+    median_pfs_months: 4.5
+    event_rate: 0.80
+  pdac:
+    control_rate_dichotomous: 0.05
+    median_os_months: 6.0
+    median_pfs_months: 3.5
+    event_rate: 0.85
+  msi_h_tumor:
+    control_rate_dichotomous: 0.15
+    median_os_months: 18.0
+    median_pfs_months: 5.0
+    event_rate: 0.75
+  solid_tumor:
+    control_rate_dichotomous: 0.15
+    median_os_months: 10.0
+    median_pfs_months: 4.0
+    event_rate: 0.80
+
+default_indication_params:
+  control_rate_dichotomous: 0.10
+  median_os_months: 6.0
+  median_pfs_months: 3.5
+  event_rate: 0.85
+
+# ==============================================================================
+# INDICATION KEYWORD DETECTION
+# Maps indication keys to keywords found in condition/title text.
+# ==============================================================================
+indication_keywords:
+  psoriasis: [psoriasis, plaque psoriasis, pso, pasi, spga]
+  nsclc: [non-small cell lung, nsclc, lung cancer, kras g12c, egfr, alk]
+  pdac: [pancreatic, pdac, pancreas, pancreatic ductal]
+  msi_h_tumor: [msi-h, microsatellite instability, msi high, mismatch repair deficient, dmmr]
+  solid_tumor: [solid tumor, advanced solid, metastatic solid, refractory solid]
+
+# ==============================================================================
+# MASKING NORMALIZATION
+# Textbook Ch 7 line 5648-5672: textbook covers unblinded, single-blind, double-blind,
+# triple-blind. Triple-blind is double-blind + blinded monitoring committee (line 5837-5839).
+# Textbook doesn't define "quadruple-blind" — normalization to Double-blind is practical convention.
+# ==============================================================================
+masking_map:
+  NONE: Open-label
+  SINGLE: Single-blind
+  DOUBLE: Double-blind
+  TRIPLE: Double-blind    # Triple-blind = double-blind + blinded DSMB (textbook Ch 7)
+  QUADRUPLE: Double-blind # No textbook basis; "quadruple-blind" is nonstandard terminology
+
+# ==============================================================================
+# RECRUITMENT YIELD ESTIMATION
+# Textbook Ch 10 line 2870-2875, 3253-3282: restrictive criteria impact recruitment.
+# Thresholds below are practical heuristics, not textbook-defined values.
+# ==============================================================================
+recruitment_yield:
+  restrictive_count_thresholds:
+    low: 2          # ≥2 restrictive factors → Low yield (<5% screen-to-enroll)
+    moderate: 1     # ≥1 restrictive factors → Moderate yield (5-20%)
+    # 0 restrictive factors → High yield (>20%)
+
+# ==============================================================================
+# COMPETING RISK KEYWORDS
+# Used in both population analysis and eligibility classification.
+# These are disease/condition keywords indicating competing risks for exclusion.
+# ==============================================================================
+competing_keywords:
+  - cancer
+  - malignancy
+  - neoplasm
+  - tumor
+  - liver disease
+  - renal disease
+  - kidney disease
+  - organ failure
+  - transplant
+  - hiv
+  - aids
+  - hepatitis
+  - cirrhosis
+  - dialysis
+
+# ==============================================================================
+# ENDPOINT CLASSIFICATION KEYWORDS
+# Textbook Ch 8 line 6323-6326: three basic outcome types — dichotomous,
+# continuous, time-to-failure/survival. The keyword dicts below classify
+# trial endpoints into finer-grained categories used by the pipeline.
+# ==============================================================================
+endpoint_keywords:
+  safety:
+    - adverse event
+    - tolerability
+    - safety
+    - clinically significant
+    - laboratory
+    - ecg
+    - vital sign
+    - dlt
+    - dose-limiting
+    - maximum tolerated
+    - mt
+  patient_reported:
+    - quality of life
+    - qol
+    - patient-reported
+    - questionnaire
+    - sf-36
+    - eq-5d
+    - dlqi
+    - pssd
+    - wpai
+  clinical:
+    - death
+    - mortality
+    - survival
+    - stroke
+    - infarction
+    - hospitalization
+    - fracture
+    - overall survival
+    - os
+  biomarker:
+    - concentration
+    - level
+    - biomarker
+    - gene
+    - genetic
+    - pcr
+    - assay
+    - pharmacokinetic
+    - pk
+    - auc
+    - cmax
+    - tmax
+    - half-life
+    - terminal half-life
+  surrogate:
+    - objective response
+    - orr
+    - disease control
+    - dcr
+    - duration of response
+    - progression-free
+    - pfs
+    - recist
+    - tumor response
+    - antitumor activity
+    - best overall response
+    - confirmed response
+  composite:
+    - composite
+    - mace
+    - combined
+    - major adverse
+
+# ==============================================================================
+# SURVIVAL vs DICHOTOMOUS ENDPOINT KEYWORDS
+# Used in power analysis to dispatch endpoint type.
+# ==============================================================================
+survival_keywords:
+  - survival
+  - "progression-free "
+  - overall survival
+  - time to progression
+  - time to death
+  - death from any cause
+  - disease progression
+  - "pfs "
+  - "os "
+
+dichotomous_keywords:
+  - percentage
+  - proportion
+  - number of
+  - achieving
+  - response
+  - rate
+
+# ==============================================================================
+# NONINFERIORITY KEYWORDS
+# ==============================================================================
+noninferiority_keywords:
+  - noninferiority
+  - non-inferiority
+  - "non inferior"
+
+# ==============================================================================
+# STRATIFICATION FACTOR KEYWORDS
+# Keywords detected in description text to infer stratification factors.
+# ==============================================================================
+stratification_factor_keywords:
+  - site
+  - center
+  - study site
+  - study center
+  - region
+  - geographic
+  - baseline
+  - disease severity
+  - pasi
+  - psoriasis severity
+  - body weight
+  - bmi
+  - prior biologic
+  - prior treatment
+  - previous therapy
+  - age
+  - sex
+  - gender
+  - smoking
+
+# ==============================================================================
+# ADAPTIVE DESIGN SIGNALS
+# Maps adaptive design type labels to keyword lists for detection.
+# ==============================================================================
+adaptive_signals:
+  Group Sequential:
+    - group sequential
+    - interim analysis
+    - interim look
+    - interim monitoring
+    - dsmb
+    - data safety monitoring board
+    - data monitoring committee
+    - stopping rule
+    - stopping boundary
+    - early stopping
+    - early termination
+    - obrien
+    - pocock
+    - lan-demets
+  Sample Size Re-estimation:
+    - sample size re-estimation
+    - sample size reestimation
+    - sample size adjustment
+    - re-estimate sample size
+    - adaptive sample size
+    - event-driven
+    - event driven
+    - number of events
+    - target number of events
+  Response-Adaptive Randomization:
+    - response-adaptive
+    - response adaptive
+    - adaptive randomization
+    - outcome-adaptive
+    - play the winner
+    - minimization
+  Basket Trial:
+    - basket trial
+    - basket design
+    - histology-independent
+    - tumor-agnostic
+    - multiple tumor types
+    - multiple indications
+    - same genetic
+  Umbrella Trial:
+    - umbrella trial
+    - umbrella design
+    - multiple study drugs
+    - multiple targeted therapies
+    - subtype-matched
+  Platform Trial:
+    - platform trial
+    - platform design
+    - master protocol
+    - basket/umbrella platform
+    - add new arms
+    - drop arm
+    - add experimental arm
+    - shared control
+    - permanently open
+  "Dose-Finding / Phase I":
+    - "3+3"
+    - 3 plus 3
+    - rolling six
+    - bayesian
+    - continual reassessment
+    - crm design
+    - dose escalation
+    - dose de-escalation
+    - dose finding
+    - mtd
+    - maximum tolerated dose
+  Seamless Phase 2/3:
+    - seamless phase 2
+    - seamless phase 2/3
+    - adaptive seamless
+    - phase 2/3 adaptive
+    - phase 2/3 seamless
+
+# ==============================================================================
+# STOPPING RULE KEYWORDS
+# ==============================================================================
+stopping_rule_keywords:
+  obrien_fleming: [obrien, obrien-fleming, "obrien fleming", "o'brien"]
+  pocock: [pocock]
+  lan_demets: [lan-demets, lan demets]
+  haybittle_peto: [haybittle-peto, haybittle peto]
+  generic: [stopping rule, stopping boundary]
+
+interim_analysis_keywords:
+  - interim analysis
+  - interim look
+  - interim monitoring
+  - interim data
+
+# ==============================================================================
+# DOSE ESCALATION METHOD KEYWORDS (Phase 1)
+# ==============================================================================
+dose_escalation_keywords:
+  crm: [continual reassessment, crm]
+  bayesian: [bayesian]
+  traditional_3plus3: ["3+3", 3 plus 3]
+  rolling_six: [rolling six]
+
+# ==============================================================================
+# ADVERSE EVENT DETECTION
+# ==============================================================================
+# General AE terms — common AEs mentioned across therapeutic areas
+general_ae_terms:
+  headache: Headache
+  nausea: Nausea
+  fatigue: Fatigue
+  diarrhea: Diarrhea
+  nasopharyngitis: Nasopharyngitis
+  upper respiratory: Upper Respiratory Tract Infection
+  uti: Urinary Tract Infection
+  injection site: Injection Site Reaction
+  arthralgia: Arthralgia
+  back pain: Back Pain
+  dizziness: Dizziness
+  rash: Rash
+  pruritus: Pruritus
+  cough: Cough
+  pyrexia: Pyrexia / Fever
+  anemia: Anemia
+  insomnia: Insomnia
+
+# Drug-class-specific AE effects — extend with new drug classes as needed.
+# The "tyk2_inhibitor" entry replaces the hardcoded tyk2_class_effects dict.
+# This is NOT textbook-derived; it comes from TYK2 inhibitor clinical literature.
+drug_class_effects:
+  tyk2_inhibitor:
+    herpes zoster: Herpes zoster (shingles)
+    zoster: Herpes zoster (shingles)
+    cpk: CPK elevation
+    creatine kinase: CPK elevation
+    acne: Acne
+    folliculitis: Folliculitis
+    neutropenia: Neutropenia
+    lipid: Lipid elevation (LDL/triglycerides)
+    transaminase: Liver enzyme elevation
+    alt: ALT elevation
+    ast: AST elevation
+    infection: Infections (general)
+    tuberculosis: Tuberculosis screening
+    tb: Tuberculosis screening
+
+# ==============================================================================
+# SAFETY REPORTING KEYWORDS
+# ==============================================================================
+safety_reporting_keywords:
+  meddra: [meddra, medical dictionary, system organ class, soc, preferred term]
+  ctcae: [ctcae, common terminology, "grade ", ctcae v]
+  elicited: [checklist, elicited, solicited, questionnaire, asked about]
+  volunteered: [volunteer, spontaneous, open-ended, any health problem]
+
+# ==============================================================================
+# DSMB / SAFETY MONITORING KEYWORDS
+# ==============================================================================
+dsmb_keywords:
+  - dsmb
+  - data safety monitoring
+  - data monitoring committee
+  - independent data monitoring
+  - safety monitoring board
+
+sae_stopping_keywords:
+  - discontinuation
+  - withdrawn
+  - stop treatment
+  - dose modification
+  - dose reduction
+  - dose interruption
+  - permanent discontinuation
+  - treatment discontinuation
+
+safety_outcome_keywords:
+  - adverse event
+  - safety
+  - tolerab
+  - serious adverse
+
+# ==============================================================================
+# LLM CONFIGURATION
+# ==============================================================================
+llm:
+  model: gemma2:2b-instruct-q4_K_M
+  batch_size: 20   # Criteria per LLM request to avoid truncation
+  temperature: 0.1
+  num_predict: 4096
+
+# ==============================================================================
+# DEFAULT TRIALS (for __main__ / CLI)
+# The __main__ block previously hardcoded 3 TYK2 trial NCT IDs.
+# Now configurable here or via CLI arguments.
+# ==============================================================================
+default_trials:
+  - nct_id: NCT06088043
+    drug: Zasocitinib (TAK-279)
+  - nct_id: NCT04167462
+    drug: Deucravacitinib (BMS-986165)
+  - nct_id: NCT06220604
+    drug: JNJ-77242113
+
+default_comparison_name: tyk2
+
+# ==============================================================================
+# API
+# ==============================================================================
+api_base_url: https://clinicaltrials.gov/api/v2/studies
