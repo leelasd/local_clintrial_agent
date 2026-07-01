@@ -12,37 +12,37 @@
     {
       "text": ". Moderate to severe disease.",
       "reasoning_category": "Statistical Power",
-      "justification": "Moderate to severe disease severity is likely to be associated with greater treatment response and thus, better detection of a treatment effect.",
+      "justification": "Moderate to severe disease severity is likely to be associated with greater treatment response and thus, higher statistical power.",
       "competing_risk": false
     },
     {
       "text": ". Candidate for phototherapy or systemic therapy.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patients are eligible for the intervention being tested, which is likely to be a key factor in study success and data quality.",
+      "justification": "This criterion ensures the patient's eligibility for a specific treatment modality, which is crucial for study feasibility and data quality.",
       "competing_risk": false
     },
     {
       "text": ". Other forms of psoriasis.",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes individuals with other types of psoriasis, potentially protecting them from harm or ensuring the study's focus on plaque psoriasis.",
+      "justification": "This criterion excludes patients with other forms of psoriasis, potentially protecting them from harm or ensuring a specific treatment focus.",
       "competing_risk": false
     },
     {
       "text": ". History of recent infection.",
       "reasoning_category": "Safety",
-      "justification": "This criterion is likely to protect patients from potential complications related to infections, particularly in a context where treatment efficacy might be impacted by immune system response.",
+      "justification": "This criterion aims to protect patients from potential complications related to infections during the study period.",
       "competing_risk": false
     },
     {
       "text": ". Prior exposure to TAK-279 or active comparator.",
-      "reasoning_category": "Safety",
-      "justification": "This criterion ensures that patients have not previously received the intervention being tested, potentially preventing confounding effects on treatment efficacy.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures that participants have not previously received TAK-279 or an active comparator, potentially impacting the study's feasibility and data quality.",
       "competing_risk": false
     },
     {
       "text": "Other protocol defined inclusion/exclusion criteria apply.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion is likely to ensure data quality and consistency across the study population.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion is a general safety measure to ensure patient well-being and adherence to the study protocol.",
       "competing_risk": false
     }
   ],
@@ -390,7 +390,7 @@
     "control_type": "Placebo",
     "superiority_type": "Superiority"
   },
-  "indication": "psoriasis",
+  "indication": "plaque psoriasis",
   "randomization": {
     "randomization_type": "Simple",
     "allocation_ratio": "1:1:1",
@@ -420,6 +420,27 @@
     ],
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+  },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "TYK2",
+        "drug_class": "tyk2_inhibitor",
+        "known_effects": [
+          "Treatment response - JAK-STAT pathway inhibition"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [],
+    "genetic_screen_failure_summary": null,
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (TYK2) but could not map indication \"plaque psoriasis\" to a GWAS EFO trait. Try alternative trait name.",
+    "detected_drug_classes": [
+      "tyk2_inhibitor"
+    ]
   },
   "summary": {
     "Statistical Power": 2,

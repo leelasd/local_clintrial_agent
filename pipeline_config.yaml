@@ -85,6 +85,11 @@ indication_params:
     median_os_months: 10.0
     median_pfs_months: 4.0
     event_rate: 0.80
+  lymphoma:
+    control_rate_dichotomous: 0.30
+    median_os_months: 24.0
+    median_pfs_months: 12.0
+    event_rate: 0.70
 
 default_indication_params:
   control_rate_dichotomous: 0.10
@@ -102,6 +107,20 @@ indication_keywords:
   pdac: [pancreatic, pdac, pancreas, pancreatic ductal]
   msi_h_tumor: [msi-h, microsatellite instability, msi high, mismatch repair deficient, dmmr]
   solid_tumor: [solid tumor, advanced solid, metastatic solid, refractory solid]
+
+# Maps free-form LLM output to indication_params keys for power analysis.
+indication_aliases:
+  non-hodgkin lymphoma: lymphoma
+  hodgkin lymphoma: lymphoma
+  non-small cell lung cancer: nsclc
+  nsclc: nsclc
+  lung cancer: nsclc
+  psoriasis: psoriasis
+  pancreatic cancer: pdac
+  pdac: pdac
+  pancreatic ductal adenocarcinoma: pdac
+  msi-h: msi_h_tumor
+  msi high: msi_h_tumor
 
 # ==============================================================================
 # MASKING NORMALIZATION

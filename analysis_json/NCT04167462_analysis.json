@@ -6,7 +6,7 @@
     {
       "text": "Plaque psoriasis for at least 6 months",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a sufficient sample size and allows for comparison of treatment effects over time.",
+      "justification": "This criterion ensures a sufficient sample size to detect treatment effects.",
       "competing_risk": false
     },
     {
@@ -18,31 +18,31 @@
     {
       "text": "Candidate for phototherapy or systemic therapy",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures that participants are eligible for potential treatments and allows for comparison of treatment effects in this population.",
+      "justification": "This criterion ensures that participants are eligible for treatments and can be compared to the placebo group, maximizing the likelihood of detecting a treatment effect.",
       "competing_risk": false
     },
     {
       "text": "Other forms of psoriasis",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion may be included to ensure the study is inclusive of a broader range of psoriasis types, potentially impacting recruitment and data analysis.",
+      "justification": "This criterion may limit recruitment but is not directly related to patient safety or efficacy.",
       "competing_risk": false
     },
     {
       "text": "History of recent infection",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential complications related to infections during the study period.",
+      "justification": "This criterion protects patients from potential complications associated with infections, particularly in the context of a treatment trial.",
       "competing_risk": false
     },
     {
       "text": "Prior exposure to BMS-986165",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures that participants are not already receiving treatment with BMS-986165, potentially impacting the study's safety and efficacy.",
+      "justification": "This criterion ensures that participants have not already received BMS-986165, potentially avoiding confounding effects on the study.",
       "competing_risk": false
     },
     {
       "text": "Other inclusion/exclusion criteria may apply.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion acknowledges that additional criteria might be necessary for specific patient populations or research objectives, potentially impacting recruitment and data quality.",
+      "justification": "This criterion is a general statement and does not directly relate to patient safety or efficacy. It likely serves as a catch-all for any additional criteria that might be necessary.",
       "competing_risk": false
     }
   ],
@@ -174,7 +174,7 @@
     "control_type": "Placebo",
     "superiority_type": "Superiority"
   },
-  "indication": "psoriasis",
+  "indication": "plaque psoriasis",
   "randomization": {
     "randomization_type": "Simple",
     "allocation_ratio": "1:1",
@@ -194,12 +194,33 @@
     "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
     "ae_types_detected": [],
     "class_effects_known": [
-      "Infections (general)",
-      "AST elevation"
+      "AST elevation",
+      "Infections (general)"
     ],
     "safety_endpoints": [],
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+  },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "TYK2",
+        "drug_class": "tyk2_inhibitor",
+        "known_effects": [
+          "Treatment response - JAK-STAT pathway inhibition"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [],
+    "genetic_screen_failure_summary": null,
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (TYK2) but could not map indication \"plaque psoriasis\" to a GWAS EFO trait. Try alternative trait name.",
+    "detected_drug_classes": [
+      "tyk2_inhibitor"
+    ]
   },
   "summary": {
     "Statistical Power": 3,
