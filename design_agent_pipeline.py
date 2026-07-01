@@ -808,6 +808,54 @@ def extract_genetic_biomarkers(protocol):
     return extract_genetic_biomarkers_from_text(description)
 
 
+# Patterns to detect genetic biomarker requirements in eligibility criteria.
+# Keys map to genetic_biomarker_prevalence in config.
+GENETIC_BIOMARKER_PATTERNS = [
+    (r'\bkras\s*p?\.?g12c\b', 'KRAS_G12C'),
+    (r'\bkras\s*g12c\b', 'KRAS_G12C'),
+    (r'\bdmmr\b', 'dMMR_MSI_H'),
+    (r'\bmsi-h\b', 'dMMR_MSI_H'),
+    (r'\bmsi\s*high\b', 'dMMR_MSI_H'),
+    (r'\bmicrosatellite\s*instability\b', 'dMMR_MSI_H'),
+    (r'\begfr\s*exon\s*19\b', 'EGFR_ex19del'),
+    (r'\begfr\s*l858r\b', 'EGFR_L858R'),
+    (r'\bbraf\s*v600e?\b', 'BRAF_V600E'),
+    (r'\bher2\s*positive\b', 'HER2_amplification'),
+    (r'\bher2\s*amplif', 'HER2_amplification'),
+    (r'\berbb2\s*amplif', 'HER2_amplification'),
+]
+
+
+def detect_genetic_biomarker_requirements(text):
+    """Scan eligibility criteria for genetic biomarker requirements.
+    
+    Returns list of dicts: {biomarker_key, prevalence, screen_fail_rate, matched_text}
+    """
+    text_lower = text.lower()
+    prevalence_map = PGX_CONFIG['genetic_biomarker_prevalence']
+    found = []
+    seen = set()
+    for pattern, key in GENETIC_BIOMARKER_PATTERNS:
+        match = re.search(pattern, text_lower)
+        if match and key not in seen:
+            seen.add(key)
+            prevalence = prevalence_map.get(key, 0.5)
+            found.append({
+                'biomarker_key': key,
+                'population_prevalence': prevalence,
+                'estimated_screen_failure_rate': round(1.0 - prevalence, 3),
+                'matched_text': match.group()
+            })
+    return found
+
+
+def detect_genetic_biomarker_requirements_from_protocol(protocol):
+    """Extract genetic biomarker requirement mentions from eligibility criteria."""
+    return detect_genetic_biomarker_requirements(
+        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
+    )
+
+
 def analyze_pharmacogenetics(protocol, indication):
     """GWAS-powered pharmacogenetic subgroup analysis.
     
@@ -822,6 +870,8 @@ def analyze_pharmacogenetics(protocol, indication):
     """
     result = {
         'genetic_biomarkers_mentioned': [],
+        'genetic_screen_failure': [],
+        'genetic_screen_failure_summary': None,
         'gwas_associations_found': [],
         'pharmacogenetic_subgroups': [],
         'stratification_opportunity': None,
@@ -850,6 +900,24 @@ def analyze_pharmacogenetics(protocol, indication):
             f'genes configured for it.'
         )
         return result
+    
+    # Genetic screen failure estimation: detect biomarker-based eligibility criteria
+    # and estimate what fraction of screened patients would fail genetic requirements.
+    eligibility_text = protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
+    genetic_requirements = detect_genetic_biomarker_requirements(eligibility_text)
+    result['genetic_screen_failure'] = genetic_requirements
+    
+    if genetic_requirements:
+        max_fail = max(r['estimated_screen_failure_rate'] for r in genetic_requirements)
+        result['genetic_screen_failure_summary'] = (
+            f"Detected {len(genetic_requirements)} genetic biomarker requirement(s) in eligibility: "
+            + "; ".join(
+                f"{r['biomarker_key']} (pop. prevalence ~{r['population_prevalence']:.0%}, "
+                f"~{r['estimated_screen_failure_rate']:.0%} screen fail)"
+                for r in genetic_requirements
+            )
+            + f". Worst-case screen failure rate from genetic criteria: ~{max_fail:.0%}."
+        )
     
     if indication:
         efo_info = query_gwas_efo_trait(indication)
@@ -938,9 +1006,11 @@ def analyze_pharmacogenetics(protocol, indication):
             
             n_assocs = len(relevant)
             n_subs = len(subgroups)
+            n_genetic = len(genetic_requirements)
+            screen_part = f" {n_genetic} genetic screen requirement(s) detected." if n_genetic else ""
             result['summary'] = (
                 f"Found {n_assocs} GWAS association(s) relevant to {n_subs} pharmacogenetic subgroup(s) "
-                f"in {efo_info['efo_trait']}. "
+                f"in {efo_info['efo_trait']}.{screen_part} "
                 f"{'Stratification opportunity identified.' if result['stratification_opportunity'].startswith('Yes') else 'No clear stratification signal.'}"
             )
         else:
@@ -1111,6 +1181,9 @@ def analyze_trial(nct_id):
     print(f"  Genes detected: {[g['gene'] for g in pharmacogenetics['genetic_biomarkers_mentioned']] or 'None'}")
     print(f"  GWAS associations found: {len(pharmacogenetics['gwas_associations_found'])}")
     print(f"  Pharmacogenetic subgroups: {len(pharmacogenetics['pharmacogenetic_subgroups'])}")
+    if pharmacogenetics.get('genetic_screen_failure'):
+        for gs in pharmacogenetics['genetic_screen_failure']:
+            print(f"  Genetic screen: {gs['biomarker_key']} → pop. prevalence ~{gs['population_prevalence']:.0%}, ~{gs['estimated_screen_failure_rate']:.0%} fail rate")
     print(f"  Stratification opportunity: {pharmacogenetics['stratification_opportunity']}")
     print(f"  Summary: {pharmacogenetics['summary']}")
     
@@ -1321,7 +1394,14 @@ Do not use escape characters. Write the JSON directly.
         pa = sample_size['power_analysis']
         print(f"Power: {pa['assessment']}")
     print(f"Safety: {safety_ae['ae_reporting_method']} | AE types found: {len(safety_ae['ae_types_detected'])}")
-    print(f"Pharmacogenetics: {len(pharmacogenetics['gwas_associations_found'])} GWAS hits | {len(pharmacogenetics['pharmacogenetic_subgroups'])} subgroups | Stratification: {pharmacogenetics['stratification_opportunity'][:40] if pharmacogenetics['stratification_opportunity'] else 'N/A'}...")
+    sf = pharmacogenetics.get('genetic_screen_failure', [])
+    sf_parts = []
+    for g in sf:
+        bk = g['biomarker_key']
+        sr = g['estimated_screen_failure_rate']
+        sf_parts.append(f"{bk} ~{sr:.0%}")
+    sf_str = f" | Screen fail: {', '.join(sf_parts)}" if sf_parts else ""
+    print(f"Pharmacogenetics: {len(pharmacogenetics['gwas_associations_found'])} GWAS hits | {len(pharmacogenetics['pharmacogenetic_subgroups'])} subgroups{sf_str} | Stratification: {pharmacogenetics['stratification_opportunity'][:40] if pharmacogenetics['stratification_opportunity'] else 'N/A'}...")
     print(f"\nEligibility Classification:")
     for cat, count in categories.most_common():
         print(f"  {cat}: {count}")
