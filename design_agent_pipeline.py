@@ -1,6 +1,7 @@
 import requests
 import json
 import math
+import re
 import ollama
 import argparse
 from pathlib import Path
@@ -661,6 +662,300 @@ def analyze_safety_adverse_events(protocol, endpoints):
         'safety_monitoring': safety_monitoring
     }
 
+
+# ==============================================================================
+# GWAS CATALOG INTEGRATION
+# ==============================================================================
+# Textbook Ch 9 (Pharmacogenetics, p. 172):
+# "Collection of biologic samples at baseline in large, long-term trials has emerged
+# as a rich source for pharmacogenetic studies. In participants with or without specific
+# genotypes, one would in subgroup analysis compare treatment responses."
+#
+# "The strength by which common variants can influence the risk determination ranges
+# from a several-fold increased risk compared to those without the variant to a
+# 1,000-fold increase."
+#
+# The GWAS Catalog provides curated SNP-trait associations from published GWAS,
+# enabling identification of known genetic variants relevant to a trial's indication,
+# drug target, or safety profile.
+
+GWAS_API_BASE = CONFIG['gwas_api_base_url']
+PGX_CONFIG = CONFIG['pharmacogenetic_assessment']
+PGX_DRUGS = CONFIG['pharmacogenetic_drugs']
+
+
+def query_gwas_efo_trait(trait_name):
+    """Look up EFO trait from GWAS Catalog by free-text search.
+    
+    Returns dict with efo_id, efo_trait, uri if found, else None.
+    Prefers exact match on trait name, then substring match, then first result.
+    """
+    url = f"{GWAS_API_BASE}/v2/efo-traits"
+    params = {'efo_trait': trait_name, 'size': 15}
+    try:
+        resp = requests.get(url, params=params, timeout=10)
+        if resp.status_code == 200:
+            data = resp.json()
+            traits = data.get('_embedded', {}).get('efo_traits', [])
+            if traits:
+                # Exact match (case-insensitive)
+                for t in traits:
+                    if t.get('efo_trait', '').lower() == trait_name.lower():
+                        return {
+                            'efo_id': t['efo_id'],
+                            'efo_trait': t['efo_trait'],
+                            'uri': t['uri']
+                        }
+                # Word-boundary match: trait_name appears as a whole word
+                for t in traits:
+                    trait_lower = t.get('efo_trait', '').lower()
+                    if re.search(r'\b' + re.escape(trait_name.lower()) + r'\b', trait_lower):
+                        return {
+                            'efo_id': t['efo_id'],
+                            'efo_trait': t['efo_trait'],
+                            'uri': t['uri']
+                        }
+                # Substring match: trait_name is a substring of the trait
+                for t in traits:
+                    if trait_name.lower() in t.get('efo_trait', '').lower():
+                        return {
+                            'efo_id': t['efo_id'],
+                            'efo_trait': t['efo_trait'],
+                            'uri': t['uri']
+                        }
+                # Fallback to first result
+                t = traits[0]
+                return {
+                    'efo_id': t['efo_id'],
+                    'efo_trait': t['efo_trait'],
+                    'uri': t['uri']
+                }
+    except requests.RequestException:
+        pass
+    return None
+
+
+def query_gwas_associations(efo_trait=None, efo_id=None, max_results=None):
+    """Fetch GWAS associations for a given trait.
+    
+    Returns list of association dicts with p-value, OR, mapped genes, SNP info.
+    """
+    if max_results is None:
+        max_results = PGX_CONFIG['max_associations_per_query']
+    
+    url = f"{GWAS_API_BASE}/v2/associations"
+    params = {'size': min(max_results, 500)}
+    if efo_id:
+        params['efo_id'] = efo_id
+    elif efo_trait:
+        params['efo_trait'] = efo_trait
+    else:
+        return []
+    
+    try:
+        resp = requests.get(url, params=params, timeout=10)
+        if resp.status_code == 200:
+            data = resp.json()
+            return data.get('_embedded', {}).get('associations', [])
+    except requests.RequestException:
+        pass
+    return []
+
+
+def extract_genetic_biomarkers_from_text(text):
+    """Extract known pharmacogenetic signals from free text.
+    
+    Two-pass detection:
+    1. First detects drug class by matching drug compound names in protocol text
+    2. Then returns the relevant genes/effects for each detected drug class
+    
+    Returns dict: gene_name -> {'drug_class': str, 'known_effects': list}
+    Includes a special '_detected_drug_classes' key listing matched drug classes.
+    """
+    text_lower = text.lower()
+    detected_drug_classes = set()
+    
+    for drug_class, info in PGX_DRUGS.items():
+        for drug_name in info.get('drug_names', []):
+            if drug_name.lower() in text_lower:
+                detected_drug_classes.add(drug_class)
+                break
+    
+    genes_found = {}
+    for drug_class in detected_drug_classes:
+        info = PGX_DRUGS[drug_class]
+        for gene, effects in info.get('genes', {}).items():
+            genes_found[gene] = {
+                'drug_class': drug_class,
+                'known_effects': effects
+            }
+    
+    genes_found['_detected_drug_classes'] = list(detected_drug_classes)
+    return genes_found
+
+
+def extract_genetic_biomarkers(protocol):
+    """Extract genetic biomarker mentions from protocol description and eligibility text."""
+    description = (
+        protocol.get('descriptionModule', {}).get('briefSummary', '') + ' ' +
+        (protocol.get('descriptionModule', {}).get('detailedDescription', '') or '') + ' ' +
+        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '') + ' ' +
+        protocol.get('identificationModule', {}).get('briefTitle', '') + ' ' +
+        ' '.join(o.get('measure', '') for o in
+                  protocol.get('outcomesModule', {}).get('primaryOutcomes', []) + 
+                  protocol.get('outcomesModule', {}).get('secondaryOutcomes', []))
+    )
+    return extract_genetic_biomarkers_from_text(description)
+
+
+def analyze_pharmacogenetics(protocol, indication):
+    """GWAS-powered pharmacogenetic subgroup analysis.
+    
+    Textbook framework (Ch. 9, p. 172-174):
+    1. Identifies genes mentioned in the protocol (drug targets, biomarkers, safety genes)
+    2. Cross-references against GWAS Catalog for known SNP-trait associations
+    3. Identifies potential pharmacogenetic subgroups for:
+       - Differential treatment response (efficacy) — e.g., EGFR mutations for gefitinib
+       - Differential adverse event risk (safety) — e.g., SLCO1B1 for statin myopathy
+    4. Assesses whether genotype-stratified randomization or pre-planned subgroup analysis
+       is warranted per the textbook's pharmacogenetics framework
+    """
+    result = {
+        'genetic_biomarkers_mentioned': [],
+        'gwas_associations_found': [],
+        'pharmacogenetic_subgroups': [],
+        'stratification_opportunity': None,
+        'safety_pharmacogenetics': [],
+        'summary': 'No pharmacogenetic analysis performed'
+    }
+    
+    biomarkers = extract_genetic_biomarkers(protocol)
+    detected_classes = biomarkers.pop('_detected_drug_classes', [])
+    
+    if detected_classes:
+        result['detected_drug_classes'] = detected_classes
+    
+    result['genetic_biomarkers_mentioned'] = [
+        {'gene': g, 'drug_class': info['drug_class'], 'known_effects': info['known_effects']}
+        for g, info in biomarkers.items()
+    ]
+    
+    if not biomarkers and not detected_classes:
+        result['summary'] = 'No known pharmacogenetic drug classes or genes detected in protocol text.'
+        return result
+    
+    if not biomarkers:
+        result['summary'] = (
+            f'Drug class detected ({", ".join(detected_classes)}) but no specific pharmacogenetic '
+            f'genes configured for it.'
+        )
+        return result
+    
+    if indication:
+        efo_info = query_gwas_efo_trait(indication)
+        if efo_info:
+            associations = query_gwas_associations(efo_id=efo_info['efo_id'])
+            gene_names = [g.lower() for g in biomarkers.keys()]
+            
+            relevant = []
+            seen_snps = set()
+            for assoc in associations:
+                mapped_genes = [g.lower() for g in (assoc.get('mapped_genes', []) or [])]
+                matching = [g for g in mapped_genes if g in gene_names]
+                if not matching:
+                    continue
+                
+                p_mantissa = assoc.get('pvalue_mantissa')
+                p_exponent = assoc.get('pvalue_exponent')
+                pvalue = f"{p_mantissa}e{p_exponent}" if p_mantissa is not None and p_exponent is not None else None
+                
+                snp_info = assoc.get('snp_allele', [{}])[0] if assoc.get('snp_allele') else {}
+                rs_id = snp_info.get('rs_id', 'N/A')
+                
+                if rs_id in seen_snps:
+                    continue
+                seen_snps.add(rs_id)
+                
+                relevant.append({
+                    'snp': rs_id,
+                    'pvalue': pvalue,
+                    'or_per_copy': assoc.get('or_per_copy_num'),
+                    'ci_range': assoc.get('range'),
+                    'risk_frequency': assoc.get('risk_frequency'),
+                    'mapped_genes': assoc.get('mapped_genes', []),
+                    'trait': assoc.get('reported_trait', ['N/A'])[0],
+                    'pubmed_id': assoc.get('pubmed_id'),
+                    'accession_id': assoc.get('accession_id')
+                })
+            
+            result['gwas_associations_found'] = relevant
+            
+            # Build pharmacogenetic subgroup recommendations
+            subgroups = []
+            safety_pgx = []
+            for gene_info in result['genetic_biomarkers_mentioned']:
+                gene = gene_info['gene']
+                effects = gene_info['known_effects']
+                gwas_hits = [a for a in relevant if gene.lower() in [g.lower() for g in (a.get('mapped_genes', []) or [])]]
+                
+                subgroup = {
+                    'gene': gene,
+                    'drug_class': gene_info['drug_class'],
+                    'known_effects': effects,
+                    'gwas_associations_count': len(gwas_hits),
+                    'recommended_subgroup_analysis': any('response' in e.lower() for e in effects),
+                    'recommended_safety_monitoring': any('safety' in e.lower() for e in effects),
+                }
+                subgroups.append(subgroup)
+                
+                # Textbook Ch 9: GWAS can identify SNPs linked to adverse drug reactions
+                if subgroup['recommended_safety_monitoring']:
+                    safety_pgx.append({
+                        'gene': gene,
+                        'rationale': (
+                            f"GWAS-identified variants in {gene} may predict differential AE risk. "
+                            f"Per textbook Ch. 9 (p. 173): 'Genetic variants associated with serious "
+                            f"adverse events [...] prior to initiation of treatment.'"
+                        )
+                    })
+            
+            result['pharmacogenetic_subgroups'] = subgroups
+            result['safety_pharmacogenetics'] = safety_pgx
+            
+            # Assess stratification opportunity
+            if any(s['recommended_subgroup_analysis'] for s in subgroups):
+                result['stratification_opportunity'] = (
+                    'Yes — genotype-stratified randomization or pre-planned subgroup analysis '
+                    'warranted. Per textbook Ch. 9: "one would in subgroup analysis compare '
+                    'treatment responses such as serious adverse events."'
+                )
+            elif subgroups:
+                result['stratification_opportunity'] = (
+                    'Possible — genes mentioned but limited GWAS validation for stratification.'
+                )
+            else:
+                result['stratification_opportunity'] = 'No — no pharmacogenetic biomarkers detected.'
+            
+            n_assocs = len(relevant)
+            n_subs = len(subgroups)
+            result['summary'] = (
+                f"Found {n_assocs} GWAS association(s) relevant to {n_subs} pharmacogenetic subgroup(s) "
+                f"in {efo_info['efo_trait']}. "
+                f"{'Stratification opportunity identified.' if result['stratification_opportunity'].startswith('Yes') else 'No clear stratification signal.'}"
+            )
+        else:
+            result['summary'] = (
+                f'Genes detected ({", ".join(biomarkers.keys())}) but could not map indication '
+                f'"{indication}" to a GWAS EFO trait. Try alternative trait name.'
+            )
+    else:
+        result['summary'] = (
+            f'Genes detected ({", ".join(biomarkers.keys())}) but indication is unknown. '
+            'Cannot query GWAS without indication.'
+        )
+    
+    return result
+
 def analyze_trial(nct_id):
     """Full pipeline: fetch, classify design from API, then LLM-classify eligibility."""
     
@@ -805,6 +1100,19 @@ def analyze_trial(nct_id):
     print(f"  AE types detected: {', '.join(safety_ae['ae_types_detected'][:5]) if safety_ae['ae_types_detected'] else 'None detected in text'}")
     print(f"  Class-specific effects: {', '.join(safety_ae['class_effects_known'][:5]) if safety_ae['class_effects_known'] else 'None detected'}")
     print(f"  Safety monitoring: {safety_ae['safety_monitoring']}")
+    
+    # --- STEP 1f: Pharmacogenetic / GWAS subgroup analysis ---
+    # Textbook Ch. 9 (p. 172-174): GWAS enables identification of genetic subgroups
+    # for differential treatment response or adverse event risk.
+    # Textbook examples: imatinib/BCR-ABL, trastuzumab/HER2, gefitinib/EGFR for efficacy;
+    # SLCO1B1 rs4149056 for statin-induced myopathy safety.
+    pharmacogenetics = analyze_pharmacogenetics(protocol, indication)
+    print(f"\nPharmacogenetics (GWAS):")
+    print(f"  Genes detected: {[g['gene'] for g in pharmacogenetics['genetic_biomarkers_mentioned']] or 'None'}")
+    print(f"  GWAS associations found: {len(pharmacogenetics['gwas_associations_found'])}")
+    print(f"  Pharmacogenetic subgroups: {len(pharmacogenetics['pharmacogenetic_subgroups'])}")
+    print(f"  Stratification opportunity: {pharmacogenetics['stratification_opportunity']}")
+    print(f"  Summary: {pharmacogenetics['summary']}")
     
     # --- STEP 2: LLM classification of eligibility (batched) ---
     eligibility_text = protocol['eligibilityModule']['eligibilityCriteria']
@@ -988,6 +1296,7 @@ Do not use escape characters. Write the JSON directly.
         "randomization": randomization,
         "adaptive_designs": adaptive,
         "safety_adverse_events": safety_ae,
+        "pharmacogenetics": pharmacogenetics,
         "summary": dict(categories)
     }
     
@@ -1012,6 +1321,7 @@ Do not use escape characters. Write the JSON directly.
         pa = sample_size['power_analysis']
         print(f"Power: {pa['assessment']}")
     print(f"Safety: {safety_ae['ae_reporting_method']} | AE types found: {len(safety_ae['ae_types_detected'])}")
+    print(f"Pharmacogenetics: {len(pharmacogenetics['gwas_associations_found'])} GWAS hits | {len(pharmacogenetics['pharmacogenetic_subgroups'])} subgroups | Stratification: {pharmacogenetics['stratification_opportunity'][:40] if pharmacogenetics['stratification_opportunity'] else 'N/A'}...")
     print(f"\nEligibility Classification:")
     for cat, count in categories.most_common():
         print(f"  {cat}: {count}")

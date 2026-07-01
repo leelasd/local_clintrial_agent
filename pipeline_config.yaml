@@ -485,6 +485,79 @@ default_trials:
 default_comparison_name: tyk2
 
 # ==============================================================================
+# GWAS CATALOG API
+# Ch 9 line 8076-8089: GWAS enables genome-wide examination unconstrained by prior
+# hypotheses, identifying SNP-trait associations for pharmacogenetic subgroups.
+# Ch 9 line 8101-8109: Example — SLCO1B1 rs4149056 linked to statin-induced myopathy,
+# with 60% of cases attributable to C allele present in 15% of the population.
+# ==============================================================================
+gwas_api_base_url: https://www.ebi.ac.uk/gwas/rest/api
+
+# Pharmacogenetic subgroup analysis parameters
+pharmacogenetic_assessment:
+  min_gwas_associations: 1              # Minimum associations to report a PGx signal
+  max_associations_per_query: 20        # Max associations to fetch per API call
+  min_pvalue_exponent: -5               # Maximum p-value exponent (e.g., -5 = p < 1e-5) for genome-wide significance
+
+# Known pharmacogenetic drug class signals for cross-referencing protocol text.
+# Drug names map to drug classes; drug classes specify relevant genes.
+# The textbook (Ch. 9) discusses this paradigm: genetic variants in drug target
+# genes (imatinib/BCR-ABL, trastuzumab/HER2, gefitinib/EGFR) predict treatment response.
+pharmacogenetic_drugs:
+  tyk2_inhibitor:
+    drug_names: [tak-279, zasocitinib, deucravacitinib, bms-986165, jnj-77242113]
+    genes:
+      TYK2: [Treatment response - JAK-STAT pathway inhibition]
+  jak_inhibitor:
+    drug_names: [tofacitinib, baricitinib, upadacitinib, filgotinib, abrocitinib]
+    genes:
+      JAK1: [Treatment response - JAK-STAT signaling]
+      JAK2: [Treatment response - JAK-STAT signaling]
+      JAK3: [Treatment response - JAK-STAT signaling]
+  egfr_inhibitor:
+    drug_names: [gefitinib, erlotinib, afatinib, osimertinib, dacomitinib]
+    genes:
+      EGFR: [Treatment response - mutation-dependent efficacy]
+      KRAS: [Resistance - mutation predicts non-response]
+  immunotherapy:
+    drug_names: [pembrolizumab, nivolumab, atezolizumab, durvalumab, ipilimumab]
+    genes:
+      PD1: [Treatment response - immune checkpoint]
+      PDL1: [Treatment response - immune checkpoint]
+      CTLA4: [Treatment response - immune checkpoint]
+  statin:
+    drug_names: [atorvastatin, simvastatin, rosuvastatin, pravastatin, lovastatin]
+    genes:
+      SLCO1B1: [Safety - myopathy risk per textbook Ch 9 example]
+  bcr_abl_inhibitor:
+    drug_names: [imatinib, dasatinib, nilotinib, ponatinib, bosutinib]
+    genes:
+      BCR: [Treatment response - Philadelphia chromosome]
+      ABL1: [Treatment response - Philadelphia chromosome]
+  her2_targeted:
+    drug_names: [trastuzumab, pertuzumab, ado-trastuzumab, fam-trastuzumab, lapatinib]
+    genes:
+      ERBB2: [Treatment response - HER2 amplification]
+  jak_inhibitor:
+    JAK1: [Treatment response - JAK-STAT signaling]
+    JAK2: [Treatment response - JAK-STAT signaling]
+    JAK3: [Treatment response - JAK-STAT signaling]
+  egfr_inhibitor:
+    EGFR: [Treatment response - mutation-dependent efficacy]
+    KRAS: [Resistance - mutation predicts non-response]
+  immunotherapy:
+    PD1: [Treatment response - immune checkpoint]
+    PDL1: [Treatment response - immune checkpoint]
+    CTLA4: [Treatment response - immune checkpoint]
+  statin:
+    SLCO1B1: [Safety - myopathy risk per textbook Ch 9 example]
+  bcr_abl_inhibitor:
+    BCR: [Treatment response - Philadelphia chromosome]
+    ABL1: [Treatment response - Philadelphia chromosome]
+  her2_targeted:
+    ERBB2: [Treatment response - HER2 amplification]
+
+# ==============================================================================
 # API
 # ==============================================================================
 api_base_url: https://clinicaltrials.gov/api/v2/studies
