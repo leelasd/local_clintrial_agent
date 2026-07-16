@@ -195,6 +195,61 @@ Returns `N/A — Phase 1 trial, not powered for efficacy`.
 - **Masking normalized** per textbook convention: Ch 7 defines double-blind as participant + investigator blinded, so QUADRUPLE/TRIPLE → Double-blind.
 - **Adaptive design detection** distinguishes API model names (SEQUENTIAL = dose escalation) from true adaptive design features (group sequential, sample size re-estimation, etc.).
 
+## Related Work
+
+### `wei-ai-lab/clinical-trial-design`
+
+Repository: [github.com/wei-ai-lab/clinical-trial-design](https://github.com/wei-ai-lab/clinical-trial-design) · Apache-2.0 · pre-beta (v0.0.13)
+
+A **Claude Code plugin + MCP server for prospective Phase 2/3 trial design** — the complementary direction to this project. Where `local_clintrial_agent` *analyzes* existing trials from ClinicalTrials.gov, `clinical-trial-design` *sizes* new trials from a design brief, backed by validated R packages (`gsDesign`, `gsDesign2`, `graphicalMCP`).
+
+| | `clinical-trial-design` | `local_clintrial_agent` (this repo) |
+|---|---|---|
+| Direction | **Prospective design** (compute N / power / boundaries) | **Analysis** of existing trials from ClinicalTrials.gov |
+| Engine | Validated R packages (`gsDesign`, `gsDesign2`, `graphicalMCP`) | Algorithmic + local Ollama LLM |
+| Group-sequential / NPH | ✅ full (OBF/Pocock spending, MaxCombo/RMST/WLR/AHR) | ❌ fixed-sample textbook formulas only |
+| Multi-hypothesis alpha control | ✅ (co-primary, multi-population, Maurer-Bretz) | ❌ |
+| Operational kernel (accrual ↔ duration ↔ N) | ✅ solver with feasibility warnings | partial |
+| Monte-Carlo verification | ✅ `verify_design` (±2 pp power / ±0.5 pp Type I) | ❌ |
+| Interface | MCP server (Claude Code / any MCP client) | CLI (`design_agent_pipeline.py`) |
+| Reporting | Markdown / Word / PDF | JSON + PNG plots |
+| Tests | 288 testthat + 18 MCP smoke + CI security gate | none |
+
+**Integration potential:** the two could be composed — e.g. feed a ClinicalTrials.gov-sourced design brief into `design_*` to sanity-check whether the original sample size was appropriate, or adopt `verify_design`'s Monte-Carlo convention as a credibility floor for our own power calculations. Full notes in [`research.md`](research.md).
+
+### `adityashukla8/clinicaltrials-multiagent` ("Criteria-AI")
+
+Repository: [github.com/adityashukla8/clinicaltrials-multiagent](https://github.com/adityashukla8/clinicaltrials-multiagent) · no license · hackathon-style demo · 7 stars
+
+A Python multi-agent system (LangGraph + Gemini 2.5 Flash) for **patient-to-trial matching** and **eligibility-criteria optimization for recruitment** — the operational/recruitment leg of the trial lifecycle. Where this repo *assesses* trial design and `clinical-trial-design` *sizes* trials, Criteria-AI *matches patients* to trials and *widens eligibility criteria* (age range, biomarker thresholds) to estimate enrollment-yield gain.
+
+| | `clinicaltrials-multiagent` | `local_clintrial_agent` (this repo) |
+|---|---|---|
+| Goal | Patient-trial matching + criteria widening for recruitment | Protocol design assessment (power, masking, randomization) |
+| LLM | Hosted Gemini 2.5 Flash | Local Ollama `gemma2:2b` |
+| Orchestration | LangGraph `StateGraph` (typed-state, conditional edges, supervisor) | Single-file sequential pipeline |
+| Trial source | CT.gov by diagnosis + Phase3/4/US/recruiting filter | CT.gov by NCT ID |
+| Enrichment | 18 parallel Tavily web searches per trial | API structured fields only |
+| Power / stats | ❌ | ✅ dichotomous + survival |
+| Tests | ❌ | ❌ |
+
+**Integration potential:** the LangGraph typed-state multi-agent pattern is a cleaner orchestration shape than our single-file sequential pipeline (parallel design/endpoints/power/masking/adaptive/safety steps with a fan-in). Their eligibility-widening simulation is conceptually adjacent to our `analyze_study_population()` recruitment-yield estimate. Caveats: hackathon-grade code (ipdb imports, hardcoded GCP project, match-bias prompt, brittle JSON parsing) — borrow *patterns*, not code. Full notes in [`research.md`](research.md).
+
+### `Keiji-AI/PyTrial` — ⚠️ unmaintained ML toolkit
+
+Repository: [github.com/Keiji-AI/PyTrial](https://github.com/Keiji-AI/PyTrial) · BSD-2 (code) · v0.0.6 Jun 2023 · 127★
+
+A Python ML platform (Sunlab) with a unified `fit/predict/save/load` API across 6 trial tasks. The most complete open-source ML toolkit for the trial lifecycle, but **unmaintained** (last release Jun 2023, Python 3.7 target) with a **heavy dependency stack** (rdkit, transformers, ctgan, transtab). Do not add as a dependency; vendor specific modules instead.
+
+| Capability | PyTask / Model | What it adds to our pipeline |
+|---|---|---|
+| Trial outcome prediction | `trial_outcome/HINT` | Predicts phase-specific approval probability from `{drug SMILES, ICD codes, eligibility criteria}` — a "will this trial succeed?" field we don't have. ⚠️ TOP benchmark dataset is non-commercial-use only. |
+| Trial similarity search | `trial_search/Trial2Vec` | Learned dense-retrieval similarity over trial documents — would replace our indication-only portfolio comparison with embedding-based similarity. |
+| Deterministic criteria splitting | `data/trial_data.py:_split_protocol` | Port the inclusion/exclusion splitter to run *before* our LLM classification node — reduces LLM token load, makes the split auditable, zero new deps. |
+| Synthetic patient simulation | `trial_simulation/tabular/{CTGAN, GaussianCopula}` | Generate synthetic cohorts for the enrollment-yield simulation in issue #9 — avoids needing Criteria-AI's AppWrite patient DB. |
+
+Full in-depth analysis (architecture, all 6 tasks, code-level findings, dependency stack, integration recommendation) in [`research.md`](research.md).
+
 ## Files
 
 | File | Purpose |

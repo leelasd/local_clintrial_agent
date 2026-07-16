@@ -1,0 +1,50 @@
+Now, let's discuss a
+few practical tips for randomization. You should always
+strive to document your assignment schedule as a
+measure of quality control. You need to collect all
+baseline data before assignment and the participant should be eligible
+and ready to begin, meaning, the participant needs to provide
+informed consent. Assignments are irrevocable, this is really important. So when an assignment is made, meaning that study
+participants ends up in one of the treatment groups
+it should not be changed. You might imagine that the study participant doesn't like this particular
+treatment group or you think he or she should really be
+in the other group. But we cannot change
+those assignments because this is what our
+randomization is all about, we want a random distribution of our people across our groups. Sometimes people would cross over and there's not
+much we can do about it. At least we have to
+record it and overall it, they should be rare occurrences and we need to
+consider this when we analyze our data and we'll talk about this just
+in a little bit. Always keep assignments
+concealed until they are used. This is called concealment
+of random allocation, very important so
+that people don't opt in or out based on the
+next available assignment, and also investigators don't
+try and shuffle people into certain groups based on their beliefs as to what
+treatment is better. Usually, we combine this
+concealment with treatment masking and you should try and
+avoid quasi randomization. Sometimes you see
+that people receive the intervention based
+on the day of the week or birth date or for example the last letter of the family name or
+something along those lines. This is not random but this is predictable and it should
+therefore not be done. This is not even easier
+than a real randomization, so I would always counsel
+groups to do their best to do a real randomization and nothing that
+can be predicted. A few practical aspects of
+issuing treatment assignment. You may use envelopes that
+you deposit at a study site. This is simple but it may
+be subject to misconduct, so people would try and figure out what the
+next assignment is by holding the envelope against the lights or something
+along those lines, maybe even open them. There is the possibility
+of misconduct. You could also issue
+treatment assignment over the telephone
+which is cumbersome. You would call a number
+and then you would receive a treatment
+code or the number of a certain bottle that you have in your cabinet and give to the study participant
+or something like this. You would not get information
+like the patient is in the active treatment or in
+the placebo group because you too as the investigator
+are hopefully masked. Online treatment assignments
+are really the way to go. It requires expertise but it
+is feasible and accepted. You just log on to a website, you typically enter data about the study participant into
+your entry code and then you receive some assignment or the number of a pillbox
+or something like this.

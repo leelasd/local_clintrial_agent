@@ -1,0 +1,36 @@
+Now, let's briefly talk about trial analysis
+and in particular, intention to treat versus
+per protocol analysis. Let's start with the
+intention to treat analysis. Everyone in a trial
+as analyzed in their assigned
+groups irrespective of what happens
+after randomization. This is sometimes called
+analyzed as randomized. Even if study participants
+have been falsely included did not even meet
+the inclusion criteria, did not receive any treatment, or did not receive the treatment they've
+been randomized to. We mentioned this earlier
+people could cross over just because they like the other
+treatment arm better. This should be discouraged, but if it happens there's
+not much we can do, and we would analyze
+those people strictly in the arm they
+have been randomized to, to protect the randomization. Let's contrast this with a different strategy
+that's called protocol analysis or PP. Study participants
+are analyzed as treated according
+to this strategy, and this is sometimes
+called treatment received. But there are problems
+with this approach. First of all, we violate the
+randomization because we are analyzing people in the
+groups they have chosen, and crossovers are
+oftentimes not random. Just imagine that crossovers happened because of side
+effects of the drug. Or another problem
+is the timing. What if somebody crosses over
+halfway through the trial. Where do we analyze them? In the original arm, or in the arm they crossed into? This is problematic. In superiority trials, while ITT is very conservative, it is the standard
+primary analysis in RCTs. When we test
+superiority, that means, when we're interested in the question whether
+one treatment is better or superior
+than the other treatment. We typically also do a
+per protocol analysis, but this is more to
+complement the intention to treat analysis as a
+secondary analysis. Sometimes also as a safety
+analysis where we're really interested in what
+people actually took.

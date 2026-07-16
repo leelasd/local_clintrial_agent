@@ -1,0 +1,48 @@
+Let's talk about
+the other big topic of the day and that is masking. What is masking? We conceal something from, for example, the
+study participants, the study team, the outcome assessors or
+perhaps other people, sometimes we call this blinding. What do we typically mask? We mask the treatment, this is a classic, when we use placebos then study participants and
+clinical personnel don't know what treatment a study participant
+has been assigned to. We also mask the outcome meaning when we
+assess the outcome, when we measure the outcome, that person that measures
+the outcome must not know what the
+treatment assignment of this particular
+study participant is. Why do we do that? We reduce bias, in this case this bias is called information bias because
+patients might self-report data and there is also a placebo effect happening
+when people know they take a placebo substance and investigators might collect
+data differently based on the knowledge of treatment
+assignment and they might also assess the outcome differently based
+on that knowledge. The same applies to
+adverse event assessment. Who can be masked? You could mask one group
+that would be usually the study participant
+or the participant and investigator in a
+double masked fashion. You might include an independent outcome assessor
+that's sometimes called triple masked or
+the statistician that would be quadruple masked. Now, what's important is that this terminology
+is inconsistent. When you're reading
+reports or when you are writing your report, always check and describe
+who exactly has been masked. Masking can be difficult. It's expensive to mask a
+drug so placebos can be very costly and can in fact cost much more than the active drug. They don't help much when
+they are poorly done, when the weight doesn't
+match the color, the appearance, the texture, the taste, etc. Sometimes unmasking is too easy. When people open capsules, when we over encapsulate
+and then they can see whether the capsule contains an active substance or some placebo powder or when people weigh
+packages, for example. But there's also an
+unmasking that is very hard to prevent because
+of side effects. Active drugs can have
+side effects and that can be pronounced and
+an experienced clinician may be able to see
+those side effects in a study participant and based on those side effects figure out what group that
+participant is in. Masking can even be impossible, for example, in some
+surgical trials, though there are sham procedures around and they have been used successfully or imagined behavioral interventions
+where you, for example, try and
+determine the effect of a treadmill regimen versus
+yoga to reduce blood pressure. Now the study participant would know whether they are
+on the treadmill or taking yoga lessons
+but the person measuring the blood
+pressure must not know what group that study participant is in and also your statistician can be
+masked easily because the statistician can work with
+treatment A or treatment B and once all the data are collected and the
+database is locked, then and only then do we break the code and then we see
+which treatment is better. A rule of thumb is even if
+you can't mask everyone, you should always strive to mask as many people as you can
+to reduce information bias.
