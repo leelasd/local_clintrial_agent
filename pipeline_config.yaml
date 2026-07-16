@@ -85,6 +85,11 @@ indication_params:
     median_os_months: 10.0
     median_pfs_months: 4.0
     event_rate: 0.80
+  lymphoma:
+    control_rate_dichotomous: 0.30
+    median_os_months: 24.0
+    median_pfs_months: 12.0
+    event_rate: 0.70
 
 default_indication_params:
   control_rate_dichotomous: 0.10
@@ -102,6 +107,20 @@ indication_keywords:
   pdac: [pancreatic, pdac, pancreas, pancreatic ductal]
   msi_h_tumor: [msi-h, microsatellite instability, msi high, mismatch repair deficient, dmmr]
   solid_tumor: [solid tumor, advanced solid, metastatic solid, refractory solid]
+
+# Maps free-form LLM output to indication_params keys for power analysis.
+indication_aliases:
+  non-hodgkin lymphoma: lymphoma
+  hodgkin lymphoma: lymphoma
+  non-small cell lung cancer: nsclc
+  nsclc: nsclc
+  lung cancer: nsclc
+  psoriasis: psoriasis
+  pancreatic cancer: pdac
+  pdac: pdac
+  pancreatic ductal adenocarcinoma: pdac
+  msi-h: msi_h_tumor
+  msi high: msi_h_tumor
 
 # ==============================================================================
 # MASKING NORMALIZATION
@@ -483,6 +502,99 @@ default_trials:
     drug: JNJ-77242113
 
 default_comparison_name: tyk2
+
+# ==============================================================================
+# GWAS CATALOG API
+# Ch 9 line 8076-8089: GWAS enables genome-wide examination unconstrained by prior
+# hypotheses, identifying SNP-trait associations for pharmacogenetic subgroups.
+# Ch 9 line 8101-8109: Example — SLCO1B1 rs4149056 linked to statin-induced myopathy,
+# with 60% of cases attributable to C allele present in 15% of the population.
+# ==============================================================================
+gwas_api_base_url: https://www.ebi.ac.uk/gwas/rest/api
+
+# Pharmacogenetic subgroup analysis parameters
+pharmacogenetic_assessment:
+  min_gwas_associations: 1              # Minimum associations to report a PGx signal
+  max_associations_per_query: 20        # Max associations to fetch per API call
+  min_pvalue_exponent: -5               # Maximum p-value exponent (e.g., -5 = p < 1e-5) for genome-wide significance
+  
+  # Population prevalence of key genetic biomarkers, used to estimate screen failure rates
+  # when trials require specific mutations or genomic signatures for enrollment.
+  # These values are derived from published oncology literature / TCGA frequencies.
+  # Screen failure rate = 1 - prevalence (assuming perfect test sensitivity).
+  genetic_biomarker_prevalence:
+    KRAS_G12C: 0.13           # ~13% in NSCLC adenocarcinoma, ~2-4% in other solid tumors
+    KRAS_G12D: 0.05           # ~5% in NSCLC, ~30-40% in pancreatic cancer
+    RAS_mutation_any: 0.30    # ~30% of all cancers (KRAS/NRAS/HRAS codon 12/13/61)
+    dMMR_MSI_H: 0.15          # ~15% in CRC, ~20% endometrial, ~2-5% other solid tumors
+    EGFR_ex19del: 0.10        # ~10% in NSCLC (exon 19 deletion)
+    EGFR_L858R: 0.08          # ~8% in NSCLC (L858R point mutation)
+    BRAF_V600E: 0.08          # ~8% in melanoma, ~10% in CRC
+    HER2_amplification: 0.20  # ~20% in breast cancer
+    MSI_H_crc: 0.15           # ~15% in colorectal cancer
+    MSI_H_endometrial: 0.25   # ~20-30% in endometrial cancer
+
+# Known pharmacogenetic drug class signals for cross-referencing protocol text.
+# Drug names map to drug classes; drug classes specify relevant genes.
+# The textbook (Ch. 9) discusses this paradigm: genetic variants in drug target
+# genes (imatinib/BCR-ABL, trastuzumab/HER2, gefitinib/EGFR) predict treatment response.
+pharmacogenetic_drugs:
+  tyk2_inhibitor:
+    drug_names: [tak-279, zasocitinib, deucravacitinib, bms-986165, jnj-77242113]
+    genes:
+      TYK2: [Treatment response - JAK-STAT pathway inhibition]
+  jak_inhibitor:
+    drug_names: [tofacitinib, baricitinib, upadacitinib, filgotinib, abrocitinib]
+    genes:
+      JAK1: [Treatment response - JAK-STAT signaling]
+      JAK2: [Treatment response - JAK-STAT signaling]
+      JAK3: [Treatment response - JAK-STAT signaling]
+  egfr_inhibitor:
+    drug_names: [gefitinib, erlotinib, afatinib, osimertinib, dacomitinib]
+    genes:
+      EGFR: [Treatment response - mutation-dependent efficacy]
+      KRAS: [Resistance - mutation predicts non-response]
+  immunotherapy:
+    drug_names: [pembrolizumab, nivolumab, atezolizumab, durvalumab, ipilimumab]
+    genes:
+      PD1: [Treatment response - immune checkpoint]
+      PDL1: [Treatment response - immune checkpoint]
+      CTLA4: [Treatment response - immune checkpoint]
+  statin:
+    drug_names: [atorvastatin, simvastatin, rosuvastatin, pravastatin, lovastatin]
+    genes:
+      SLCO1B1: [Safety - myopathy risk per textbook Ch 9 example]
+  bcr_abl_inhibitor:
+    drug_names: [imatinib, dasatinib, nilotinib, ponatinib, bosutinib]
+    genes:
+      BCR: [Treatment response - Philadelphia chromosome]
+      ABL1: [Treatment response - Philadelphia chromosome]
+  her2_targeted:
+    drug_names: [trastuzumab, pertuzumab, ado-trastuzumab, fam-trastuzumab, lapatinib]
+    genes:
+      ERBB2: [Treatment response - HER2 amplification]
+  kras_g12c_inhibitor:
+    drug_names: [sotorasib, adagrasib, lumakras, krazati, divarasib, gdc-6036, jbj-1000, rmc-6291, elironrasib]
+    genes:
+      KRAS: [Treatment response - KRAS G12C mutation required]
+  kras_g12d_inhibitor:
+    drug_names: [rmc-9805, zoldonrasib]
+    genes:
+      KRAS: [Treatment response - KRAS G12D mutation required]
+  ras_multi_inhibitor:
+    drug_names: [rmc-6236, daraxonrasib, ras(ON)]
+    genes:
+      KRAS: [Treatment response - RAS multi-selective inhibition]
+      NRAS: [Treatment response - RAS multi-selective inhibition]
+      HRAS: [Treatment response - RAS multi-selective inhibition]
+  shp2_inhibitor:
+    drug_names: [rmc-4630]
+    genes:
+      PTPN11: [Treatment response - SHP2 inhibition, upstream of RAS]
+  wrn_inhibitor:
+    drug_names: [gsk4418959, ndi-219216, vvd-133214, bay-3665972]
+    genes:
+      WRN: [Treatment response - WRN helicase inhibition in dMMR/MSI-H tumors]
 
 # ==============================================================================
 # API

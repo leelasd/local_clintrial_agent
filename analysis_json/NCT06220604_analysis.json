@@ -6,61 +6,61 @@
     {
       "text": "Diagnosis of plaque psoriasis, with or without psoriatic arthritis (PsA), for at least 26 weeks prior to the first administration of study intervention",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a sufficient duration of disease and helps maximize the likelihood of detecting treatment effects.",
+      "justification": "This criterion ensures a sufficient duration of disease presence to detect treatment effects.",
       "competing_risk": false
     },
     {
       "text": "Total body surface area (BSA) greater than or equal to (>=)10 percent (%) at screening and baseline",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures a minimum BSA, which is important for study feasibility and data quality.",
+      "justification": "This criterion ensures a minimum BSA threshold for study inclusion, impacting feasibility of data collection.",
       "competing_risk": false
     },
     {
       "text": "Total psoriasis area and severity index (PASI) >=12 at screening and baseline",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a sufficient level of disease activity, which helps to maximize the likelihood of detecting treatment effects.",
+      "justification": "This criterion ensures a sufficient level of disease severity to detect treatment effects.",
       "competing_risk": false
     },
     {
       "text": "Total investigator global assessment (IGA) >=3 at screening and baseline",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a consistent level of disease severity, which helps to maximize the likelihood of detecting treatment effects.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures a minimum IGA score, impacting feasibility of data collection.",
       "competing_risk": false
     },
     {
       "text": "Candidate for phototherapy or systemic treatment for plaque psoriasis",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that participants are eligible for treatment and can be followed up with appropriate care.",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures the patient is likely to benefit from study intervention.",
       "competing_risk": false
     },
     {
       "text": "Nonplaque form of psoriasis (for example, erythrodermic, guttate, or pustular)",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a consistent level of disease severity, which helps to maximize the likelihood of detecting treatment effects.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures a specific type of psoriasis is included for study feasibility.",
       "competing_risk": false
     },
     {
       "text": "Current drug-induced psoriasis (for example, a new onset of psoriasis or an exacerbation of psoriasis from beta blockers, calcium channel blockers, or lithium)",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures that participants are not experiencing psoriasis due to medication.",
+      "justification": "This criterion ensures the patient is not experiencing psoriasis due to medication.",
       "competing_risk": false
     },
     {
       "text": "A current diagnosis or signs or symptoms of severe, progressive, or uncontrolled renal, liver, cardiac, vascular, pulmonary, gastrointestinal, endocrine, neurologic, hematologic, rheumatologic, psychiatric, or metabolic disturbances",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures that participants are not experiencing underlying health conditions that could be exacerbated by the study intervention.",
+      "justification": "This criterion ensures the patient is not experiencing severe medical conditions that could impact study outcomes.",
       "competing_risk": false
     },
     {
       "text": "Known allergies, hypersensitivity, or intolerance to JNJ-77242113, deucravacitinib or to any of the excipients or components of the study intervention",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures that participants are not allergic to the study intervention.",
+      "justification": "This criterion ensures the patient is not allergic to study medication.",
       "competing_risk": false
     },
     {
       "text": "Major surgical procedure, (for example, requiring general anesthesia) within 8 weeks before screening, or will not have fully recovered from surgical procedure, or has a surgical procedure planned during the time the participant is expected to participate in the study",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that participants are able to participate in the study without complications.",
+      "justification": "This criterion ensures the patient's recovery from surgery does not interfere with study participation.",
       "competing_risk": false
     }
   ],
@@ -330,7 +330,7 @@
     "control_type": "Placebo",
     "superiority_type": "Superiority"
   },
-  "indication": "psoriasis",
+  "indication": "plaque psoriasis",
   "randomization": {
     "randomization_type": "Blocked",
     "allocation_ratio": "1:1:1",
@@ -362,9 +362,30 @@
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "TYK2",
+        "drug_class": "tyk2_inhibitor",
+        "known_effects": [
+          "Treatment response - JAK-STAT pathway inhibition"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [],
+    "genetic_screen_failure_summary": null,
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (TYK2) but could not map indication \"plaque psoriasis\" to a GWAS EFO trait. Try alternative trait name.",
+    "detected_drug_classes": [
+      "tyk2_inhibitor"
+    ]
+  },
   "summary": {
-    "Statistical Power": 4,
-    "Feasibility": 3,
+    "Statistical Power": 3,
+    "Feasibility": 4,
     "Safety": 3
   }
 }

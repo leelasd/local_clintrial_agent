@@ -1,12 +1,23 @@
 import requests
 import json
 import math
+import re
 import ollama
 import argparse
 from pathlib import Path
 from collections import Counter
 from scipy import stats
 import yaml
+
+try:
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    import matplotlib.ticker as mticker
+    import numpy as np
+    HAS_MPL = True
+except ImportError:
+    HAS_MPL = False
 
 
 def _load_config(config_path=None):
@@ -19,22 +30,35 @@ def _load_config(config_path=None):
 CONFIG = _load_config()
 
 INDICATION_PARAMS = CONFIG['indication_params']
-
+INDICATION_ALIASES = CONFIG.get('indication_aliases', {})
 DEFAULT_INDICATION_PARAMS = CONFIG['default_indication_params']
 
 
 def infer_indication(protocol):
-    """Infer therapeutic indication from protocol conditions and title."""
+    """Infer therapeutic indication from protocol text using LLM."""
     conditions = protocol.get('conditionModule', {}).get('conditions', [])
     title = protocol.get('identificationModule', {}).get('briefTitle', '')
-    combined = ' '.join(conditions + [title]).lower()
+    brief_summary = protocol.get('descriptionModule', {}).get('briefSummary', '')[:600]
+    
+    prompt = f"""Based on this clinical trial, what is the therapeutic indication or disease being studied?
 
-    indication_keywords = CONFIG['indication_keywords']
+Trial Title: {title}
+Conditions: {', '.join(conditions)}
+Summary: {brief_summary}
 
-    for indication, keywords in indication_keywords.items():
-        if any(k in combined for k in keywords):
-            return indication
-
+Respond with 1-3 words describing the indication (e.g., \"psoriasis\", \"non-hodgkin lymphoma\", \"non-small cell lung cancer\"). If unclear, respond with: unknown"""
+    try:
+        resp = ollama.chat(
+            model=CONFIG['llm']['model'],
+            messages=[{'role': 'user', 'content': prompt}],
+            options={'temperature': 0.0, 'num_predict': 32}
+        )
+        result = resp['message']['content'].strip().lower()
+        if result in ('unknown', 'none', 'n/a', ''):
+            return None
+        return result
+    except Exception:
+        pass
     return None
 
 
@@ -661,6 +685,376 @@ def analyze_safety_adverse_events(protocol, endpoints):
         'safety_monitoring': safety_monitoring
     }
 
+
+# ==============================================================================
+# GWAS CATALOG INTEGRATION
+# ==============================================================================
+# Textbook Ch 9 (Pharmacogenetics, p. 172):
+# "Collection of biologic samples at baseline in large, long-term trials has emerged
+# as a rich source for pharmacogenetic studies. In participants with or without specific
+# genotypes, one would in subgroup analysis compare treatment responses."
+#
+# "The strength by which common variants can influence the risk determination ranges
+# from a several-fold increased risk compared to those without the variant to a
+# 1,000-fold increase."
+#
+# The GWAS Catalog provides curated SNP-trait associations from published GWAS,
+# enabling identification of known genetic variants relevant to a trial's indication,
+# drug target, or safety profile.
+
+GWAS_API_BASE = CONFIG['gwas_api_base_url']
+PGX_CONFIG = CONFIG['pharmacogenetic_assessment']
+PGX_DRUGS = CONFIG['pharmacogenetic_drugs']
+
+
+def query_gwas_efo_trait(trait_name):
+    """Look up EFO trait from GWAS Catalog by free-text search.
+    
+    Returns dict with efo_id, efo_trait, uri if found, else None.
+    Prefers exact match on trait name, then substring match, then first result.
+    """
+    url = f"{GWAS_API_BASE}/v2/efo-traits"
+    params = {'efo_trait': trait_name, 'size': 15}
+    try:
+        resp = requests.get(url, params=params, timeout=10)
+        if resp.status_code == 200:
+            data = resp.json()
+            traits = data.get('_embedded', {}).get('efo_traits', [])
+            if traits:
+                # Exact match (case-insensitive)
+                for t in traits:
+                    if t.get('efo_trait', '').lower() == trait_name.lower():
+                        return {
+                            'efo_id': t['efo_id'],
+                            'efo_trait': t['efo_trait'],
+                            'uri': t['uri']
+                        }
+                # Word-boundary match: trait_name appears as a whole word
+                for t in traits:
+                    trait_lower = t.get('efo_trait', '').lower()
+                    if re.search(r'\b' + re.escape(trait_name.lower()) + r'\b', trait_lower):
+                        return {
+                            'efo_id': t['efo_id'],
+                            'efo_trait': t['efo_trait'],
+                            'uri': t['uri']
+                        }
+                # Substring match: trait_name is a substring of the trait
+                for t in traits:
+                    if trait_name.lower() in t.get('efo_trait', '').lower():
+                        return {
+                            'efo_id': t['efo_id'],
+                            'efo_trait': t['efo_trait'],
+                            'uri': t['uri']
+                        }
+                # Fallback to first result
+                t = traits[0]
+                return {
+                    'efo_id': t['efo_id'],
+                    'efo_trait': t['efo_trait'],
+                    'uri': t['uri']
+                }
+    except requests.RequestException:
+        pass
+    return None
+
+
+def query_gwas_associations(efo_trait=None, efo_id=None, max_results=None):
+    """Fetch GWAS associations for a given trait.
+    
+    Returns list of association dicts with p-value, OR, mapped genes, SNP info.
+    """
+    if max_results is None:
+        max_results = PGX_CONFIG['max_associations_per_query']
+    
+    url = f"{GWAS_API_BASE}/v2/associations"
+    params = {'size': min(max_results, 500)}
+    if efo_id:
+        params['efo_id'] = efo_id
+    elif efo_trait:
+        params['efo_trait'] = efo_trait
+    else:
+        return []
+    
+    try:
+        resp = requests.get(url, params=params, timeout=10)
+        if resp.status_code == 200:
+            data = resp.json()
+            return data.get('_embedded', {}).get('associations', [])
+    except requests.RequestException:
+        pass
+    return []
+
+
+def extract_genetic_biomarkers_from_text(text):
+    """Extract known pharmacogenetic signals from free text.
+    
+    Two-pass detection:
+    1. First detects drug class by matching drug compound names in protocol text
+    2. Then returns the relevant genes/effects for each detected drug class
+    
+    Returns dict: gene_name -> {'drug_class': str, 'known_effects': list}
+    Includes a special '_detected_drug_classes' key listing matched drug classes.
+    """
+    text_lower = text.lower()
+    detected_drug_classes = set()
+    
+    for drug_class, info in PGX_DRUGS.items():
+        for drug_name in info.get('drug_names', []):
+            if drug_name.lower() in text_lower:
+                detected_drug_classes.add(drug_class)
+                break
+    
+    genes_found = {}
+    for drug_class in detected_drug_classes:
+        info = PGX_DRUGS[drug_class]
+        for gene, effects in info.get('genes', {}).items():
+            genes_found[gene] = {
+                'drug_class': drug_class,
+                'known_effects': effects
+            }
+    
+    genes_found['_detected_drug_classes'] = list(detected_drug_classes)
+    return genes_found
+
+
+def extract_genetic_biomarkers(protocol):
+    """Extract genetic biomarker mentions from protocol description and eligibility text."""
+    description = (
+        protocol.get('descriptionModule', {}).get('briefSummary', '') + ' ' +
+        (protocol.get('descriptionModule', {}).get('detailedDescription', '') or '') + ' ' +
+        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '') + ' ' +
+        protocol.get('identificationModule', {}).get('briefTitle', '') + ' ' +
+        ' '.join(o.get('measure', '') for o in
+                  protocol.get('outcomesModule', {}).get('primaryOutcomes', []) + 
+                  protocol.get('outcomesModule', {}).get('secondaryOutcomes', []))
+    )
+    return extract_genetic_biomarkers_from_text(description)
+
+
+# Patterns to detect genetic biomarker requirements in eligibility criteria.
+# Keys map to genetic_biomarker_prevalence in config.
+GENETIC_BIOMARKER_PATTERNS = [
+    (r'\bkras\s*p?\.?g12c\b', 'KRAS_G12C'),
+    (r'\bkras\s*g12c\b', 'KRAS_G12C'),
+    (r'\b(kras|ras)\s*p?\.?g12d\b', 'KRAS_G12D'),
+    (r'\b(kras|ras)\s*g12d\b', 'KRAS_G12D'),
+    (r'\b(kras|nras|hras)\s*(mutation|mutant|mut)\b', 'RAS_mutation_any'),
+    (r'\b(mutation|mutant|mut)\s+in\s+(kras|nras|hras)\b', 'RAS_mutation_any'),
+    (r'\bpan.?ras\b', 'RAS_mutation_any'),
+    (r'\bcodons?\s*(12|13|61)\b', 'RAS_mutation_any'),
+    (r'\bdmmr\b', 'dMMR_MSI_H'),
+    (r'\bmsi-h\b', 'dMMR_MSI_H'),
+    (r'\bmsi\s*high\b', 'dMMR_MSI_H'),
+    (r'\bmicrosatellite\s*instability\b', 'dMMR_MSI_H'),
+    (r'\begfr\s*exon\s*19\b', 'EGFR_ex19del'),
+    (r'\begfr\s*l858r\b', 'EGFR_L858R'),
+    (r'\bbraf\s*v600e?\b', 'BRAF_V600E'),
+    (r'\bher2\s*positive\b', 'HER2_amplification'),
+    (r'\bher2\s*amplif', 'HER2_amplification'),
+    (r'\berbb2\s*amplif', 'HER2_amplification'),
+]
+
+
+def detect_genetic_biomarker_requirements(text):
+    """Scan eligibility criteria for genetic biomarker requirements.
+    
+    Returns list of dicts: {biomarker_key, prevalence, screen_fail_rate, matched_text}
+    """
+    text_lower = text.lower()
+    prevalence_map = PGX_CONFIG['genetic_biomarker_prevalence']
+    found = []
+    seen = set()
+    for pattern, key in GENETIC_BIOMARKER_PATTERNS:
+        match = re.search(pattern, text_lower)
+        if match and key not in seen:
+            seen.add(key)
+            prevalence = prevalence_map.get(key, 0.5)
+            found.append({
+                'biomarker_key': key,
+                'population_prevalence': prevalence,
+                'estimated_screen_failure_rate': round(1.0 - prevalence, 3),
+                'matched_text': match.group()
+            })
+    return found
+
+
+def detect_genetic_biomarker_requirements_from_protocol(protocol):
+    """Extract genetic biomarker requirement mentions from eligibility criteria."""
+    return detect_genetic_biomarker_requirements(
+        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
+    )
+
+
+def analyze_pharmacogenetics(protocol, indication):
+    """GWAS-powered pharmacogenetic subgroup analysis.
+    
+    Textbook framework (Ch. 9, p. 172-174):
+    1. Identifies genes mentioned in the protocol (drug targets, biomarkers, safety genes)
+    2. Cross-references against GWAS Catalog for known SNP-trait associations
+    3. Identifies potential pharmacogenetic subgroups for:
+       - Differential treatment response (efficacy) — e.g., EGFR mutations for gefitinib
+       - Differential adverse event risk (safety) — e.g., SLCO1B1 for statin myopathy
+    4. Assesses whether genotype-stratified randomization or pre-planned subgroup analysis
+       is warranted per the textbook's pharmacogenetics framework
+    """
+    result = {
+        'genetic_biomarkers_mentioned': [],
+        'genetic_screen_failure': [],
+        'genetic_screen_failure_summary': None,
+        'gwas_associations_found': [],
+        'pharmacogenetic_subgroups': [],
+        'stratification_opportunity': None,
+        'safety_pharmacogenetics': [],
+        'summary': 'No pharmacogenetic analysis performed'
+    }
+    
+    biomarkers = extract_genetic_biomarkers(protocol)
+    detected_classes = biomarkers.pop('_detected_drug_classes', [])
+    
+    if detected_classes:
+        result['detected_drug_classes'] = detected_classes
+    
+    result['genetic_biomarkers_mentioned'] = [
+        {'gene': g, 'drug_class': info['drug_class'], 'known_effects': info['known_effects']}
+        for g, info in biomarkers.items()
+    ]
+    
+    if not biomarkers and not detected_classes:
+        result['summary'] = 'No known pharmacogenetic drug classes or genes detected in protocol text.'
+        return result
+    
+    if not biomarkers:
+        result['summary'] = (
+            f'Drug class detected ({", ".join(detected_classes)}) but no specific pharmacogenetic '
+            f'genes configured for it.'
+        )
+        return result
+    
+    # Genetic screen failure estimation: detect biomarker-based eligibility criteria
+    # and estimate what fraction of screened patients would fail genetic requirements.
+    eligibility_text = protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
+    genetic_requirements = detect_genetic_biomarker_requirements(eligibility_text)
+    result['genetic_screen_failure'] = genetic_requirements
+    
+    if genetic_requirements:
+        max_fail = max(r['estimated_screen_failure_rate'] for r in genetic_requirements)
+        result['genetic_screen_failure_summary'] = (
+            f"Detected {len(genetic_requirements)} genetic biomarker requirement(s) in eligibility: "
+            + "; ".join(
+                f"{r['biomarker_key']} (pop. prevalence ~{r['population_prevalence']:.0%}, "
+                f"~{r['estimated_screen_failure_rate']:.0%} screen fail)"
+                for r in genetic_requirements
+            )
+            + f". Worst-case screen failure rate from genetic criteria: ~{max_fail:.0%}."
+        )
+    
+    if indication:
+        efo_info = query_gwas_efo_trait(indication)
+        if efo_info:
+            associations = query_gwas_associations(efo_id=efo_info['efo_id'])
+            gene_names = [g.lower() for g in biomarkers.keys()]
+            
+            relevant = []
+            seen_snps = set()
+            for assoc in associations:
+                mapped_genes = [g.lower() for g in (assoc.get('mapped_genes', []) or [])]
+                matching = [g for g in mapped_genes if g in gene_names]
+                if not matching:
+                    continue
+                
+                p_mantissa = assoc.get('pvalue_mantissa')
+                p_exponent = assoc.get('pvalue_exponent')
+                pvalue = f"{p_mantissa}e{p_exponent}" if p_mantissa is not None and p_exponent is not None else None
+                
+                snp_info = assoc.get('snp_allele', [{}])[0] if assoc.get('snp_allele') else {}
+                rs_id = snp_info.get('rs_id', 'N/A')
+                
+                if rs_id in seen_snps:
+                    continue
+                seen_snps.add(rs_id)
+                
+                relevant.append({
+                    'snp': rs_id,
+                    'pvalue': pvalue,
+                    'or_per_copy': assoc.get('or_per_copy_num'),
+                    'ci_range': assoc.get('range'),
+                    'risk_frequency': assoc.get('risk_frequency'),
+                    'mapped_genes': assoc.get('mapped_genes', []),
+                    'trait': assoc.get('reported_trait', ['N/A'])[0],
+                    'pubmed_id': assoc.get('pubmed_id'),
+                    'accession_id': assoc.get('accession_id')
+                })
+            
+            result['gwas_associations_found'] = relevant
+            
+            # Build pharmacogenetic subgroup recommendations
+            subgroups = []
+            safety_pgx = []
+            for gene_info in result['genetic_biomarkers_mentioned']:
+                gene = gene_info['gene']
+                effects = gene_info['known_effects']
+                gwas_hits = [a for a in relevant if gene.lower() in [g.lower() for g in (a.get('mapped_genes', []) or [])]]
+                
+                subgroup = {
+                    'gene': gene,
+                    'drug_class': gene_info['drug_class'],
+                    'known_effects': effects,
+                    'gwas_associations_count': len(gwas_hits),
+                    'recommended_subgroup_analysis': any('response' in e.lower() for e in effects),
+                    'recommended_safety_monitoring': any('safety' in e.lower() for e in effects),
+                }
+                subgroups.append(subgroup)
+                
+                # Textbook Ch 9: GWAS can identify SNPs linked to adverse drug reactions
+                if subgroup['recommended_safety_monitoring']:
+                    safety_pgx.append({
+                        'gene': gene,
+                        'rationale': (
+                            f"GWAS-identified variants in {gene} may predict differential AE risk. "
+                            f"Per textbook Ch. 9 (p. 173): 'Genetic variants associated with serious "
+                            f"adverse events [...] prior to initiation of treatment.'"
+                        )
+                    })
+            
+            result['pharmacogenetic_subgroups'] = subgroups
+            result['safety_pharmacogenetics'] = safety_pgx
+            
+            # Assess stratification opportunity
+            if any(s['recommended_subgroup_analysis'] for s in subgroups):
+                result['stratification_opportunity'] = (
+                    'Yes — genotype-stratified randomization or pre-planned subgroup analysis '
+                    'warranted. Per textbook Ch. 9: "one would in subgroup analysis compare '
+                    'treatment responses such as serious adverse events."'
+                )
+            elif subgroups:
+                result['stratification_opportunity'] = (
+                    'Possible — genes mentioned but limited GWAS validation for stratification.'
+                )
+            else:
+                result['stratification_opportunity'] = 'No — no pharmacogenetic biomarkers detected.'
+            
+            n_assocs = len(relevant)
+            n_subs = len(subgroups)
+            n_genetic = len(genetic_requirements)
+            screen_part = f" {n_genetic} genetic screen requirement(s) detected." if n_genetic else ""
+            result['summary'] = (
+                f"Found {n_assocs} GWAS association(s) relevant to {n_subs} pharmacogenetic subgroup(s) "
+                f"in {efo_info['efo_trait']}.{screen_part} "
+                f"{'Stratification opportunity identified.' if result['stratification_opportunity'].startswith('Yes') else 'No clear stratification signal.'}"
+            )
+        else:
+            result['summary'] = (
+                f'Genes detected ({", ".join(biomarkers.keys())}) but could not map indication '
+                f'"{indication}" to a GWAS EFO trait. Try alternative trait name.'
+            )
+    else:
+        result['summary'] = (
+            f'Genes detected ({", ".join(biomarkers.keys())}) but indication is unknown. '
+            'Cannot query GWAS without indication.'
+        )
+    
+    return result
+
 def analyze_trial(nct_id):
     """Full pipeline: fetch, classify design from API, then LLM-classify eligibility."""
     
@@ -758,9 +1152,10 @@ def analyze_trial(nct_id):
     
     # --- STEP 1c: Sample size / power analysis (indication-parameterized) ---
     indication = infer_indication(protocol)
-    if indication and indication in INDICATION_PARAMS:
-        indication_params = INDICATION_PARAMS[indication]
-        print(f"\n  Indication detected: {indication} (using indication-specific power params)")
+    indication_key = INDICATION_ALIASES.get(indication, indication)
+    if indication_key and indication_key in INDICATION_PARAMS:
+        indication_params = INDICATION_PARAMS[indication_key]
+        print(f"\n  Indication: {indication_key} (via LLM: '{indication}', using indication-specific power params)")
     else:
         indication_params = DEFAULT_INDICATION_PARAMS
         if indication is None:
@@ -805,6 +1200,22 @@ def analyze_trial(nct_id):
     print(f"  AE types detected: {', '.join(safety_ae['ae_types_detected'][:5]) if safety_ae['ae_types_detected'] else 'None detected in text'}")
     print(f"  Class-specific effects: {', '.join(safety_ae['class_effects_known'][:5]) if safety_ae['class_effects_known'] else 'None detected'}")
     print(f"  Safety monitoring: {safety_ae['safety_monitoring']}")
+    
+    # --- STEP 1f: Pharmacogenetic / GWAS subgroup analysis ---
+    # Textbook Ch. 9 (p. 172-174): GWAS enables identification of genetic subgroups
+    # for differential treatment response or adverse event risk.
+    # Textbook examples: imatinib/BCR-ABL, trastuzumab/HER2, gefitinib/EGFR for efficacy;
+    # SLCO1B1 rs4149056 for statin-induced myopathy safety.
+    pharmacogenetics = analyze_pharmacogenetics(protocol, indication)
+    print(f"\nPharmacogenetics (GWAS):")
+    print(f"  Genes detected: {[g['gene'] for g in pharmacogenetics['genetic_biomarkers_mentioned']] or 'None'}")
+    print(f"  GWAS associations found: {len(pharmacogenetics['gwas_associations_found'])}")
+    print(f"  Pharmacogenetic subgroups: {len(pharmacogenetics['pharmacogenetic_subgroups'])}")
+    if pharmacogenetics.get('genetic_screen_failure'):
+        for gs in pharmacogenetics['genetic_screen_failure']:
+            print(f"  Genetic screen: {gs['biomarker_key']} → pop. prevalence ~{gs['population_prevalence']:.0%}, ~{gs['estimated_screen_failure_rate']:.0%} fail rate")
+    print(f"  Stratification opportunity: {pharmacogenetics['stratification_opportunity']}")
+    print(f"  Summary: {pharmacogenetics['summary']}")
     
     # --- STEP 2: LLM classification of eligibility (batched) ---
     eligibility_text = protocol['eligibilityModule']['eligibilityCriteria']
@@ -988,6 +1399,7 @@ Do not use escape characters. Write the JSON directly.
         "randomization": randomization,
         "adaptive_designs": adaptive,
         "safety_adverse_events": safety_ae,
+        "pharmacogenetics": pharmacogenetics,
         "summary": dict(categories)
     }
     
@@ -1012,6 +1424,14 @@ Do not use escape characters. Write the JSON directly.
         pa = sample_size['power_analysis']
         print(f"Power: {pa['assessment']}")
     print(f"Safety: {safety_ae['ae_reporting_method']} | AE types found: {len(safety_ae['ae_types_detected'])}")
+    sf = pharmacogenetics.get('genetic_screen_failure', [])
+    sf_parts = []
+    for g in sf:
+        bk = g['biomarker_key']
+        sr = g['estimated_screen_failure_rate']
+        sf_parts.append(f"{bk} ~{sr:.0%}")
+    sf_str = f" | Screen fail: {', '.join(sf_parts)}" if sf_parts else ""
+    print(f"Pharmacogenetics: {len(pharmacogenetics['gwas_associations_found'])} GWAS hits | {len(pharmacogenetics['pharmacogenetic_subgroups'])} subgroups{sf_str} | Stratification: {pharmacogenetics['stratification_opportunity'][:40] if pharmacogenetics['stratification_opportunity'] else 'N/A'}...")
     print(f"\nEligibility Classification:")
     for cat, count in categories.most_common():
         print(f"  {cat}: {count}")
@@ -1024,6 +1444,156 @@ Do not use escape characters. Write the JSON directly.
         print(f"    → {cat}: {just}")
     
     return final_output
+
+
+# ==============================================================================
+# POWER VISUALIZATION
+# ==============================================================================
+
+def _dichotomous_power_curve(n_per_arm, control_rate, delta, alpha=0.05):
+    """Compute power for a dichotomous endpoint at a given absolute difference."""
+    p1 = control_rate + delta
+    phat = (control_rate + p1) / 2
+    se = math.sqrt(2 * phat * (1 - phat) / n_per_arm)
+    if se == 0:
+        return 0
+    z = delta / se
+    z_alpha = stats.norm.ppf(1 - alpha / 2)
+    return stats.norm.cdf(z - z_alpha)
+
+
+def _survival_power_curve(n_per_arm, num_arms, hr, event_rate, alpha=0.05):
+    """Compute power for a survival endpoint at a given hazard ratio (Schoenfeld)."""
+    expected_events = n_per_arm * num_arms * event_rate
+    p_alloc = 1.0 / num_arms
+    denom = expected_events * p_alloc * (1 - p_alloc)
+    if denom <= 0:
+        return 0
+    z_alpha = stats.norm.ppf(1 - alpha / 2)
+    log_hr = math.log(hr)
+    z = abs(log_hr) * math.sqrt(denom)
+    return stats.norm.cdf(z - z_alpha)
+
+
+def generate_power_plots(all_results, output_dir='images'):
+    """Generate power curve visualizations from analysis results.
+    
+    Creates:
+    1. images/power_curves.png — power curves for each trial
+    2. images/power_comparison.png — bar chart of detectable effects
+    """
+    if not HAS_MPL:
+        print("  ⚠ matplotlib/numpy not installed. Skipping power plots.")
+        return
+
+    Path(output_dir).mkdir(exist_ok=True)
+    comparison_name = 'portfolio'
+
+    # Collect dichotomous trials with power data
+    plot_trials = []
+    for r in all_results:
+        ss = r.get('sample_size')
+        if not ss or not ss.get('power_analysis'):
+            continue
+        pa = ss['power_analysis']
+        det = pa.get('detectable_absolute_difference')
+        if det is None:
+            continue
+        plot_trials.append({
+            'name': r.get('drug', r['nct_id']),
+            'n': ss['estimated_n_per_arm'],
+            'enrollment': ss['enrollment_actual'],
+            'control_rate': ss.get('estimated_control_event_rate', 0.10),
+            'alpha': pa.get('alpha', 0.05),
+            'detectable_80': det,
+            'power_20': pa.get('estimated_power_for_20pct_improvement', 0),
+            'assessment': pa.get('assessment', 'N/A'),
+        })
+
+    if not plot_trials:
+        print("  ⚠ No dichotomous power data to plot.")
+        return
+
+    colors = plt.cm.Set2(np.linspace(0, 1, len(plot_trials)))
+    markers = ['o', 's', '^', 'D', 'v', 'p', '*', 'h']
+
+    for idx, t in enumerate(plot_trials):
+        t['color'] = colors[idx]
+        t['marker'] = markers[idx % len(markers)]
+
+    # ── Figure 1: Power Curves ──
+    fig, ax = plt.subplots(figsize=(10, 6))
+    deltas = np.linspace(0.01, 0.40, 150)
+
+    for t in plot_trials:
+        powers = [_dichotomous_power_curve(t['n'], t['control_rate'], d, t['alpha']) for d in deltas]
+        ax.plot(deltas * 100, powers, label=t['name'],
+                color=t['color'], linewidth=2.5)
+        idx_80 = np.argmin(np.abs(np.array(powers) - 0.80))
+        ax.plot(deltas[idx_80] * 100, 0.80, marker=t['marker'],
+                color=t['color'], markersize=10, zorder=5)
+
+    ax.axhline(y=0.80, color='gray', linestyle='--', linewidth=1, alpha=0.7)
+    ax.annotate('80% Power', xy=(0.5, 0.81), fontsize=10, color='gray', fontstyle='italic')
+
+    ax.set_xlabel('Absolute Treatment Effect (Δ, %)', fontsize=12)
+    ax.set_ylabel('Statistical Power', fontsize=12)
+    ax.set_title('Power Curves by Trial', fontsize=14, fontweight='bold')
+    ax.legend(fontsize=9, loc='lower right')
+    ax.set_xlim(0, 40)
+    ax.set_ylim(0, 1.05)
+    ax.grid(True, alpha=0.3)
+    ax.yaxis.set_major_formatter(mticker.PercentFormatter(1.0, decimals=0))
+    ax.xaxis.set_major_formatter(mticker.FormatStrFormatter('%.0f%%'))
+
+    for t in plot_trials:
+        ax.annotate(f'{t["name"]}\n{t["n"]}/arm',
+                    xy=(t['detectable_80'] * 100, 0.80),
+                    xytext=(t['detectable_80'] * 100 + 2, 0.80 - 0.06 * (
+                        1 if plot_trials.index(t) % 2 == 0 else -0.5
+                    )),
+                    fontsize=8, color=t['color'], fontweight='bold',
+                    arrowprops=dict(arrowstyle='->', color=t['color'], lw=1))
+
+    plt.tight_layout()
+    path1 = f'{output_dir}/power_curves.png'
+    fig.savefig(path1, dpi=200, bbox_inches='tight')
+    plt.close(fig)
+    print(f"  ✓ Saved {path1}")
+
+    # ── Figure 2: Bar chart comparison ──
+    fig2, ax2 = plt.subplots(figsize=(10, 6))
+    x = np.arange(len(plot_trials))
+    detectable = [t['detectable_80'] * 100 for t in plot_trials]
+    bars = ax2.bar(x, detectable, 0.5, color=[t['color'] for t in plot_trials],
+                   alpha=0.85, edgecolor='white', linewidth=1.2)
+
+    for bar, val, t in zip(bars, detectable, plot_trials):
+        ax2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5,
+                 f'{val:.0f}%', ha='center', va='bottom', fontsize=10,
+                 fontweight='bold', color=t['color'])
+        ax2.text(bar.get_x() + bar.get_width() / 2, bar.get_height() / 2,
+                 f'{t["n"]}/arm', ha='center', va='center', fontsize=9,
+                 color='white', fontweight='bold')
+
+    thresholds = CONFIG['dichotomous_power_assessment']
+    ax2.axhspan(0, thresholds['adequately_powered'] * 100, alpha=0.1, color='green', label='Adequately Powered')
+    ax2.axhspan(thresholds['adequately_powered'] * 100, thresholds['borderline'] * 100, alpha=0.1, color='orange', label='Borderline')
+    ax2.axhspan(thresholds['borderline'] * 100, thresholds['underpowered'] * 100, alpha=0.1, color='red', label='Underpowered')
+
+    ax2.set_xticks(x)
+    ax2.set_xticklabels([t['name'] for t in plot_trials], fontsize=9)
+    ax2.set_ylabel('Minimum Detectable Effect (Δ, %)', fontsize=12)
+    ax2.set_title('Smallest Effect Each Trial Can Detect\n(at 80% Power)', fontsize=14, fontweight='bold')
+    ax2.legend(fontsize=9, loc='upper left')
+    ax2.set_ylim(0, max(detectable) * 1.5 + 5)
+    ax2.grid(True, alpha=0.3, axis='y')
+
+    plt.tight_layout()
+    path2 = f'{output_dir}/power_comparison.png'
+    fig2.savefig(path2, dpi=200, bbox_inches='tight')
+    plt.close(fig2)
+    print(f"  ✓ Saved {path2}")
 
 
 if __name__ == '__main__':
@@ -1071,3 +1641,8 @@ if __name__ == '__main__':
     with open(comparison_path, 'w') as f:
         json.dump(comparison, indent=2, fp=f)
     print(f"\n✓ Detailed comparison saved to {comparison_path}")
+    
+    print("\n" + "=" * 80)
+    print("POWER VISUALIZATION")
+    print("=" * 80)
+    generate_power_plots(all_results)
