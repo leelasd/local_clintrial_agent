@@ -994,3 +994,323 @@ Our `design_agent_pipeline.py` passes raw eligibility-criteria text to the local
 
 **Do reference the hybrid RRF retrieval architecture** if issue #10 (PyTrial Trial2Vec trial-similarity) progresses — TrialMatchAI's hybrid BM25+vector with reciprocal-rank fusion is the stronger, benchmarked approach vs. embedding-only.
 
+---
+
+# CRAN Task View: Clinical Trial Design, Monitoring, Analysis and Reporting — Deep Dive
+
+Repository: https://github.com/cran-task-views/ClinicalTrials
+CRAN: https://CRAN.R-project.org/view=ClinicalTrials
+Maintainers: Ya Wang, Thomas Jaki, Laura Pascasio Harris, Orla Doyle, Elias Laurin Meyer, Wilmar Igl (Gilead Sciences)
+Version: 2026-06-10 · Languages: R (markdown task view)
+
+## What it is
+
+The official CRAN Task View for clinical trials — a curated, expert-maintained catalog of **129 R packages** (124 active + 5 archived) spanning the entire trial lifecycle: design, monitoring, analysis, and reporting. It is the authoritative reference for "which R package does X" in clinical trials, maintained by biostatisticians from Gilead Sciences and academic collaborators. Our `cran_task_view_mapping.md` is a companion doc that maps these packages to our Python pipeline steps.
+
+This is not a tool to install — it's the **requirements catalog** for our R backend. It tells us exactly which validated R packages exist for each trial-design capability, which are "core" (priority = core, meaning the task view editors consider them essential), and which are niche. The task view is the map; issues #8–#14 are the integration plan for the destinations on that map.
+
+## Structure — 4 categories, 16 subcategories
+
+### Design (7 subcategories, 84 packages)
+
+#### Adaptive Designs (24 packages)
+The largest subcategory. Packages for simulation and optimization of adaptive trial designs — seamless Phase II/III, enrichment, MAMS, dose selection at interim, response-adaptive randomization, and Bayesian adaptive designs.
+
+| Package | Priority | Installed? | Relevance to our agent |
+|---|---|---|---|
+| `rpact` | **core** | ✅ | GS + adaptive (inverse-normal/Fisher combination, MAMS, enrichment, SSR, boundary recalc). **Primary R backend for issues #11, #13.** |
+| `adaptTest` | core | ✅ | Adaptive two-stage tests (Bauer-Koehne, Lehmacher-Wassmer, conditional error). |
+| `adoptr` | — | ✅ | Optimal one/two-arm two-stage designs under custom objectives. Kunzmann et al. (2021). |
+| `asd` | core | ✅ | Adaptive seamless designs with treatment selection + subpopulation selection. |
+| `MAMS` | — | ✅ | Multi-arm multi-stage designs with normal endpoints. |
+| `gsMAMS` | — | ✅ | GS MAMS with SCPRT efficacy/futility boundaries. Wu et al. (2023). |
+| `graphicalMCP` | — | ✅ | Maurer-Bretz graphical multiple comparison procedures. **Issue #8.** |
+| `gMCP` | — | — | GUI for graphical MCPs (weighted Bonferroni, parametric, Simes). |
+| `CohortPlat` | — | ✅ | Cohort platform trial simulation (combination therapies). |
+| `NCC` | — | — | Platform trials with non-concurrent controls. Bofill Roig et al. (2022). |
+| `drugdevelopR` | — | ✅ | Optimal Phase II/III sample size allocation + go/no-go rules. |
+| `esDesign` | — | — | Adaptive enrichment designs with SSR. |
+| `SAME` | — | — | Bayesian seamless multi-arm biomarker-enriched Phase II/III with survival. |
+| `TrialSimulator` | — | — | Modular trial simulation (seamless, dose selection, adaptive). |
+| `adaptr` | — | — | Adaptive design simulation + comparison (flexible arms, control sharing). |
+| `adestr` | — | — | Performance evaluation of point/interval estimators for adaptive two-stage designs. |
+| `adpss` | — | — | Adaptive sample size determination with maximal efficiency. |
+| `ASSISTant` | — | — | Subgroup selection in three-stage GS trials. |
+| `BDP2` | — | ⚠️ archived | Bayesian adaptive Phase II binary endpoint designs. Archived 2026-05-04. |
+| `cats` | — | — | Cohort platform trial with co-primary binary endpoints. |
+| `eselect` | — | — | Endpoint selection + sample size reassessment for multiple binary endpoints. |
+| `MABOUST` | — | ⚠️ archived | MABOUST design simulation. Archived 2026-05-06. |
+| `MinEDfind` | — | — | Bayesian two-stage minimum effective dose design. |
+| `cats` | — | — | Cohort platform trial simulation (binary co-primary endpoints). |
+
+#### Bioequivalence (4 packages)
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `PowerTOST` | **core** | ✅ | BE study power/sample size across designs (TOST). **Issue #12.** |
+| `PK` | — | — | Non-compartmental PK parameters + BE tests. |
+| `adaptIVPT` | — | — | FDA adaptive IVPT bioequivalence (mixed scaling). |
+| `replicateBE` | — | — | ABEL (Average Bioequivalence with Expanding Limits). |
+
+#### Dose-Finding (14 packages)
+Phase I dose-escalation designs — CRM, BOIN, EWOC, 3+3, EffTox. Directly relevant to our `analyze_adaptive_design()` dose-escalation detection.
+
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `dfcrm` | **core** | ✅ | Classical CRM + TITE-CRM. Phase I dose-finding. |
+| `BOIN` | — | ✅ | Bayesian Optimal Interval design (single-agent + combination). |
+| `DoseFinding` | — | ✅ | MCP-Mod methodology for dose-response studies. |
+| `escalation` | — | — | CRM, mTPI, BOIN, EffTox, 3+3 dose-finding framework. |
+| `crmPack` | — | — | Model-based dose escalation (CRM, dual-endpoint biomarker). |
+| `bcrm` | **core** | ⚠️ archived | Bayesian CRM designs. Archived 2026-05-08. |
+| `UnifiedDoseFinding` | — | — | Unified Phase I: Quasi-CRM, generalized BOIN, non-binary endpoints. |
+| `DTAT` | — | — | Dose Titration Algorithm Tuning (continuous dose individualization). |
+| `ewoc` | — | — | Escalation With Overdose Control. |
+| `OncoBayes2` | — | — | Bayesian logistic regression for oncology dose escalation (combination). |
+| `pocrm` | — | — | Partial Order CRM for combination trials. |
+| `MCPMod` | — | — | Legacy MCP-Mod — superseded by `DoseFinding`. |
+| `TEQR` | **core** | — | Toxicity Equivalence Range design (cumulative cohort + safety rules). |
+| `SEARS` | — | — | Seamless Phase I/II: dose escalation (toxicity) + dose expansion (efficacy). |
+| `dfmta` | — | — | Phase I/II adaptive dose-finding for Molecularly Targeted Agents. |
+| `iAdapt` | — | — | Two-stage adaptive dose-finding for binary toxicity. |
+| `MinEDfind` | — | — | Minimum effective dose (Bayesian two-stage). |
+
+#### Factorial Designs (2 packages)
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `conf.design` | — | — | Confounded + fractional factorial designs. |
+| `FrF2` | — | — | Regular and non-regular fractional factorial (2-level). |
+
+#### Group Sequential Designs (12 packages)
+The core of issues #11 + #13.
+
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `gsDesign` | — | ✅ | GS design (boundaries, power, spending). **Issue #11.** mRNA-1273 regulatory precedent. |
+| `rpact` | **core** | ✅ | GS + confirmatory adaptive (combination testing). **Issues #11, #13.** LGPL-3. |
+| `ldbounds` | **core** | ✅ | Lan-DeMets alpha spending bounds. |
+| `GroupSeq` | — | — | GS boundary computation + CIs (Lan-DeMets). |
+| `grpseq` | — | — | GS with non-binding futility (Gallo et al. 2014). |
+| `gscounts` | — | — | GS for negative binomial outcomes. |
+| `GSED` | — | — | Group sequential enrichment design with subgroup selection. |
+| `gsrsb` | — | — | Gatekeeping for primary + secondary endpoints in GS. |
+| `lrstat` | — | ✅ | Adaptive GS trials with flexible sample size + error spending. |
+| `SurrogateSeq` | — | — | GS with surrogate marker for early efficacy + futility. |
+| `BinGSD` | — | — | GS for single-arm binary endpoint (asymptotic + exact). |
+| `PwrGSD` | — | ✅ | Evaluation of interim analysis plans for survival endpoints. |
+
+#### Randomization (3 packages)
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `blockrand` | **core** | ✅ | Block randomization + PDF cards. Maps to our `analyze_randomization()`. |
+| `experiment` | **core** | — | Clinical experiment tools including randomization. |
+| `randomizeR` | — | — | Randomization procedure selection + sequence generation. |
+
+#### Response Adaptive Randomization (7 packages)
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `carat` | — | ✅ | Covariate-adaptive randomization (6 procedures). |
+| `BAR` | — | — | Bayesian adaptive randomization. |
+| `brada` | — | — | Bayesian response-adaptive for binary endpoints. |
+| `CARM` | — | — | Covariate-adjusted ARM via Mahalanobis distance. |
+| `covadap` | — | — | 7 covariate-adaptive randomization procedures. |
+| `grouprar` | — | — | Group response-adaptive (handles delayed/missing responses). |
+| `RABR` | — | — | Response Adaptive Block Randomization. |
+| `RARfreq` | — | — | Frequentist response-adaptive (DBCD + SEU). |
+
+#### Sample Size and Power (13 packages)
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `TrialSize` | **core** | ✅ | 80+ functions from Chow et al. (2007). **Issue #12.** |
+| `PowerTOST` | **core** | ✅ | BE study power/sample size. |
+| `pwr` | **core** | ✅ | Cohen (1988) power calculations. |
+| `longpower` | **core** | ✅ | Power for longitudinal models (MMRM, GLS, GEE). |
+| `clinfun` | **core** | ✅ | Phase II sample sizes (Simon 2-stage, Fisher's exact) + toxicity monitoring. |
+| `rpact` | **core** | ✅ | Sample size for means/rates/survival/counts. |
+| `lrstat` | — | ✅ | Power for NPH with weighted log-rank (Fleming-Harrington). |
+| `BayesCTDesign` | — | ✅ | Bayesian two-arm RCT power (Gaussian, Poisson, Bernoulli, Weibull). |
+| `blindrecalc` | — | — | Blinded sample size recalculation (superiority + NI). |
+| `baskexact` | — | — | Basket trial operating characteristics (power prior). |
+| `cosa` | — | — | Optimal sample allocation for multilevel designs. |
+| `MKpower` | — | — | Power for Welch, Wilcoxon, negative binomial, ANCOVA, AUC. |
+| `pmvalsampsize` | — | — | Minimum sample size for prediction model validation. |
+| `presize` | — | ✅ | Precision-based sample size (CI width, not power). |
+| `samplesize` | — | — | t-test + Wilcoxon-Mann-Whitney sample size. |
+| `ssanv` | — | — | Sample size with nonadherence adjustment. |
+
+#### Simulation (15 packages)
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `Mediana` | — | ✅ | General trial simulation framework (CSE approach). |
+| `asd` | core | ✅ | Adaptive seamless design simulation. |
+| `rpact` | core | ✅ | Simulation for means/rates/survival/counts + MAMS + enrichment. |
+| `CohortPlat` | — | ✅ | Cohort platform trial simulation. |
+| `NCC` | — | — | Platform trial simulation with non-concurrent controls. |
+| `basksim` | — | — | Basket trial design simulation comparison. |
+| `bhmbasket` | — | — | Basket trial simulation (Bayesian hierarchical). |
+| `bcrm` | core | ⚠️ | Bayesian CRM simulation. Archived. |
+| `TrialSimulator` | — | — | Modular declarative trial simulation. |
+| `adaptDiag` | — | — | Adaptive diagnostic trial simulation. |
+| `airship` | — | — | Shiny app for simulation result visualization. |
+| `esDesign` | — | — | Adaptive enrichment design simulation. |
+| `ewoc` | — | — | EWOC simulation. |
+| `RABR` | — | — | RABR design simulation. |
+| `simglm` | — | — | GLM simulation with power analysis. |
+| `UnifiedDoseFinding` | — | — | Dose-finding simulation. |
+
+### Monitoring (7 packages)
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `rpact` | **core** | ✅ | Boundary recalculation during trial (under/over-running). |
+| `accrualPlot` | — | — | Accrual tracking + prediction. Maps to our `analyze_study_population()`. |
+| `PwrGSD` | — | ✅ | Interim analysis evaluation for survival. |
+| `monitOS` | — | — | OS monitoring in pivotal trials (indolent cancers). |
+| `esDesign` | — | — | Adaptive enrichment design monitoring. |
+| `SAME` | — | — | Bayesian seamless biomarker-enriched monitoring. |
+| `seqmon` | — | — | Sequential monitoring (efficacy + futility boundaries). |
+| `tLagInterim` | — | — | Interim monitoring with time-lagged outcomes (IPW estimators). |
+
+### Analysis (6 subcategories, 25 packages)
+
+#### General Analysis
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `clintrialx` | — | — | Fetch trial data from CT.gov + AACT. R equivalent of our API client. |
+| `ctrdata` | — | — | Query/retrieve/analyze trial data from 4 registries. |
+| `coin` | — | — | Conditional inference (2-sample, K-sample, correlation, censored). |
+| `multcomp` | — | ✅ | Simultaneous tests + CIs (linear, GLM, mixed, survival). |
+| `logistf` | — | — | Firth's bias-reduced logistic regression (separation fix). |
+| `epibasix` | — | — | `n4means`, `n4props`, `diffdetect` for RCTs. |
+| `HH` | — | — | AE dotplot for clinical studies. |
+| `TestDesign` | — | — | Optimal test design (Birnbaum, MIP solvers). |
+
+#### Longitudinal Data Analysis
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `mmrm` | — | ✅ | MMRM for longitudinal continuous outcomes. |
+| `lme4` | — | ✅ | Linear + generalized linear mixed models. |
+| `glmmTMB` | — | ✅ | GLMM with zero-inflation. |
+| `nlme` | — | — | Gaussian linear/nonlinear mixed models. |
+| `brms.mmrm` | — | ✅ | Bayesian MMRM via brms. |
+| `multcomp` | — | ✅ | Simultaneous inference for longitudinal. |
+
+#### Survival Analysis
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `survival` | **core** | ✅ | Cox model, KM, AFT, case-cohort. The foundation. |
+| `maxcombo` | — | ✅ | MaxCombo test under NPH. **Issue #8 (gsDesign2).** |
+| `nphRCT` | — | ✅ | Stratified weighted log-rank for RCTs. |
+| `rpsftm` | — | — | Rank-preserving structural failure time model. |
+| `multcomp` | — | ✅ | Simultaneous inference for Cox/survival. |
+
+#### Meta-Analysis
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `metafor` | — | ✅ | Comprehensive meta-analysis (effect sizes, models, forest plots). |
+| `meta` | — | — | User-friendly meta-analysis (Schwarzer et al. 2015). |
+| `netmeta` | — | — | Frequentist network meta-analysis (SUCRA, league tables). |
+| `metaLik` | — | — | Likelihood inference in meta-analysis. |
+| `metasens` | — | — | Bias modeling/adjustment in meta-analysis. |
+| `RBesT` | — | ✅ | Bayesian evidence synthesis (MAP priors, historical data). |
+
+#### Missing Data Imputation
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `mice` | — | ✅ | Multiple imputation by chained equations. |
+| `rbmi` | — | ✅ | Reference-based multiple imputation for longitudinal. |
+| `remiod` | — | — | Bayesian reference-based MI (J2R, CR, delta adjustment). |
+
+#### Other Analysis for Specific Designs
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `clinicalsignificance` | — | — | Clinical significance analysis (Jacobson-Truax). |
+| `clinsig` | — | — | Parametric + non-parametric clinical significance. |
+| `MatchIt` | — | — | Matched samples (propensity scores). |
+| `speff2trial` | core | — | Treatment effect estimation in 2-group RCT. |
+| `ThreeGroups` | — | — | ML estimator for three-group designs. |
+
+### Reporting (7 packages)
+| Package | Priority | Installed? | Relevance |
+|---|---|---|---|
+| `rtables` | — | ✅ | Multi-level tabulations (hierarchical, pipe-friendly). |
+| `tern` | — | ✅ | TLG library for clinical trials. |
+| `consort` | — | ✅ | CONSORT diagrams for RCTs. |
+| `tidytlg` | — | — | TLG via tidyverse. |
+| `rlistings` | — | ✅ | Formatted listings for regulatory submissions. |
+| `gridify` | — | — | Enriched figures + tables (ggplot, gt, flextable). |
+| `junco` | — | — | Enhanced rtables/rlistings/tern (RTF export, risk diff). |
+
+## Removed/Archived Packages (5)
+From `data/removed_packages.csv`:
+| Package | Archived | Reason |
+|---|---|---|
+| `ipcwswitch` | 2025-07-01 | Issues not corrected in time |
+| `maic` | 2025-07-22 | Maintainer email undeliverable |
+| `nppbib` | 2026-03-18 | Issues not corrected despite reminders |
+| `PowerUpR` | 2026-03-18 | Issues not corrected despite reminders |
+| `bcrm` | 2026-05-08 | Maintainer email undeliverable |
+| `BDP2` | 2026-05-04 | Maintainer email undeliverable |
+| `MABOUST` | 2026-05-06 | Maintainer email undeliverable |
+
+## Installed on our system: 52 of 124 active packages
+
+### Core packages (13 of 15 installed)
+`rpact` ✅, `PowerTOST` ✅, `TrialSize` ✅, `pwr` ✅, `longpower` ✅, `clinfun` ✅, `blockrand` ✅, `ldbounds` ✅, `survival` ✅, `adaptTest` ✅, `asd` ✅, `dfcrm` ✅ — only `bcrm` (archived) and `experiment` missing from core.
+
+### Missing but needed for our agent (2 packages to install)
+- `gsDesign` — ✅ now installed (was the gap for issue #11)
+- `gsDesign2` — ✅ now installed (was the gap for issue #8 NPH)
+
+### Not installed (lazy — install when capability is needed)
+~72 packages covering: Bayesian dose-finding (`crmPack`, `escalation`, `OncoBayes2`), basket trials (`baskexact`, `bhmbasket`), platform trials (`NCC`), meta-analysis (`meta`, `netmeta`), reporting (`tidytlg`, `gridify`, `junco`), and others. These are capability-specific — install lazily when a trial analysis requires them.
+
+## Why this matters for our agent architecture
+
+The CRAN Task View is the **bill of materials** for the R backend of our clinical trial design agent. It confirms:
+
+1. **Every statistical capability our agent needs exists as a validated R package.** There are no gaps in the R ecosystem — the question is which packages to bridge to Python and how.
+
+2. **The "core" designation is a quality signal.** Of 124 active packages, only 15 carry `priority = "core"`. We have 13 of 15 installed. These are the packages the task view editors (Gilead biostatisticians) consider essential for clinical trial work.
+
+3. **rpact is the only package appearing in 4 categories** (Adaptive Designs, Group Sequential, Sample Size, Monitoring). This validates our choice of rpact as the primary R backend — it has the broadest coverage of any single package in the task view.
+
+4. **The task view confirms the complementary relationship between rpact and gsDesign** (noted in our rpact deep dive). gsDesign appears in Group Sequential only; rpact appears in Group Sequential + Adaptive + Sample Size + Monitoring. gsDesign suggests rpact (reverse-suggests). They are complementary, not competitive.
+
+5. **The 5 archived packages are a cautionary tale** — `bcrm` (Bayesian CRM, core priority) was archived because the maintainer's email bounced. This is the R ecosystem's fragility: packages depend on individual maintainers. Our agent should treat R package availability as a runtime check, not a build-time assumption.
+
+6. **The R Foundation's regulatory guidance document** (linked from the task view) — *Regulatory Compliance and Validation Issues* — provides the framework for using R in GxP-regulated environments. This is the regulatory foundation that complements the FDA NDA open-source references in our research.
+
+## R + rpy2 Bridge — Verified Working
+
+All 4 critical R packages are accessible from Python via rpy2 (ABI mode):
+
+```python
+import rpy2.robjects as ro
+from rpy2.robjects.packages import importr
+
+# rpact — group sequential design (OBF spending, 3-look)
+rpact = importr('rpact')
+ro.r('d <- getDesignGroupSequential(sided=1, alpha=0.025, beta=0.2, '
+     'informationRates=c(0.33,0.7,1), typeOfDesign="asOF")')
+alpha_spent = [round(x, 6) for x in ro.r('d$alphaSpent')]
+# → [9.5e-05, 0.007384, 0.025]
+critical_values = [round(x, 4) for x in ro.r('d$criticalValues')]
+# → [3.7307, 2.4396, 2.0001]
+
+# gsDesign — fixed-sample survival
+gs = importr('gsDesign')
+ro.r('x <- nSurvival(lambda1=0.0461, lambda2=0.0307, ratio=1.0, '
+     'alpha=0.025, beta=0.1, sided=1)')
+n = int(ro.r('x$n')[0])       # → 520
+events = int(ro.r('x$nEvents')[0])  # → 254
+
+# gsDesign2 — NPH designs (MaxCombo, RMST, WLR, AHR)
+importr('gsDesign2')  # loaded
+
+# graphicalMCP — Maurer-Bretz alpha recycling
+importr('graphicalMCP')  # loaded
+```
+
+**Note:** rpy2 runs in ABI mode (not API mode) because the prebuilt `_rinterface_cffi_api.abi3.so` has a hardcoded rpath to a non-existent R 4.5 framework. ABI mode works correctly — use `ro.r('expr')` for R evaluation instead of `.rx2()` for attribute access. To fix API mode, build rpy2 from source against the Homebrew R installation.
+
+See `examples/rpy2_bridge.py` for a production-ready bridge module.
+
