@@ -1,0 +1,1 @@
+from clintrial_agent.reporting.visualization import generate_power_plots
