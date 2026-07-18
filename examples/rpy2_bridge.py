@@ -72,7 +72,7 @@ class RBridge:
         core_packages = ["rpact", "gsDesign", "gsDesign2", "graphicalMCP"]
         for pkg_name in core_packages:
             try:
-                self._loaded_packages[pkg_name] = importr(pkg_name)
+                self._loaded_packages[pkg_name] = importr(pkg_name, on_conflict="warn")
             except PackageNotInstalledError as e:
                 raise RPackageError(
                     f"R package '{pkg_name}' is not installed. "
@@ -83,8 +83,19 @@ class RBridge:
     def _ensure_jsonlite() -> None:
         """Ensure jsonlite is loaded for R-to-JSON marshalling."""
         if not hasattr(RBridge, "_jsonlite_loaded"):
-            importr("jsonlite")
+            importr("jsonlite", on_conflict="warn")
             RBridge._jsonlite_loaded = True
+
+    def _ensure_package(self, pkg_name: str) -> None:
+        """Ensure an R package is loaded."""
+        if pkg_name not in self._loaded_packages:
+            try:
+                self._loaded_packages[pkg_name] = importr(pkg_name, on_conflict="warn")
+            except PackageNotInstalledError as e:
+                raise RPackageError(
+                    f"R package '{pkg_name}' is not installed. "
+                    f"Install with: Rscript -e 'install.packages(\"{pkg_name}\")'"
+                ) from e
 
     def _eval_to_json(self, r_expr: str) -> dict | list:
         """
@@ -601,6 +612,168 @@ class RBridge:
         return self._eval_to_json(r_code)
 
     # ==================================================================
+    # dfcrm — Continual Reassessment Method (Phase I Dose Finding)
+    # ==================================================================
+
+    def dfcrm_crm(
+        self,
+        prior: list[float],
+        target: float,
+        tox: list[int],
+        level: list[int],
+    ) -> dict:
+        """
+        Update the Continual Reassessment Method (CRM) model to recommend the next dose.
+        """
+        self._ensure_package("dfcrm")
+        prior_str = ",".join(str(p) for p in prior)
+        tox_str = ",".join(str(t) for t in tox)
+        level_str = ",".join(str(l) for l in level)
+
+        r_code = f"""
+        fit <- crm(
+            prior = c({prior_str}),
+            target = {target},
+            tox = c({tox_str}),
+            level = c({level_str})
+        )
+        .result <- list(
+            mtd = as.integer(fit$mtd),
+            ptox = as.numeric(fit$ptox),
+            dose_next = as.integer(fit$mtd)
+        )
+        """
+        return self._eval_to_json(r_code)
+
+    # ==================================================================
+    # blockrand — Blocked Randomization List Generation
+    # ==================================================================
+
+    def blockrand_generate(
+        self,
+        n: int,
+        num_levels: int = 2,
+        levels: list[str] | None = None,
+        block_sizes: list[int] | None = None,
+    ) -> dict:
+        """
+        Generate a blocked randomization list for trial participants.
+        """
+        self._ensure_package("blockrand")
+        if levels is None:
+            levels = [chr(65 + i) for i in range(num_levels)]  # ["A", "B", ...]
+        if block_sizes is None:
+            block_sizes = [2, 4]
+
+        levels_str = ",".join(f'"{l}"' for l in levels)
+        bs_str = ",".join(str(b) for b in block_sizes)
+
+        r_code = f"""
+        res <- blockrand(
+            n = {n},
+            num.levels = {num_levels},
+            levels = c({levels_str}),
+            block.sizes = c({bs_str})
+        )
+        .result <- list(
+            id = as.integer(res$id),
+            block_id = as.integer(res$block.id),
+            block_size = as.integer(res$block.size),
+            treatment = as.character(res$treatment)
+        )
+        """
+        return self._eval_to_json(r_code)
+
+    # ==================================================================
+    # PowerTOST — Bioequivalence Power and Sample Size
+    # ==================================================================
+
+    def powertost_sample_size(
+        self,
+        alpha: float = 0.05,
+        target_power: float = 0.8,
+        cv: float = 0.2,
+        theta0: float = 0.95,
+        theta1: float = 0.8,
+        theta2: float = 1.25,
+        design: str = "2x2",
+    ) -> dict:
+        """
+        Calculate sample size for bioequivalence testing (TOST).
+        """
+        self._ensure_package("PowerTOST")
+        r_code = f"""
+        res <- sampleN.TOST(
+            alpha = {alpha},
+            targetpower = {target_power},
+            CV = {cv},
+            theta0 = {theta0},
+            theta1 = {theta1},
+            theta2 = {theta2},
+            design = "{design}",
+            print = FALSE
+        )
+        .result <- list(
+            sample_size = as.integer(res[["Sample size"]]),
+            achieved_power = as.numeric(res[["Achieved power"]]),
+            alpha = {alpha},
+            cv = {cv},
+            target_power = {target_power}
+        )
+        """
+        return self._eval_to_json(r_code)
+
+    # ==================================================================
+    # clinfun — Simon's Two-Stage Design
+    # ==================================================================
+
+    def clinfun_simon2stage(
+        self,
+        pu: float,
+        pa: float,
+        ep1: float = 0.05,
+        ep2: float = 0.2,
+    ) -> dict:
+        """
+        Calculate Simon's optimal and minimax two-stage designs for Phase II trials.
+        """
+        self._ensure_package("clinfun")
+        r_code = f"""
+        res <- ph2simon(
+            pu = {pu},
+            pa = {pa},
+            ep1 = {ep1},
+            ep2 = {ep2}
+        )
+        adm <- clinfun:::twostage.admissible(res)
+        minimax <- adm[1, ]
+        optimal <- adm[nrow(adm), ]
+        .result <- list(
+            pu = {pu},
+            pa = {pa},
+            alpha = {ep1},
+            beta = {ep2},
+            optimal = list(
+                r1 = as.integer(optimal["r1"]),
+                n1 = as.integer(optimal["n1"]),
+                r = as.integer(optimal["r"]),
+                n = as.integer(optimal["n"]),
+                en_p0 = as.numeric(optimal["EN(p0)"]),
+                pet_p0 = as.numeric(optimal["PET(p0)"])
+            ),
+            minimax = list(
+                r1 = as.integer(minimax["r1"]),
+                n1 = as.integer(minimax["n1"]),
+                r = as.integer(minimax["r"]),
+                n = as.integer(minimax["n"]),
+                en_p0 = as.numeric(minimax["EN(p0)"]),
+                pet_p0 = as.numeric(minimax["PET(p0)"])
+            )
+        )
+        """
+        return self._eval_to_json(r_code)
+
+    # ==================================================================
     # Utility — Check installed packages
     # ==================================================================
 
@@ -622,6 +795,7 @@ class RBridge:
                 "jsonlite", "survival", "maxcombo", "multcomp",
                 "TrialSize", "PowerTOST", "clinfun", "blockrand",
                 "carat", "mmrm", "lme4", "metafor", "mice", "rbmi",
+                "dfcrm",
             ]
 
         ro.r('installed <- rownames(installed.packages())')
@@ -677,6 +851,50 @@ if __name__ == "__main__":
     print("graphicalMCP — Loaded (Maurer-Bretz alpha recycling)")
     print("=" * 60)
     print("  OK")
+    print()
+
+    print("=" * 60)
+    print("dfcrm — Continual Reassessment Method (MTD recommendation)")
+    print("=" * 60)
+    crm_fit = bridge.dfcrm_crm(
+        prior=[0.05, 0.1, 0.2, 0.3, 0.5],
+        target=0.2,
+        tox=[0, 0, 1],
+        level=[1, 2, 2]
+    )
+    print(f"  Recommended MTD Level: {crm_fit['mtd']}")
+    print(f"  Updated probabilities: {crm_fit['ptox']}")
+    print()
+
+    print("=" * 60)
+    print("blockrand — Blocked Randomization (n=12, 1:1 allocation)")
+    print("=" * 60)
+    rand_list = bridge.blockrand_generate(n=12, levels=["Standard", "Experimental"])
+    print(f"  Randomization list (first 6):")
+    for i in range(6):
+        print(f"    ID {rand_list['id'][i]}: Block {rand_list['block_id'][i]} (size {rand_list['block_size'][i]}) -> {rand_list['treatment'][i]}")
+    print()
+
+    print("=" * 60)
+    print("PowerTOST — Bioequivalence Sample Size (2x2 Crossover)")
+    print("=" * 60)
+    be_ss = bridge.powertost_sample_size(cv=0.2, target_power=0.8)
+    print(f"  Sample size needed: {be_ss['sample_size']}")
+    print(f"  Achieved power:     {be_ss['achieved_power']:.4f}")
+    print()
+
+    print("=" * 60)
+    print("clinfun — Simon's Two-Stage Design (pu=0.1, pa=0.3)")
+    print("=" * 60)
+    simon = bridge.clinfun_simon2stage(pu=0.1, pa=0.3)
+    print(f"  Optimal design:")
+    print(f"    Stage 1: stop if <= {simon['optimal']['r1']} / {simon['optimal']['n1']} responses")
+    print(f"    Stage 2: fail if <= {simon['optimal']['r']} / {simon['optimal']['n']} responses")
+    print(f"    Expected N (Null):  {simon['optimal']['en_p0']:.2f}")
+    print(f"  Minimax design:")
+    print(f"    Stage 1: stop if <= {simon['minimax']['r1']} / {simon['minimax']['n1']} responses")
+    print(f"    Stage 2: fail if <= {simon['minimax']['r']} / {simon['minimax']['n']} responses")
+    print(f"    Expected N (Null):  {simon['minimax']['en_p0']:.2f}")
     print()
 
     print("=" * 60)

@@ -38,21 +38,36 @@ While the R ecosystem historically has a larger collection of niche clinical tri
 
 ---
 
-## 💡 Future Expansion: Python-to-R Integration Ideas
+## ⚡ Implemented Python-to-R Bridge Features
 
-Because many advanced statistical methodologies in clinical trials (e.g., group sequential alpha spending, Bayesian Continual Reassessment Method) are only implemented in R, we can extend our Python agent using these CRAN packages:
+We have built a production-ready Python-to-R bridge module ([examples/rpy2_bridge.py](file:///Users/leelasdodda/Documents/Codes/local_clintrial_agent/examples/rpy2_bridge.py)) that exposes key CRAN packages directly to our Python pipeline using the `rpy2` library in ABI-compatible mode. 
 
-### 1. Advanced Sample Size and Power (via `rpact`)
-* **Current Python State:** Uses normal approximation for proportions and the Schoenfeld event-count formula for survival.
-* **R Package Integration:** `rpact` is the industry standard for confirmatory adaptive clinical trials.
-* **Implementation:** We can call `rpact` via Python's `rpy2` library (or run a sub-process) to calculate exact sample sizes and power curves for group sequential trials (e.g., spending functions like O'Brien-Fleming and Pocock).
+The following R-based clinical trial features are fully implemented and verified working:
 
-### 2. Dose-Finding Simulations (via `dfcrm` and `ewoc`)
-* **Current Python State:** Simply labels Phase 1 trials as `"Safety / Dose-Finding"` and identifies keywords.
-* **R Package Integration:** `dfcrm` (Continual Reassessment Method) and `ewoc` (Escalation With Overdose Control).
-* **Implementation:** Enable the pipeline to run simulations of dose-escalation trajectories based on cohort sizes and target toxicity rates, generating predictive toxicity curves.
+### 1. Group Sequential & Adaptive Designs (`rpact` & `gsDesign`)
+* **Features:** Group sequential alpha spending boundaries (O'Brien-Fleming, Pocock), exact binomial sizing, and survival sample sizing/event calculations.
+* **Bridge Methods:** `rpact_group_sequential()`, `rpact_sample_size_survival()`, `rpact_mams_simulation()`, `gsdesign_survival()`, `gsdesign_fixed_survival()`, `gsdesign_exact_binomial()`.
 
-### 3. Randomization Simulation (via `carat`)
-* **Current Python State:** Heuristically detects the randomization method (Simple, Blocked, Stratified, Adaptive) and stratification factors.
-* **R Package Integration:** `carat` implements covariate-adaptive randomization procedures (minimization, biased coin).
-* **Implementation:** Predict the probability of imbalances in patient characteristics across arms based on the detected stratification factors.
+### 2. Dose-Finding & Phase I CRM (`dfcrm`)
+* **Features:** Bayesian Continual Reassessment Method (CRM) for safety monitoring and identifying Maximum Tolerated Dose (MTD).
+* **Bridge Method:** `dfcrm_crm()`.
+
+### 3. Patient Randomization List Generator (`blockrand`)
+* **Features:** Permuted block randomization list generation for trial allocation, supporting varying block sizes and custom treatment arm names.
+* **Bridge Method:** `blockrand_generate()`.
+
+### 4. Bioequivalence Sizing (`PowerTOST`)
+* **Features:** Calculates sample size and achieved power for bioequivalence testing (Two One-Sided Tests / TOST) in standard designs (e.g. 2x2 Crossover).
+* **Bridge Method:** `powertost_sample_size()`.
+
+### 5. Simon's Phase II Two-Stage Designs (`clinfun`)
+* **Features:** Simon's minimax and optimal two-stage designs for Phase II oncology trials (interim futility stopping rules).
+* **Bridge Method:** `clinfun_simon2stage()`.
+
+---
+
+## 💡 Future Expansion: Non-Proportional Hazards and Multiplicity
+
+We can continue expanding the bridge to cover more advanced scenarios:
+1. **NPH Trials (`gsDesign2`):** Utilize non-proportional hazard methods (MaxCombo, weighted log-rank tests) directly in our sizing pipeline.
+2. **Multi-Hypothesis Testing (`graphicalMCP`):** Maurer-Bretz alpha recycling procedures for trials with multiple primary endpoints/treatment comparisons.
