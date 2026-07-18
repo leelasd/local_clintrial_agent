@@ -8,7 +8,7 @@ This document details the architectural evolution and step-by-step roadmap to tr
 
 Currently, the pipeline operates as a single-file script ([design_agent_pipeline.py](file:///Users/leelasdodda/Documents/Codes/local_clintrial_agent/design_agent_pipeline.py)) that relies on heuristic keyword parsing, simple statistical approximations (e.g., Schoenfeld's formula), and loose LLM classification. 
 
-The future state transitions to a **Modular Multi-Agent Kernel** exposed via an **MCP (Model Context Protocol) Server**, fetching exact parameters from an **R-to-Python Bridge** and structured data from the **CT.gov v2 API**.
+The future state transitions to a **Modular Multi-Agent Kernel** exposed via an **MCP (Model Context Protocol) Server**, fetching exact parameters from an **R-to-Python Bridge** and querying a local **PostgreSQL database containing both AACT (clinical_trials.ctgov) and ChEMBL (chembl_37)**.
 
 ```mermaid
 graph TD
@@ -24,13 +24,13 @@ graph TD
         E[Model / Chat Client] <-->|Model Context Protocol| F[Clinical Trial Agent MCP Server]
         
         %% Core Core Modules
-        F <--> G[Data Fetcher & Parser Module]
+        F <--> G[Local DB Connector Module]
         F <--> H[Exact Statistical Engine RBridge]
         F <--> I[Eligibility Constraint Reasoning]
         F <--> J[Outcome Prediction Module]
         
-        %% External Integrations
-        G -->|API v2 / MCP| K[CT.gov Data Server]
+        %% Database Integrations
+        G -->|Postgres SQL Queries| K[Local DB: chembl_37 + ctgov schema]
         H -->|rpy2 / ABI| L[R Packages: rpact, gsDesign, dfcrm, PowerTOST]
         I -->|Regex + Pydantic| M[Deterministic Constraint Extractor]
         J -->|Trial2Vec / HINT| N[Success & Similarity Models]
@@ -57,10 +57,11 @@ Loose LLM categorizations are replaced by a structured extraction system inspire
 *   **Enrollment-Yield Simulation:** Use PyTrial's tabular simulators (`CTGAN`, `GaussianCopula`) or simplified statistical samplers (`biostats::clinical_data()`) to generate synthetic patient cohorts.
 *   **Widening Scenarios:** Calculate expected enrollment-yield multiplier effects when widening eligibility criteria boundaries (e.g., widening age from `[18-65]` to `[18-75]` or relaxing biomarker counts).
 
-### 3. MCP-First Integration & Protocol Data Layer
-Standardize the agent to run natively within an MCP ecosystem:
-*   **Agent MCP Server:** Expose our custom analysis functions (`analyze_trial`, `power_comparison`) as MCP tools so that any LLM-enabled IDE or chat client can invoke them directly.
-*   **CT.gov MCP Integration:** Consume structured protocol details, historical records, and adverse event profiles from the `cyanheads/clinicaltrialsgov-mcp-server` wrapper instead of maintaining complex local raw client queries.
+### 3. Local PostgreSQL Clinical Trial Database Setup (AACT + ChEMBL)
+Expose and query the local PostgreSQL databases (`chembl_37` and `clinical_trials` via FDW bridge) as the primary data source:
+*   **Structured Queries:** Perform SQL queries against `ctgov.studies`, `ctgov.designs`, `ctgov.design_groups`, `ctgov.eligibilities`, and `ctgov.reported_events` to retrieve accurate, low-latency trial details.
+*   **Drug & Target Cross-Referencing:** Query the `bridge.chembl_clinical_trials` and `molecule_dictionary` tables to link NCT IDs to standard drug names, targets, and Max Phase indicators.
+*   **Adverse Events & Endpoints:** Inspect structured event listings in `ctgov.reported_events` and trial endpoints in `ctgov.design_outcomes` to support toxicity and power assessments.
 
 ### 4. Outcome & Feasibility Prediction
 Introduce machine learning models to predict operational feasibility and clinical outcome success:
@@ -88,12 +89,12 @@ gantt
     Build criteria-relaxation simulator   : p3_3, after p3_2, 4d
     section Phase 4: MCP Exposure
     Construct clinical-agent MCP server   : p4_1, after p3_3, 5d
-    Connect CT.gov data server as backend : p4_2, after p4_1, 3d
+    Connect local Postgres DB as backend  : p4_2, after p4_1, 3d
 ```
 
-### Phase 1: Core Modularization (Target: Week 1)
+### Phase 1: Core Modularization & SQL Data Layer (Target: Week 1)
 *   Break down [design_agent_pipeline.py](file:///Users/leelasdodda/Documents/Codes/local_clintrial_agent/design_agent_pipeline.py) into separate domain packages:
-    *   `clintrial_agent/data/` (CT.gov API client, parsing kernel).
+    *   `clintrial_agent/data/` (Local PostgreSQL connector for AACT + ChEMBL, parsing kernel).
     *   `clintrial_agent/stats/` (Approximations & R-Bridge solvers).
     *   `clintrial_agent/llm/` (Ollama client, structured prompting schemas).
     *   `clintrial_agent/reporting/` (JSON outputs, power curve visualizers).
@@ -113,8 +114,8 @@ gantt
 
 ### Phase 4: MCP Server Deployment (Target: Week 4)
 *   Write an MCP server wrapper (`clinical_agent_mcp.py`) using the official Python MCP SDK.
-*   Expose tools: `analyze_nct_id`, `simulate_recruitment`, `calculate_sequential_boundaries`, `compare_portfolio`.
-*   Integrate it with your IDE or local agent clients to allow natural language execution of clinical trial analysis.
+*   Expose tools: `analyze_nct_id`, `simulate_recruitment`, `calculate_sequential_boundaries`, `compare_portfolio`, `query_chembl_drug`.
+*   Integrate it with local developer clients to allow natural language queries directly over the local clinical trials + ChEMBL database.
 
 ---
 
