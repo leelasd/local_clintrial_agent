@@ -1,6 +1,9 @@
 import math
+import logging
 from scipy import stats
 from clintrial_agent.config import CONFIG, DEFAULT_INDICATION_PARAMS
+
+logger = logging.getLogger(__name__)
 
 def analyze_sample_size(protocol, endpoints, indication_params=None):
     """Compute sample size and power analysis using actual enrollment and primary endpoint.
@@ -22,11 +25,18 @@ def analyze_sample_size(protocol, endpoints, indication_params=None):
     enrollment = enrollment_info.get('count', 0)
     phases = design_mod.get('phases', [])
     
+    # Extract design features for RBridge dispatching
+    design_info = design_mod.get('designInfo', {})
+    intervention_model = design_info.get('interventionModel', '')
+    allocation = design_info.get('allocation', '')
+    
+    is_phase1 = any('PHASE1' in p for p in phases)
+    is_phase2 = any('PHASE2' in p for p in phases)
+    
     if not enrollment:
         return None
     
     # Phase 1 dose-escalation trials are not powered for efficacy
-    is_phase1 = any('PHASE1' in p for p in phases)
     if is_phase1:
         interventional_arms = [a for a in arm_groups if a.get('type') != 'NO_INTERVENTION']
         num_arms = len(interventional_arms)
@@ -70,13 +80,100 @@ def analyze_sample_size(protocol, endpoints, indication_params=None):
     dichotomous_keywords = CONFIG['dichotomous_keywords']
     is_dichotomous = any(k in primary_text.lower() for k in dichotomous_keywords)
     
+    calculation_mode = CONFIG.get('calculation_mode', 'Python-approx')
+    
+    # R-exact Crossover / Bioequivalence Sizing Dispatch
+    if intervention_model == 'CROSSOVER' and calculation_mode == 'R-exact':
+        try:
+            from clintrial_agent.stats.r_bridge import RBridge
+            bridge = RBridge()
+            res = bridge.powertost_sample_size(
+                alpha=alpha,
+                target_power=power_target,
+                cv=0.20,
+                theta0=0.95,
+                theta1=0.8,
+                theta2=1.25,
+                design="2x2"
+            )
+            return {
+                'enrollment_actual': enrollment,
+                'estimated_n_per_arm': n_per_arm,
+                'num_arms': num_arms,
+                'primary_endpoint_type': 'Bioequivalence (Crossover)',
+                'power_analysis': {
+                    'alpha': alpha,
+                    'power_target': power_target,
+                    'test_type': 'TOST (Two One-Sided Tests)',
+                    'r_exact_required_sample_size': res['sample_size'],
+                    'r_exact_achieved_power': round(res['achieved_power'], 3),
+                    'assessment': 'Adequately Powered' if enrollment >= res['sample_size'] else 'Underpowered'
+                }
+            }
+        except Exception as e:
+            logger.warning(f"R-exact Crossover sizing failed: {e}. Falling back to standard calculation.")
+
+    # R-exact Simon 2-Stage Dispatch for Single-Arm Phase 2 Trials
+    if num_arms == 1 and is_phase2 and is_dichotomous and calculation_mode == 'R-exact':
+        try:
+            from clintrial_agent.stats.r_bridge import RBridge
+            bridge = RBridge()
+            pu = indication_params.get('control_rate_dichotomous', 0.10)
+            pa = pu + 0.20 # Assume 20% absolute improvement target
+            simon = bridge.clinfun_simon2stage(pu=pu, pa=pa, ep1=alpha, ep2=1 - power_target)
+            return {
+                'enrollment_actual': enrollment,
+                'estimated_n_per_arm': n_per_arm,
+                'num_arms': num_arms,
+                'primary_endpoint_type': 'Dichotomous (Proportion)',
+                'power_analysis': {
+                    'alpha': alpha,
+                    'power_target': power_target,
+                    'test_type': "Simon's Two-Stage",
+                    'simon_optimal_n': simon['optimal']['n'],
+                    'simon_optimal_r': simon['optimal']['r'],
+                    'simon_minimax_n': simon['minimax']['n'],
+                    'simon_minimax_r': simon['minimax']['r'],
+                    'assessment': 'Adequately Powered' if enrollment >= simon['optimal']['n'] else 'Underpowered'
+                }
+            }
+        except Exception as e:
+            logger.warning(f"R-exact Simon 2-stage failed: {e}. Falling back to standard calculation.")
+
+    # Standard calculations
     if is_survival and n_per_arm > 1:
         is_os = any(k in primary_text.lower() for k in ['overall survival', 'os'])
         median_key = 'median_os_months' if is_os else 'median_pfs_months'
-        return _analyze_survival_power(primary_text, enrollment, n_per_arm, num_arms,
-                                       alpha, power_target, z_alpha, z_beta,
-                                       control_median_months=indication_params.get(median_key),
-                                       event_rate=indication_params.get('event_rate'))
+        control_median = indication_params.get(median_key)
+        event_rate = indication_params.get('event_rate')
+        
+        result = _analyze_survival_power(primary_text, enrollment, n_per_arm, num_arms,
+                                         alpha, power_target, z_alpha, z_beta,
+                                         control_median_months=control_median,
+                                         event_rate=event_rate)
+        
+        # Inject R-exact gsDesign calculation if requested
+        if calculation_mode == 'R-exact' and result and control_median:
+            try:
+                from clintrial_agent.stats.r_bridge import RBridge
+                bridge = RBridge()
+                lambda1 = math.log(2) / control_median
+                # Assume standard HR target of 0.70 for Phase 3 oncology trial
+                lambda2 = lambda1 * 0.70
+                res = bridge.gsdesign_fixed_survival(
+                    lambda1=lambda1,
+                    lambda2=lambda2,
+                    ratio=1.0,
+                    alpha=alpha,
+                    beta=1 - power_target,
+                    sided=2
+                )
+                result['power_analysis']['r_exact_required_sample_size'] = res['n']
+                result['power_analysis']['r_exact_required_events'] = res['events']
+                result['power_analysis']['assessment'] = 'Adequately Powered (R-exact)' if enrollment >= res['n'] else 'Underpowered (R-exact)'
+            except Exception as e:
+                logger.warning(f"R-exact gsDesign survival sizing failed: {e}")
+        return result
     
     if is_dichotomous and n_per_arm > 1:
         return _analyze_dichotomous_power(primary_text, enrollment, n_per_arm, num_arms,

@@ -1,0 +1,238 @@
+{
+  "nct_id": "NCT00526643",
+  "title": "CAPPA-2: Cisplatin Added to Gemcitabine in Poor Performance Advanced NSCLC Patients",
+  "phase": "PHASE3",
+  "eligibility": [
+    {
+      "text": "Histologically or cytologically confirmed diagnosis of advanced non small cell lung cancer, not amenable to surgical or curative radiation therapy (stage IIIB or IV);",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures the study population is representative of a specific disease group and aims to maximize the likelihood of detecting treatment effects.",
+      "competing_risk": true
+    },
+    {
+      "text": "No prior or concomitant chemotherapy (adjuvant/neoadjuvant chemotherapy permitted if concluded at least one year prior to enrollment);",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures the study population is comparable and allows for a fair comparison of treatment effects.",
+      "competing_risk": false
+    },
+    {
+      "text": "ECOG performance status 2;",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients are able to participate in the trial with minimal physical limitations, protecting them from potential harm.",
+      "competing_risk": false
+    },
+    {
+      "text": "Age: > or = 18 and < 70 years;",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures the study population is within a specific age range, which may influence treatment response.",
+      "competing_risk": false
+    },
+    {
+      "text": "Life expectancy at least 4 weeks;",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients have sufficient life expectancy to participate in the trial and potentially benefit from the intervention.",
+      "competing_risk": false
+    },
+    {
+      "text": "Normal bone marrow, hepatic and renal function defined as: neutrophils > or = 2000/mm3, PLT > or = 100,000/mm3, Hb > or = 10.0 g/dl, Bilirubin > or = 1.5 times the upper normal limit (UNL), AST and ALT < or = 3 times the UNL (5 times in the presence of liver metastases), creatinine within normal limits;",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients have healthy organ function, protecting them from potential harm.",
+      "competing_risk": false
+    },
+    {
+      "text": "Signed informed consent.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patient autonomy and understanding of the trial's risks and benefits.",
+      "competing_risk": false
+    },
+    {
+      "text": "Active systemic infections;",
+      "reasoning_category": "Safety",
+      "justification": "This criterion protects patients from potential complications arising from active infections.",
+      "competing_risk": false
+    },
+    {
+      "text": "Severe concomitant illness (congestive heart failure, angina pectoris, myocardial infarction within previous 6 months, cardiac arrhythmias under treatment, severe arterial hypertension, severe or uncontrolled diabetes mellitus);",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from existing conditions.",
+      "competing_risk": false
+    },
+    {
+      "text": "Inadequate hepatic or renal function;",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients have adequate organ function for study participation, potentially impacting data quality.",
+      "competing_risk": false
+    },
+    {
+      "text": "Radiation therapy ongoing or concluded within two weeks prior to enrollment;",
+      "reasoning_category": "Safety",
+      "justification": "This criterion protects patients from potential complications arising from radiation exposure.",
+      "competing_risk": false
+    },
+    {
+      "text": "Symptomatic cerebral metastases;",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from existing conditions.",
+      "competing_risk": false
+    },
+    {
+      "text": "Previous chemotherapy for advanced disease;",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients have not received prior chemotherapy, potentially impacting data quality.",
+      "competing_risk": false
+    },
+    {
+      "text": "Any condition that would, in the investigator's opinion, limit the patients ability to provide informed consent or to comply with study procedures;",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from existing conditions.",
+      "competing_risk": false
+    },
+    {
+      "text": "Pregnant or nursing females;",
+      "reasoning_category": "Safety",
+      "justification": "This criterion protects pregnant women and their developing fetuses from potential harm.",
+      "competing_risk": false
+    },
+    {
+      "text": "Any malignancy within the past 5 years (except for adequately treated carcinoma in situ of the cervix or non melanoma skin cancer);",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from existing conditions.",
+      "competing_risk": true
+    }
+  ],
+  "criteria_metadata": {
+    "total_parsed": 16,
+    "classified": 16,
+    "batches": 1,
+    "batch_size": 20
+  },
+  "population": {
+    "sex": "ALL",
+    "age_range": "18 Years - 70 Years",
+    "std_ages": [],
+    "healthy_volunteers": false,
+    "age_restrictiveness": "High",
+    "has_competing_risk_exclusions": true,
+    "recruitment_yield_estimate": "Moderate (5-20% screen-to-enroll)",
+    "enrollment_count": 57,
+    "enrollment_type": "ACTUAL"
+  },
+  "sample_size": {
+    "enrollment_actual": 57,
+    "estimated_n_per_arm": 28,
+    "num_arms": 2,
+    "primary_endpoint_type": "OS (Overall Survival)",
+    "estimated_control_event_rate": 0.8,
+    "indication_params_used": {
+      "control_median_months": 12.0,
+      "event_rate": 0.8
+    },
+    "power_analysis": {
+      "alpha": 0.05,
+      "power_target": 0.8,
+      "test_type": "Two-sided (log-rank)",
+      "detectable_hazard_ratio": 0.436,
+      "hr_reduction": "56%",
+      "expected_events": 46,
+      "control_median_months": 12.0,
+      "implied_treatment_median_months": 27.5,
+      "median_improvement_months": 15.5,
+      "assessment": "Underpowered (R-exact)",
+      "r_exact_required_sample_size": 427.6074,
+      "r_exact_required_events": 246.2178
+    }
+  },
+  "endpoints": [
+    {
+      "text": "overall survival",
+      "endpoint_type": "Clinical",
+      "timeframe": "one year",
+      "is_primary": true
+    },
+    {
+      "text": "change in performance status",
+      "endpoint_type": "Surrogate",
+      "timeframe": "each cycle of chemotherapy",
+      "is_primary": false
+    },
+    {
+      "text": "toxicity",
+      "endpoint_type": "Surrogate",
+      "timeframe": "each cycle of chemotherapy and every 3 months thereafter",
+      "is_primary": false
+    },
+    {
+      "text": "quality of life",
+      "endpoint_type": "Patient-Reported",
+      "timeframe": "chemotherapy cycles 1 and 2",
+      "is_primary": false
+    },
+    {
+      "text": "objective response",
+      "endpoint_type": "Surrogate",
+      "timeframe": "at 6 weeks and 12 weeks",
+      "is_primary": false
+    },
+    {
+      "text": "progression free survival",
+      "endpoint_type": "Clinical",
+      "timeframe": "one year",
+      "is_primary": false
+    }
+  ],
+  "trial_integrity": {
+    "masking_level": "Open-label",
+    "blinding_validation_method": "Not specified",
+    "concomitant_therapy_controls": "Standardized background care"
+  },
+  "trial_design": {
+    "design_type": "Parallel RCT",
+    "control_type": "Standard of Care",
+    "superiority_type": "Superiority"
+  },
+  "indication": "non-small cell lung cancer",
+  "randomization": {
+    "randomization_type": "Simple",
+    "allocation_ratio": "1:1",
+    "stratification_factors": [
+      "Age"
+    ],
+    "randomization_description": "Stratified by Age. Simple randomization."
+  },
+  "adaptive_designs": {
+    "has_adaptive_features": false,
+    "adaptive_types": [],
+    "interim_analysis_mentioned": false,
+    "stopping_rules": "Not mentioned",
+    "dose_escalation_method": null,
+    "description": "Standard fixed-design trial. No adaptive features detected."
+  },
+  "safety_adverse_events": {
+    "ae_reporting_method": "Not explicitly specified",
+    "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
+    "ae_types_detected": [],
+    "class_effects_known": [
+      "ALT elevation",
+      "AST elevation",
+      "Infections (general)"
+    ],
+    "safety_endpoints": [],
+    "sae_stopping_rules": "Not specified in protocol text",
+    "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+  },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [],
+    "genetic_screen_failure": [],
+    "genetic_screen_failure_summary": null,
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "No known pharmacogenetic drug classes or genes detected in protocol text."
+  },
+  "summary": {
+    "Statistical Power": 1,
+    "Feasibility": 4,
+    "Safety": 11
+  }
+}

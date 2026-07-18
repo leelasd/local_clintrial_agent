@@ -6,43 +6,43 @@
     {
       "text": "Plaque psoriasis for at least 6 months",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a sufficient sample size to detect treatment effects.",
+      "justification": "This criterion helps ensure a sufficient sample size to detect treatment effects.",
       "competing_risk": false
     },
     {
       "text": "Moderate to severe disease",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion helps ensure the study population is representative of patients with moderate to severe psoriasis, maximizing the likelihood of detecting a treatment effect.",
+      "justification": "This criterion ensures the study population is representative of patients with moderate to severe psoriasis, maximizing the likelihood of detecting a treatment effect.",
       "competing_risk": false
     },
     {
       "text": "Candidate for phototherapy or systemic therapy",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures that participants are eligible for potential treatments and allows for comparison with standard care.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion helps ensure that participants are eligible for treatment and can be followed up with appropriate interventions.",
       "competing_risk": false
     },
     {
       "text": "Other forms of psoriasis",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion may be a feasibility factor, as it could limit the study population to those with specific types of psoriasis.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion may serve to exclude patients with other types of skin conditions, potentially impacting the study's safety and generalizability.",
       "competing_risk": false
     },
     {
       "text": "History of recent infection",
       "reasoning_category": "Safety",
-      "justification": "This criterion is likely related to safety concerns and potential complications from infections in patients with psoriasis.",
+      "justification": "This criterion helps ensure that participants are healthy enough to participate in the trial and minimize potential risks from infections.",
       "competing_risk": false
     },
     {
       "text": "Prior exposure to BMS-986165",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures that participants are not already receiving treatment with BMS-986165, potentially leading to safety concerns.",
+      "justification": "This criterion ensures that participants have not previously received BMS-986165, potentially impacting the study's safety and generalizability.",
       "competing_risk": false
     },
     {
       "text": "Other inclusion/exclusion criteria may apply.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion is a general statement and could be related to feasibility issues such as recruitment or data quality.",
+      "justification": "This criterion indicates that additional criteria might be applied to ensure data quality or patient adherence, which could impact feasibility.",
       "competing_risk": false
     }
   ],
@@ -191,8 +191,8 @@
     "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
     "ae_types_detected": [],
     "class_effects_known": [
-      "Infections (general)",
-      "AST elevation"
+      "AST elevation",
+      "Infections (general)"
     ],
     "safety_endpoints": [],
     "sae_stopping_rules": "Not specified in protocol text",
@@ -220,8 +220,8 @@
     ]
   },
   "summary": {
-    "Statistical Power": 3,
+    "Statistical Power": 2,
     "Feasibility": 2,
-    "Safety": 2
+    "Safety": 3
   }
 }

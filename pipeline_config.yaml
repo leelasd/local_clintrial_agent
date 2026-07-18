@@ -2,6 +2,13 @@
 # Each value is annotated with its rationale: textbook reference, oncology heuristic, or practical convention.
 
 # ==============================================================================
+# CALCULATION SETTINGS
+# ==============================================================================
+# Choose between "Python-approx" (analytical/textbook formula approximations in Python)
+# and "R-exact" (exact calculations using R packages like rpact and gsDesign via RBridge)
+calculation_mode: "R-exact"
+
+# ==============================================================================
 # STATISTICAL PARAMETERS
 # ==============================================================================
 # Textbook Ch 8 line 6360-6367: "While the chosen level of α is somewhat arbitrary,
