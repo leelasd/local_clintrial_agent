@@ -63,7 +63,8 @@ def simulate_eligibility_yield(nct_id: str, cohort_size: int = 10000) -> str:
 def query_exact_stats(solver: str, params: dict) -> str:
     """
     Query the in-process RBridge statistical kernel via rpy2 for exact sequential designs,
-    log-rank survival sizing, bioequivalence crossover sizing, or CRM dose monitoring.
+    log-rank survival sizing, bioequivalence crossover sizing, CRM dose monitoring,
+    non-proportional hazards sizing, or graphical multiplicity adjustments.
     
     Args:
         solver: The R statistical solver to run. Options:
@@ -77,6 +78,10 @@ def query_exact_stats(solver: str, params: dict) -> str:
               Params: alpha (float), beta (float), sided (int), information_rates (list of floats).
             - 'crm': Continual Reassessment Method for Phase I dose monitoring (dfcrm).
               Params: prior (list of floats), target (float), tox (list of ints), level (list of ints).
+            - 'gsdesign2_nph': Non-proportional hazards fixed-sample survival design (gsDesign2).
+              Params: hr (float), control_median (float), test (str, e.g. 'maxcombo' or 'rmst'), alpha (float), power (float), enrollment_rate (float), enrollment_duration (float), follow_up_duration (float).
+            - 'graphical_mcp': graphical multiple comparison testing (graphicalMCP).
+              Params: num_hypotheses (int), alpha (float), weights (list of floats), transition_matrix (list of list of floats), p_values (list of floats).
         params: Dict of parameters specific to the chosen solver.
     """
     try:
@@ -124,8 +129,27 @@ def query_exact_stats(solver: str, params: dict) -> str:
                 tox=params.get('tox', []),
                 level=params.get('level', [])
             )
+        elif solver == 'gsdesign2_nph':
+            res = bridge.gsdesign2_nph_survival(
+                hr=float(params.get('hr', 0.7)),
+                control_median=float(params.get('control_median', 6.0)),
+                test=params.get('test', 'maxcombo'),
+                alpha=float(params.get('alpha', 0.025)),
+                power=float(params.get('power', 0.9)),
+                enrollment_rate=float(params.get('enrollment_rate', 10.0)),
+                enrollment_duration=float(params.get('enrollment_duration', 12.0)),
+                follow_up_duration=float(params.get('follow_up_duration', 12.0))
+            )
+        elif solver == 'graphical_mcp':
+            res = bridge.graphical_mcp(
+                num_hypotheses=int(params.get('num_hypotheses', 2)),
+                alpha=float(params.get('alpha', 0.025)),
+                weights=params.get('weights'),
+                transition_matrix=params.get('transition_matrix'),
+                p_values=params.get('p_values')
+            )
         else:
-            return f"Unsupported solver: '{solver}'. Choose from: 'simon2stage', 'n_survival', 'powertost', 'group_sequential', 'crm'."
+            return f"Unsupported solver: '{solver}'. Choose from: 'simon2stage', 'n_survival', 'powertost', 'group_sequential', 'crm', 'gsdesign2_nph', 'graphical_mcp'."
             
         return json.dumps(res, indent=2, default=str)
     except Exception as e:

@@ -67,6 +67,15 @@ def run_tests():
         chembl_res = search_chembl_bridge(nct_id)
         print(f"  ✓ ChEMBL tool success (response length: {len(chembl_res)} characters)")
         
+        # Test query_exact_stats for gsdesign2_nph and graphical_mcp
+        nph_res = query_exact_stats("gsdesign2_nph", {"hr": 0.7, "control_median": 6.0})
+        nph_dict = json.loads(nph_res)
+        print(f"  ✓ RBridge gsDesign2 NPH success (Sample Size: {nph_dict['n']:.1f}, Events: {nph_dict['events']:.1f})")
+        
+        mcp_res = query_exact_stats("graphical_mcp", {"p_values": [0.01, 0.03]})
+        mcp_dict = json.loads(mcp_res)
+        print(f"  ✓ RBridge graphicalMCP success (H1 Rejected: {mcp_dict['rejected']['H1']}, H2 Rejected: {mcp_dict['rejected']['H2']})")
+        
         # Test query_clinical_db (read-only verification)
         sql_res = query_clinical_db("SELECT count(*) FROM ctgov.studies WHERE phase = 'PHASE3'")
         res_dict = json.loads(sql_res)

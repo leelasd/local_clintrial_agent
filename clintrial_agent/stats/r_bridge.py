@@ -323,23 +323,19 @@ class RBridge:
         """Compute a fixed-sample NPH survival design using gsDesign2."""
         treatment_median = control_median / hr
         r_code = f"""
+        er <- define_enroll_rate(duration = {enrollment_duration}, rate = {enrollment_rate})
+        fr <- define_fail_rate(duration = {enrollment_duration + follow_up_duration}, fail_rate = log(2)/{control_median}, dropout_rate = 0.001, hr = {hr})
         x <- fixed_design_{test}(
             alpha = {alpha},
             power = {power},
-            enroll_rate = {enrollment_rate},
             ratio = 1,
             study_duration = {enrollment_duration + follow_up_duration},
-            fail_rate = data.frame(
-                stratum = "All",
-                duration = {enrollment_duration + follow_up_duration},
-                fail_rate = c(log(2)/{control_median}, log(2)/{treatment_median}),
-                hr = {hr},
-                dropout_rate = 0.001
-            )
+            enroll_rate = er,
+            fail_rate = fr
         )
         .result <- list(
-            n = x$analysis$sample_size,
-            events = x$analysis$event,
+            n = as.numeric(x$analysis$n),
+            events = as.numeric(x$analysis$event),
             test = "{test}",
             hr = {hr},
             control_median = {control_median},
@@ -357,8 +353,14 @@ class RBridge:
         alpha: float = 0.025,
         weights: list[float] | None = None,
         transition_matrix: list[list[float]] | None = None,
+        p_values: list[float] | None = None,
     ) -> dict:
-        """Create a graphical multiple comparison procedure."""
+        """
+        Create and test a graphical multiple comparison procedure using graphicalMCP.
+        If p_values are provided, it runs graph_test_shortcut to calculate adjusted
+        p-values and rejections.
+        """
+        self._ensure_package("graphicalMCP")
         if weights is None:
             weights = [1.0 / num_hypotheses] * num_hypotheses
         if transition_matrix is None:
@@ -371,21 +373,38 @@ class RBridge:
         tm_str = ",".join(tm_rows)
 
         r_code = f"""
-        graph <- graph_create(
-            transition_matrix = matrix(c({tm_str}), nrow = {num_hypotheses}, byrow = TRUE),
-            weights = c({w_str}),
-            alpha = {alpha}
-        )
-        .result <- list(
-            num_hypotheses = {num_hypotheses},
-            weights = c({w_str}),
-            alpha = {alpha},
-            transition_matrix = as.character(
-                paste(apply(matrix(c({tm_str}), nrow={num_hypotheses}, byrow=TRUE),
-                      1, paste, collapse=','), collapse=';')
-            )
+        g <- graph_create(
+            hypotheses = c({w_str}),
+            transitions = matrix(c({tm_str}), nrow = {num_hypotheses}, byrow = TRUE)
         )
         """
+        
+        if p_values is not None:
+            p_str = ",".join(str(p) for p in p_values)
+            r_code += f"""
+            res <- graph_test_shortcut(g, p = c({p_str}), alpha = {alpha})
+            .result <- list(
+                num_hypotheses = {num_hypotheses},
+                alpha = {alpha},
+                initial_weights = as.numeric(g$hypotheses),
+                p_values = c({p_str}),
+                adjusted_p = as.list(res$outputs$adjusted_p),
+                rejected = as.list(res$outputs$rejected),
+                rejection_order = as.character(res$outputs$graph$deleted)
+            )
+            """
+        else:
+            r_code += f"""
+            .result <- list(
+                num_hypotheses = {num_hypotheses},
+                alpha = {alpha},
+                initial_weights = as.numeric(g$hypotheses),
+                transition_matrix = as.character(
+                    paste(apply(matrix(c({tm_str}), nrow={num_hypotheses}, byrow=TRUE),
+                          1, paste, collapse=','), collapse=';')
+                )
+            )
+            """
         return self._eval_to_json(r_code)
 
     def dfcrm_crm(
