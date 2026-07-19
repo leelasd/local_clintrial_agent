@@ -6,7 +6,7 @@
     {
       "text": "At least 18 years old and has provided informed consent.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures compliance with legal requirements for clinical trials involving human subjects.",
+      "justification": "This criterion ensures compliance with legal and ethical requirements for clinical trials involving human subjects.",
       "competing_risk": false
     },
     {
@@ -18,61 +18,61 @@
     {
       "text": "Histologically or cytologically confirmed PDAC with metastatic disease.",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a homogeneous patient population for comparison between treatment groups, maximizing the likelihood of detecting a statistically significant effect.",
+      "justification": "This criterion ensures a homogeneous patient population for comparison between treatment groups, maximizing the likelihood of detecting a statistically significant difference.",
       "competing_risk": false
     },
     {
       "text": "Measurable disease per RECIST 1.1.",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures that patients have measurable disease to allow for accurate assessment of treatment response and progression.",
+      "justification": "This criterion ensures that patients have measurable disease to allow for accurate assessment of treatment efficacy.",
       "competing_risk": false
     },
     {
       "text": "Adequate organ function (bone marrow, liver, kidney, coagulation)",
       "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure the patient's overall health is sufficient to tolerate the study treatment and potential side effects.",
+      "justification": "This criterion helps ensure the patient's ability to tolerate and metabolize study medication safely.",
       "competing_risk": false
     },
     {
       "text": "Documented RAS mutation status, either mutant or wild-type. RAS mutations defined as nonsynonymous mutations in KRAS, NRAS, or HRAS at codons 12, 13, or 61 (G12, G13, or Q61).",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a specific patient population for the study. It helps to ensure that the treatment effect is being compared between groups with similar RAS mutations.",
+      "justification": "This criterion ensures a homogeneous patient population for comparison between treatment groups, maximizing the likelihood of detecting a statistically significant difference.",
       "competing_risk": false
     },
     {
       "text": "Able to take oral medications.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patients can effectively receive the study medication and avoid potential complications from non-oral administration.",
+      "justification": "This criterion helps ensure patients can effectively receive study medication and avoid complications from non-oral administration.",
       "competing_risk": false
     },
     {
       "text": "Prior therapy with direct RAS-targeted therapy (eg. degraders and/or inhibitors).",
       "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure the study is comparing a new treatment to an existing one, minimizing confounding factors from prior therapies.",
+      "justification": "This criterion helps ensure patients have not received prior treatment that could interfere with the study medication's efficacy or safety.",
       "competing_risk": false
     },
     {
       "text": "History of or known central nervous system metastatic disease.",
       "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure patients are not at increased risk for complications related to the study treatment, especially if it affects the central nervous system.",
+      "justification": "This criterion helps ensure patients are free from conditions that may compromise their ability to participate in the trial and manage potential side effects.",
       "competing_risk": false
     },
     {
-      "text": "Any conditions that may affect the ability to take or absorb study treatment.",
+      "text": "Any conditions that may affect the ability to take or absorb study treatment",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure patients can receive the study medication without complications and ensures data quality by identifying potential issues with adherence.",
+      "justification": "This criterion helps ensure patients can effectively receive study medication and avoid complications from non-compliance with protocol requirements.",
       "competing_risk": false
     },
     {
       "text": "Major surgery within 4 weeks prior to randomization.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure that patients have sufficient time for recovery before starting the study treatment, minimizing risks of complications and ensuring data quality.",
+      "justification": "This criterion helps ensure patients have sufficient time for recovery before starting the study medication and avoid potential complications from surgical procedures.",
       "competing_risk": false
     },
     {
       "text": "Patient is unable or unwilling to comply with protocol-required study visits or procedures.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure patients can adhere to the study protocol, minimizing potential complications and ensuring data quality.",
+      "justification": "This criterion helps ensure patients can effectively participate in the trial and adhere to study protocols, ensuring data quality.",
       "competing_risk": false
     }
   ],
@@ -113,7 +113,9 @@
       "control_median_months": 3.5,
       "implied_treatment_median_months": 4.6,
       "median_improvement_months": 1.1,
-      "assessment": "Underpowered"
+      "assessment": "Adequately Powered (R-exact)",
+      "r_exact_required_sample_size": 262.3461,
+      "r_exact_required_events": 245.5869
     }
   },
   "endpoints": [

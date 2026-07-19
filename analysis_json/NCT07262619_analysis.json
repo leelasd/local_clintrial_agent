@@ -24,49 +24,49 @@
     {
       "text": "Part 1A: recommend that participants have archival tissue not more than 3 years old.",
       "reasoning_category": "Feasibility",
-      "justification": "Provides time-sensitive data for analysis and ensures sufficient sample availability.",
+      "justification": "Ensures sufficient time for tumor tissue collection and analysis, impacting study design.",
       "competing_risk": true
     },
     {
       "text": "Part 1B and Part 2: participant has locally confirmed Microsatellite Instability High (MSI-H) or Mismatch Repair Deficient (dMMR) tumor.",
       "reasoning_category": "Statistical Power",
-      "justification": "Targets a specific patient population for treatment efficacy evaluation.",
+      "justification": "Targets a specific population for treatment efficacy evaluation.",
       "competing_risk": true
     },
     {
       "text": "Participant must have archival tumor tissue (not more than 3 years old) for retrospective confirmation of MSI-H or dMMR tumor by a central laboratory.",
       "reasoning_category": "Safety",
-      "justification": "Ensures accurate diagnosis and potential treatment response assessment.",
+      "justification": "Ensures accurate diagnosis and treatment selection.",
       "competing_risk": true
     },
     {
       "text": ". In Part 1A, has received and then progressed after or is intolerant to at least 1 standard treatment regimen in the advanced setting.",
       "reasoning_category": "Safety",
-      "justification": "Identifies patients who have failed previous treatments, potentially impacting treatment response.",
+      "justification": "Identifies patients with a specific history of treatment response.",
       "competing_risk": false
     },
     {
       "text": "The participant does not have alternative therapeutic options per PI's medical judgement.",
       "reasoning_category": "Feasibility",
-      "justification": "Ensures a limited pool of eligible patients with no other viable treatment options.",
+      "justification": "Ensures patient selection based on clinical judgment and treatment limitations.",
       "competing_risk": false
     },
     {
       "text": "Preference should be given to: (1) participants with MSI-H or dMMR cancers that have progressed after checkpoint inhibitor (CPI) therapy and (2) participants with microsatellite stable cells (MSS) cancers that have progressed following at least one regimen of platinum, alkylating or topoisomerase containing chemotherapy.",
       "reasoning_category": "Statistical Power",
-      "justification": "Prioritizes specific patient populations for treatment efficacy evaluation.",
+      "justification": "Targets specific patient populations for treatment efficacy evaluation.",
       "competing_risk": true
     },
     {
       "text": ". has measurable disease at baseline according to Response Evaluation Criteria in Solid Tumors version 1.1 (RECIST 1.1) as determined by the PI.",
       "reasoning_category": "Statistical Power",
-      "justification": "Ensures a consistent and objective method for evaluating treatment response.",
+      "justification": "Ensures consistent and objective measurement of disease progression.",
       "competing_risk": true
     },
     {
       "text": ". has an Eastern Cooperative Oncology Group (ECOG) score of 0 to 1.",
       "reasoning_category": "Feasibility",
-      "justification": "Limits patient selection based on functional capacity, potentially impacting study outcomes.",
+      "justification": "Limits patient selection based on functional capacity, impacting study design.",
       "competing_risk": false
     },
     {
@@ -78,19 +78,19 @@
     {
       "text": ". has not recovered (i.e., to Grade \u2264 1 or to baseline) from prior anti-cancer therapy-induced adverse events (AEs).",
       "reasoning_category": "Safety",
-      "justification": "Protects patients from further harm by ensuring adequate recovery before treatment.",
+      "justification": "Protects patients from further harm by ensuring adequate recovery.",
       "competing_risk": true
     },
     {
       "text": "has received prior treatment with Werner (WRN) inhibitor.",
       "reasoning_category": "Safety",
-      "justification": "Identifies patients who have a history of WRN inhibitor use, potentially impacting treatment response.",
+      "justification": "Identifies patients who have been exposed to a specific drug, potentially impacting treatment response.",
       "competing_risk": false
     },
     {
       "text": ". has a history of relevant drug hypersensitivity, ascertained or presumptive allergy/hypersensitivity to the active drug substance and/or formulation ingredients, history of serious allergic reactions leading to hospitalization, or any other allergic reaction in general.",
       "reasoning_category": "Safety",
-      "justification": "Prevents patients with known allergies from participating, ensuring safety.",
+      "justification": "Protects patients from potential adverse reactions.",
       "competing_risk": false
     },
     {
@@ -102,43 +102,49 @@
     {
       "text": ". has known additional malignancy that is progressing or has required active treatment within the past 3 years.",
       "reasoning_category": "Safety",
-      "justification": "Identifies patients with a history of cancer requiring active treatment, potentially impacting treatment response.",
+      "justification": "Identifies potential risks associated with concurrent malignancies.",
       "competing_risk": true
     },
     {
       "text": ". has known active central nervous system (CNS) metastases and/or carcinomatous meningitis.",
       "reasoning_category": "Safety",
-      "justification": "Prevents patients with CNS metastases from participating, ensuring safety.",
+      "justification": "Prevents patients with CNS involvement from participating, ensuring safety.",
       "competing_risk": false
     },
     {
-      "text": ". has active autoimmune disease that has required systemic treatment in the past 2 years (ie, with use of disease modifying agents, corticosteroids, or immunosuppressive drugs). Participants may enroll with the following conditions: Type 1 diabetes, hypothyroidism requiring hormone replacement, or skin disorders (vitiligo, psoriasis, or alopecia not requiring systemic treatment).",
+      "text": ". has mean resting QTcF > 470 ms (men and women) obtained from triplicate electrocardiograms (ECGs).",
       "reasoning_category": "Safety",
-      "justification": "Identifies patients with autoimmune diseases that require systemic treatment, potentially impacting treatment response.",
+      "justification": "Ensures patients have a specific cardiac condition, potentially impacting treatment response.",
+      "competing_risk": false
+    },
+    {
+      "text": ". has active autoimmune disease that has required systemic treatment in the past 2 years (ie, with use of disease modifying agents, corticosteroids, or immunosuppressive drugs).",
+      "reasoning_category": "Safety",
+      "justification": "Identifies patients with a specific history of autoimmune disease, potentially impacting treatment response.",
       "competing_risk": false
     },
     {
       "text": ". has history of (non-infectious) pneumonitis/pneumonitis/interstitial lung disease that required steroids or current pneumonitis/interstitial lung disease.",
       "reasoning_category": "Safety",
-      "justification": "Prevents patients with pre-existing lung conditions from participating, ensuring safety.",
+      "justification": "Identifies patients with a specific respiratory condition, potentially impacting treatment response.",
       "competing_risk": false
     },
     {
       "text": ". has active tuberculosis.",
       "reasoning_category": "Safety",
-      "justification": "Identifies patients with active TB, potentially impacting treatment response.",
+      "justification": "Ensures patient safety by excluding those with active TB.",
       "competing_risk": false
     },
     {
       "text": ". has any active infections requiring systemic therapy.",
       "reasoning_category": "Safety",
-      "justification": "Prevents patients with active infections from participating, ensuring safety.",
+      "justification": "Prevents patients from participating if they have active infections, ensuring safety.",
       "competing_risk": false
     }
   ],
   "criteria_metadata": {
-    "total_parsed": 22,
-    "classified": 22,
+    "total_parsed": 23,
+    "classified": 23,
     "batches": 2,
     "batch_size": 20
   },
@@ -273,10 +279,10 @@
       "Urinary Tract Infection"
     ],
     "class_effects_known": [
-      "AST elevation",
-      "Infections (general)",
+      "Tuberculosis screening",
       "ALT elevation",
-      "Tuberculosis screening"
+      "AST elevation",
+      "Infections (general)"
     ],
     "safety_endpoints": [],
     "sae_stopping_rules": "Not specified in protocol text",
@@ -340,7 +346,7 @@
   },
   "summary": {
     "Feasibility": 4,
-    "Safety": 15,
+    "Safety": 16,
     "Statistical Power": 3
   }
 }

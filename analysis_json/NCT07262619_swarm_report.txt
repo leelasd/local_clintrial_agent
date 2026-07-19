@@ -1,52 +1,79 @@
-**Feasibility Assessment Report for Trial NCT07262619**
+## Clinical Trial Protocol Extraction and Analysis Report
 
-**To:** Swarm Coordinator
-**From:** Feasibility Specialist
-**Date:** [Current Date]
-**Subject:** Final Feasibility Synthesis for NCT07262619
+**Trial ID:** NCT07262619
+**Title:** EIK1005-002: A Clinical Research Study Evaluating EIK1005, a Werner Helicase Inhibitor, as Monotherapy and in Combination With Pembrolizumab in Participants With Advanced Solid Tumors Including Microsatellite Instability High (MSI-H) Tumors
+**Status:** Extracted and ready for downstream analysis.
+
+---
+
+### 1. Raw Protocol Design Characteristics (Extracted)
+
+The trial is a **Phase 1/Phase 2 Adaptive Design** studying the agent **EIK1005** (a Werner Helicase Inhibitor) as monotherapy and in combination with Pembrolizumab in patients with advanced solid tumors, specifically targeting **Microsatellite Instability High (MSI-H) Tumors**.
+
+#### A. Study Design
+*   **Design Type:** Adaptive Design (Type: Dose-Finding / Phase I).
+*   **Control Type:** Standard of Care.
+*   **Randomization:** Stratified by Baseline, Prior Treatment, and Age.
+*   **Interim Analysis/Stopping Rules:** Not explicitly mentioned in the protocol text.
+
+#### B. Population & Eligibility Criteria Summary
+*   **Target Population:** Patients with advanced, unresectable, and/or metastatic solid tumors, specifically those with locally confirmed **MSI-H or dMMR** tumors.
+*   **Key Inclusion Criteria:**
+    *   Age $\ge 18$ years, providing informed consent.
+    *   Life expectancy of at least 3 months.
+    *   Archival tumor tissue $\le 3$ years old for retrospective confirmation of MSI-H/dMMR.
+    *   Measurable disease at baseline per RECIST 1.1.
+    *   ECOG performance status of 0 or 1.
+    *   Adequate organ and marrow function.
+*   **Key Exclusion/Safety Criteria:**
+    *   History of progression after prior standard treatment.
+    *   Prior treatment with Werner (WRN) inhibitor.
+    *   History of relevant drug hypersensitivity or serious allergic reactions.
+    *   Diagnosis of immunodeficiency or receiving chronic systemic steroids within 7 days prior to dosing.
+    *   Active tuberculosis or active systemic infections.
+    *   Known additional malignancy progressing or requiring active treatment within the past 3 years.
+    *   Known active Central Nervous System (CNS) metastases or carcinomatous meningitis.
+
+#### C. Endpoints Summary
+*   **Primary Endpoints (Safety/Dose-Finding):**
+    1.  Dose-Limiting Toxicity (DLT) - Part 1 (21 Days).
+    2.  Adverse Events (AEs) - Part 1 and Part 2.
+*   **Secondary Endpoints (Efficacy/PK):**
+    *   Objective Response (OR) and Disease Control (DC) (Surrogate endpoints).
+    *   Progression-free survival (PFS) (Part 2).
+    *   Pharmacokinetic (PK) parameters of EIK1005 (AUC0-24, AUCtau,ss, Cmax, tmax, t½).
+
+#### D. Pharmacogenetics
+*   **Biomarkers of Interest:** PD1, PDL1, CTLA4 (related to immunotherapy response).
+*   **Screen Failure Risk:** Estimated $\sim 85\%$ screen failure rate for the dMMR/MSI-H biomarker criterion.
 
 ---
 
-### **1. Executive Summary**
+### 2. Drug Structure and Mechanism Check
 
-This report synthesizes the initial analysis of trial NCT07262619, focusing on recruitment yield and eligibility criteria simulation.
-
-**Key Findings:**
-*   **Eligibility Simulation:** Initial screen-to-enrollment yield simulations have been performed, providing baseline yield estimates and scenarios for relaxing specific eligibility criteria.
-*   **Statistical Power:** The attempt to perform statistical power calculations using the `simon2stage` solver resulted in an **error**. This calculation remains unfinalized and requires re-attempt by the biostatistician.
-*   **Recommendation:** Proceed with the eligibility simulation results for preliminary planning, but defer final statistical sizing until the power calculation error is resolved.
-
-### **2. Eligibility Criteria Simulation Results**
-
-The `simulate_eligibility_yield` tool was executed to estimate recruitment potential based on the protocol criteria.
-
-| Metric | Value | Notes |
-| :--- | :--- | :--- |
-| **Baseline Screen-to-Enrollment Yield** | 1.0 | Represents the expected yield under the original, strict criteria. |
-| **Relaxation Scenario 1** | | |
-| Variable Relaxed | `age_min` | Decreasing minimum age from **18.0 to 13.0 years**. |
-| New Yield | 1.0 | The yield remains unchanged under this specific relaxation. |
-| Original Text | "1. is $\ge$ 18 years of age at the time of signing the informed consent." | |
-
-**Analysis:**
-The simulation suggests that under the current protocol constraints, the baseline yield is 1.0. Relaxing the minimum age criterion from 18 to 13 years did not immediately alter the simulated yield in this run, indicating that age is not the primary bottleneck under these simulated conditions. Further simulations across other criteria will be necessary for a comprehensive view.
-
-### **3. Statistical Power Analysis Status**
-
-**Status:** **Error Encountered**
-
-The biostatistician reported an error from the statistical solver (`simon2stage`) during the attempt to perform the statistical power calculations necessary for final feasibility assessment.
-
-**Action Required:**
-The biostatistician must re-run the power calculation, ensuring the input parameters for the `simon2stage` solver are correctly formatted and validated.
-
-### **4. Conclusion and Next Steps**
-
-The feasibility assessment has successfully completed the eligibility criteria simulation component. The critical path item—the statistical power sizing—is currently blocked due to a solver error.
-
-**Next Steps:**
-1.  **Biostatistician:** Resolve the solver error and re-run the statistical power calculations for NCT07262619.
-2.  **Feasibility Specialist:** Once the power calculation is successful, re-integrate the resulting power sizing metrics into this report to finalize the comprehensive feasibility assessment.
+*   **ChEMBL Bridge Search Result:** **No direct drug structure/mechanism bridge record was found** for the intervention drug **EIK1005**.
 
 ---
-*End of Report*
+
+### 3. Handoff Summary for Specialized Analysis
+
+The analysis requires further specialized computation. The extracted data has been passed to the appropriate agents for their specific tasks:
+
+#### **For the Biostatistician:**
+*   **Task:** Power Calculations and Sample Size Determination.
+*   **Focus Areas:** Given this is a Phase 1/2 dose-finding study, the biostatistician should focus on defining the appropriate statistical framework for dose selection, evaluating the sample size justification for safety/PK endpoints, and determining the statistical plan for the primary safety endpoints (DLT, AEs). The lack of explicit power targets is noted, requiring a discussion on Phase 1 statistical goals.
+
+#### **For the Feasibility Specialist:**
+*   **Task:** Recruitment Yield and Eligibility Criteria Simulation.
+*   **Focus Areas:** The specialist should use the detailed eligibility criteria to simulate the screen-to-enroll yield, considering the strict requirements (especially the $\sim 85\%$ screen failure rate for the MSI-H biomarker) and the complex inclusion/exclusion criteria (e.g., prior treatment history, organ function). They should provide realistic estimates for patient flow and potential protocol relaxations.
+
+---
+
+### 4. Conclusion and Next Steps
+
+The protocol extraction is complete, providing a comprehensive view of the study design, endpoints, and population stratification.
+
+**The immediate next steps are:**
+1.  **Biostatistician:** Execute power and sample size calculations based on the identified Phase 1/2 adaptive design and endpoints.
+2.  **Feasibility Specialist:** Perform the recruitment yield simulation and analyze the feasibility of meeting the strict inclusion/exclusion criteria.
+3.  **Compound Specialist (If required):** Investigate the molecular target and mechanism of action for **EIK1005** given the lack of a direct ChEMBL match, to contextualize the trial's rationale.
