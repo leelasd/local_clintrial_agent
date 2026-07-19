@@ -6,7 +6,7 @@
     {
       "text": "Plaque psoriasis for at least 6 months",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion helps ensure a sufficient sample size to detect treatment effects.",
+      "justification": "This criterion helps ensure a sufficient sample size to detect a treatment effect.",
       "competing_risk": false
     },
     {
@@ -24,25 +24,25 @@
     {
       "text": "Other forms of psoriasis",
       "reasoning_category": "Safety",
-      "justification": "This criterion may serve to exclude patients with other types of skin conditions, potentially impacting the study's safety and generalizability.",
+      "justification": "This criterion is likely to serve as a safety measure, ensuring the study population is not overly diverse in terms of other skin conditions.",
       "competing_risk": false
     },
     {
       "text": "History of recent infection",
       "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure that participants are healthy enough to participate in the trial and minimize potential risks from infections.",
+      "justification": "This criterion helps ensure that participants are healthy enough to participate in the trial and minimize potential complications from infections.",
       "competing_risk": false
     },
     {
       "text": "Prior exposure to BMS-986165",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures that participants have not previously received BMS-986165, potentially impacting the study's safety and generalizability.",
+      "justification": "This criterion is likely a safety measure, ensuring that participants are not already receiving treatment with BMS-986165.",
       "competing_risk": false
     },
     {
       "text": "Other inclusion/exclusion criteria may apply.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion indicates that additional criteria might be applied to ensure data quality or patient adherence, which could impact feasibility.",
+      "justification": "This criterion is likely to serve as a safety measure, ensuring that participants are eligible for treatment and can be followed up with appropriate interventions.",
       "competing_risk": false
     }
   ],
@@ -218,6 +218,10 @@
     "detected_drug_classes": [
       "tyk2_inhibitor"
     ]
+  },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 1.0,
+    "relaxations": []
   },
   "summary": {
     "Statistical Power": 2,

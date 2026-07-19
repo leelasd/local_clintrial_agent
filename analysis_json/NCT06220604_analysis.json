@@ -6,61 +6,61 @@
     {
       "text": "Diagnosis of plaque psoriasis, with or without psoriatic arthritis (PsA), for at least 26 weeks prior to the first administration of study intervention",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a sufficient duration of disease presence to detect treatment effects.",
+      "justification": "This criterion ensures a sufficient duration of disease and helps in identifying patients who are likely to benefit from treatment.",
       "competing_risk": false
     },
     {
       "text": "Total body surface area (BSA) greater than or equal to (>=)10 percent (%) at screening and baseline",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures a minimum BSA threshold for study participation, impacting feasibility.",
+      "justification": "This criterion ensures that the study population is large enough for statistical analysis.",
       "competing_risk": false
     },
     {
       "text": "Total psoriasis area and severity index (PASI) >=12 at screening and baseline",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion establishes a baseline severity level to ensure the study can detect treatment effects.",
+      "justification": "This criterion helps to identify patients with a high level of disease severity, which is likely to respond better to treatment.",
       "competing_risk": false
     },
     {
       "text": "Total investigator global assessment (IGA) >=3 at screening and baseline",
-      "reasoning_category": "Safety",
-      "justification": "This criterion ensures patients have a certain degree of disease severity to avoid potential harm from the study intervention.",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion helps to identify patients with a high level of disease severity, which is likely to respond better to treatment.",
       "competing_risk": false
     },
     {
       "text": "Candidate for phototherapy or systemic treatment for plaque psoriasis",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion defines eligibility based on the need for further treatment, impacting feasibility.",
+      "justification": "This criterion ensures that the study population has a need for treatment and are eligible for intervention.",
       "competing_risk": false
     },
     {
       "text": "Nonplaque form of psoriasis (for example, erythrodermic, guttate, or pustular)",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a specific type of psoriasis is being studied to maximize treatment effect detection.",
+      "justification": "This criterion helps to identify patients with a high level of disease severity, which is likely to respond better to treatment.",
       "competing_risk": false
     },
     {
       "text": "Current drug-induced psoriasis (for example, a new onset of psoriasis or an exacerbation of psoriasis from beta blockers, calcium channel blockers, or lithium)",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patients are not experiencing psoriasis due to medication, protecting them from potential harm.",
+      "justification": "This criterion helps to identify patients who are at risk for adverse events related to the study intervention.",
       "competing_risk": false
     },
     {
       "text": "A current diagnosis or signs or symptoms of severe, progressive, or uncontrolled renal, liver, cardiac, vascular, pulmonary, gastrointestinal, endocrine, neurologic, hematologic, rheumatologic, psychiatric, or metabolic disturbances",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patients are not at risk for complications from the study intervention.",
+      "justification": "This criterion helps to identify patients who are at risk for adverse events related to the study intervention.",
       "competing_risk": false
     },
     {
       "text": "Known allergies, hypersensitivity, or intolerance to JNJ-77242113, deucravacitinib or to any of the excipients or components of the study intervention",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patient safety by excluding those with known adverse reactions to the study interventions.",
+      "justification": "This criterion helps to identify patients who are at risk for adverse events related to the study intervention.",
       "competing_risk": false
     },
     {
       "text": "Major surgical procedure, (for example, requiring general anesthesia) within 8 weeks before screening, or will not have fully recovered from surgical procedure, or has a surgical procedure planned during the time the participant is expected to participate in the study",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patients are physically capable of participating in the study.",
+      "justification": "This criterion helps to ensure that participants are healthy enough to participate in the study.",
       "competing_risk": false
     }
   ],
@@ -380,9 +380,13 @@
       "tyk2_inhibitor"
     ]
   },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 1.0,
+    "relaxations": []
+  },
   "summary": {
-    "Statistical Power": 3,
+    "Statistical Power": 4,
     "Feasibility": 3,
-    "Safety": 4
+    "Safety": 3
   }
 }

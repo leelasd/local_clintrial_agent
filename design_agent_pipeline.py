@@ -15,6 +15,7 @@ from clintrial_agent.data import fetch_trial
 from clintrial_agent.stats import analyze_sample_size, _dichotomous_power_curve, _survival_power_curve
 from clintrial_agent.llm import infer_indication, classify_eligibility_criteria
 from clintrial_agent.reporting import generate_power_plots
+from clintrial_agent.eligibility import parse_constraints, generate_synthetic_cohort, simulate_relaxation
 
 try:
     import matplotlib
@@ -865,6 +866,22 @@ def analyze_trial(nct_id):
     print(f"  Recruitment Yield: {population['recruitment_yield_estimate']}")
     print(f"  Enrollment: {population['enrollment_count']} ({population['enrollment_type']})")
     
+    # Run Eligibility Constraint & Yield Simulation
+    eligibility_text = protocol['eligibilityModule']['eligibilityCriteria']
+    constraints = parse_constraints(eligibility_text)
+    cohort_df = generate_synthetic_cohort(size=10000)
+    yield_results = simulate_relaxation(cohort_df, constraints)
+    
+    print(f"\nEligibility Constraint & Yield Simulation (N=10,000 cohort):")
+    print(f"  Baseline Screen-to-Enroll Yield: {yield_results['baseline_yield']:.1%}")
+    if yield_results['relaxations']:
+        print(f"  Relaxation Scenarios (Multiplier Effects):")
+        for r in yield_results['relaxations']:
+            print(f"    • {r['description']} → Multiplier: {r['multiplier']}x (New Yield: {r['new_yield']:.1%})")
+            print(f"      Matched: \"{r['raw_text'][:70]}...\"")
+    else:
+        print(f"  No extractable numeric constraints parsed from criteria.")
+    
     # --- STEP 1c: Sample size / power analysis (indication-parameterized) ---
     indication = infer_indication(protocol)
     indication_key = INDICATION_ALIASES.get(indication, indication)
@@ -1009,6 +1026,7 @@ def analyze_trial(nct_id):
         "adaptive_designs": adaptive,
         "safety_adverse_events": safety_ae,
         "pharmacogenetics": pharmacogenetics,
+        "eligibility_yield_simulation": yield_results,
         "summary": dict(categories)
     }
     

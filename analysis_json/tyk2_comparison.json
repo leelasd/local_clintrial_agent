@@ -1,188 +1,385 @@
 {
-  "NCT00526643": {
-    "nct_id": "NCT00526643",
-    "title": "CAPPA-2: Cisplatin Added to Gemcitabine in Poor Performance Advanced NSCLC Patients",
+  "NCT06088043": {
+    "nct_id": "NCT06088043",
+    "title": "A Study About How Well TAK-279 Works and Its Safety in Participants With Moderate-to-severe Plaque Psoriasis During 52 Weeks of Treatment",
     "phase": "PHASE3",
     "eligibility": [
       {
-        "text": "Histologically or cytologically confirmed diagnosis of advanced non small cell lung cancer, not amenable to surgical or curative radiation therapy (stage IIIB or IV);",
+        "text": ". Plaque psoriasis for at least 6 months.",
         "reasoning_category": "Statistical Power",
-        "justification": "This criterion ensures the study population is representative of a specific disease group and aims to maximize the likelihood of detecting treatment effects.",
-        "competing_risk": true
+        "justification": "This criterion ensures a sufficient duration of disease to detect treatment effects.",
+        "competing_risk": false
       },
       {
-        "text": "No prior or concomitant chemotherapy (adjuvant/neoadjuvant chemotherapy permitted if concluded at least one year prior to enrollment);",
+        "text": ". Moderate to severe disease.",
+        "reasoning_category": "Statistical Power",
+        "justification": "Moderate to severe disease severity is likely to be associated with greater treatment response and thus, higher statistical power.",
+        "competing_risk": false
+      },
+      {
+        "text": ". Candidate for phototherapy or systemic therapy.",
         "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures the study population is comparable and allows for a fair comparison of treatment effects.",
+        "justification": "This criterion ensures the patient's eligibility for a specific treatment modality, which is essential for study feasibility and data quality.",
         "competing_risk": false
       },
       {
-        "text": "ECOG performance status 2;",
+        "text": ". Other forms of psoriasis.",
         "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients are able to participate in the trial with minimal physical limitations, protecting them from potential harm.",
+        "justification": "This criterion excludes patients with other types of psoriasis, potentially protecting them from harm or ensuring a homogenous patient population.",
         "competing_risk": false
       },
       {
-        "text": "Age: > or = 18 and < 70 years;",
+        "text": ". History of recent infection.",
+        "reasoning_category": "Safety",
+        "justification": "This criterion aims to protect the patient from potential complications related to infections.",
+        "competing_risk": false
+      },
+      {
+        "text": ". Prior exposure to TAK-279 or active comparator.",
         "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures the study population is within a specific age range, which may influence treatment response.",
+        "justification": "This criterion ensures that patients have not previously received treatment with TAK-279 or an active comparator, potentially impacting the study's ability to detect a treatment effect.",
         "competing_risk": false
       },
       {
-        "text": "Life expectancy at least 4 weeks;",
+        "text": "Other protocol defined inclusion/exclusion criteria apply.",
         "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients have sufficient life expectancy to participate in the trial and potentially benefit from the intervention.",
+        "justification": "This criterion is likely included for safety reasons as it may address potential risks or complications associated with the study's design and procedures.",
         "competing_risk": false
-      },
-      {
-        "text": "Normal bone marrow, hepatic and renal function defined as: neutrophils > or = 2000/mm3, PLT > or = 100,000/mm3, Hb > or = 10.0 g/dl, Bilirubin > or = 1.5 times the upper normal limit (UNL), AST and ALT < or = 3 times the UNL (5 times in the presence of liver metastases), creatinine within normal limits;",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients have healthy organ function, protecting them from potential harm.",
-        "competing_risk": false
-      },
-      {
-        "text": "Signed informed consent.",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures patient autonomy and understanding of the trial's risks and benefits.",
-        "competing_risk": false
-      },
-      {
-        "text": "Active systemic infections;",
-        "reasoning_category": "Safety",
-        "justification": "This criterion protects patients from potential complications arising from active infections.",
-        "competing_risk": false
-      },
-      {
-        "text": "Severe concomitant illness (congestive heart failure, angina pectoris, myocardial infarction within previous 6 months, cardiac arrhythmias under treatment, severe arterial hypertension, severe or uncontrolled diabetes mellitus);",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from existing conditions.",
-        "competing_risk": false
-      },
-      {
-        "text": "Inadequate hepatic or renal function;",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures patients have adequate organ function for study participation, potentially impacting data quality.",
-        "competing_risk": false
-      },
-      {
-        "text": "Radiation therapy ongoing or concluded within two weeks prior to enrollment;",
-        "reasoning_category": "Safety",
-        "justification": "This criterion protects patients from potential complications arising from radiation exposure.",
-        "competing_risk": false
-      },
-      {
-        "text": "Symptomatic cerebral metastases;",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from existing conditions.",
-        "competing_risk": false
-      },
-      {
-        "text": "Previous chemotherapy for advanced disease;",
-        "reasoning_category": "Feasibility",
-        "justification": "This criterion ensures patients have not received prior chemotherapy, potentially impacting data quality.",
-        "competing_risk": false
-      },
-      {
-        "text": "Any condition that would, in the investigator's opinion, limit the patients ability to provide informed consent or to comply with study procedures;",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from existing conditions.",
-        "competing_risk": false
-      },
-      {
-        "text": "Pregnant or nursing females;",
-        "reasoning_category": "Safety",
-        "justification": "This criterion protects pregnant women and their developing fetuses from potential harm.",
-        "competing_risk": false
-      },
-      {
-        "text": "Any malignancy within the past 5 years (except for adequately treated carcinoma in situ of the cervix or non melanoma skin cancer);",
-        "reasoning_category": "Safety",
-        "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from existing conditions.",
-        "competing_risk": true
       }
     ],
     "criteria_metadata": {
-      "total_parsed": 16,
-      "classified": 16,
+      "total_parsed": 7,
+      "classified": 7,
       "batches": 1,
       "batch_size": 20
     },
     "population": {
       "sex": "ALL",
-      "age_range": "18 Years - 70 Years",
+      "age_range": "18 Years+",
       "std_ages": [],
       "healthy_volunteers": false,
-      "age_restrictiveness": "High",
-      "has_competing_risk_exclusions": true,
+      "age_restrictiveness": "Moderate",
+      "has_competing_risk_exclusions": false,
       "recruitment_yield_estimate": "Moderate (5-20% screen-to-enroll)",
-      "enrollment_count": 57,
+      "enrollment_count": 693,
       "enrollment_type": "ACTUAL"
     },
     "sample_size": {
-      "enrollment_actual": 57,
-      "estimated_n_per_arm": 28,
-      "num_arms": 2,
-      "primary_endpoint_type": "OS (Overall Survival)",
-      "estimated_control_event_rate": 0.8,
+      "enrollment_actual": 693,
+      "estimated_n_per_arm": 231,
+      "num_arms": 3,
+      "primary_endpoint_type": "Dichotomous (Proportion)",
+      "estimated_control_event_rate": 0.1,
       "indication_params_used": {
-        "control_median_months": 12.0,
-        "event_rate": 0.8
+        "control_rate_dichotomous": 0.1
       },
       "power_analysis": {
         "alpha": 0.05,
         "power_target": 0.8,
-        "test_type": "Two-sided (log-rank)",
-        "detectable_hazard_ratio": 0.436,
-        "hr_reduction": "56%",
-        "expected_events": 46,
-        "control_median_months": 12.0,
-        "implied_treatment_median_months": 27.5,
-        "median_improvement_months": 15.5,
-        "assessment": "Underpowered (R-exact)",
-        "r_exact_required_sample_size": 427.6074,
-        "r_exact_required_events": 246.2178
+        "test_type": "Two-sided",
+        "detectable_absolute_difference": 0.1,
+        "estimated_power_for_20pct_improvement": 1.0,
+        "assessment": "Adequately Powered"
       }
     },
     "endpoints": [
       {
-        "text": "overall survival",
+        "text": "Percentage of Participants Achieving a Static Physician's Global Assessment (sPGA) of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 16 Comparing TAK-279 Against Placebo",
         "endpoint_type": "Clinical",
-        "timeframe": "one year",
+        "timeframe": "Baseline, Week 16",
         "is_primary": true
       },
       {
-        "text": "change in performance status",
+        "text": "Percentage of Participants Achieving >=75% Improvement from Baseline in Psoriasis Area and Severity Index (PASI) Score (PASI-75 Response) at Week 16 Comparing TAK-279 Against Placebo",
         "endpoint_type": "Surrogate",
-        "timeframe": "each cycle of chemotherapy",
-        "is_primary": false
+        "timeframe": "Baseline, Week 16",
+        "is_primary": true
       },
       {
-        "text": "toxicity",
+        "text": "Percentage of Participants Achieving 90% Improvement from Baseline in PASI (PASI-90 Response) at Week 16 Comparing TAK-279 Against Placebo",
         "endpoint_type": "Surrogate",
-        "timeframe": "each cycle of chemotherapy and every 3 months thereafter",
+        "timeframe": "Baseline, Week 16",
         "is_primary": false
       },
       {
-        "text": "quality of life",
-        "endpoint_type": "Patient-Reported",
-        "timeframe": "chemotherapy cycles 1 and 2",
-        "is_primary": false
-      },
-      {
-        "text": "objective response",
-        "endpoint_type": "Surrogate",
-        "timeframe": "at 6 weeks and 12 weeks",
-        "is_primary": false
-      },
-      {
-        "text": "progression free survival",
+        "text": "Percentage of Participants Achieving an sPGA of Clear (0) at Week 16 Comparing TAK-279 Against Placebo",
         "endpoint_type": "Clinical",
-        "timeframe": "one year",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving PASI-100 at Week 16 Comparing TAK-279 Against Placebo",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving a Scalp-specific Physician's Global Assessment (ssPGA) of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 16 Comparing TAK-279 Against Placebo",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline and Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants with a Baseline Dermatology Life Quality Index (DLQI) Score >=2 who Achieve DLQI Score of 0 or 1 at Week 16 Comparing TAK-279 Against Placebo",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants with a Baseline Psoriasis Symptoms and Signs Diary (PSSD) >=1 who Achieve Weekly Mean PSSD Symptom Score of 0 at Week 16 Comparing TAK-279 Against Placebo",
+        "endpoint_type": "Composite",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in Nail Psoriasis Severity Index (NAPSI) at Week 16 Among Participants with Nail Involvement at Baseline Comparing TAK-279 Against Placebo",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline and Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in Body Surface Area (BSA) Affected by Psoriasis at Week 16 Comparing TAK-279 Against Placebo",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Baseline and Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percent Change from Baseline in Body Surface Area (BSA) Affected by Psoriasis at Week 16 Comparing TAK-279 Against Placebo",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Baseline and Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving a Physician's Global Assessment (PGA) of the Hands and/or Feet of Clear (0) or Almost Clear (1) with a >=2-Point Decrease From Baseline at Week 16 Comparing TAK-279 Against Placebo",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline and Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in DLQI at Week 16 Comparing TAK-279 Against Placebo",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline and Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in the Short Form-36 Health Survey (SF-36) Version 2 Scores at Week 16 Comparing TAK-279 Against Placebo",
+        "endpoint_type": "Patient-Reported",
+        "timeframe": "Baseline and Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in the EuroQoL 5-Dimension 5-level Questionnaire (EQ-5D-5L) Scores at Week 16 Comparing TAK-279 Against Placebo",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline and Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change in Work Productivity and Activity Impairment-Psoriasis (WPAI-PSO) Questionnaire Scores at Week 16 Comparing TAK-279 Against Placebo",
+        "endpoint_type": "Patient-Reported",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving an sPGA of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 16 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline and Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving PASI-75 at Week 16 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving PASI-90 at Week 16 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving an sPGA of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline and Week 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving PASI-75 at Week 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Week 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving PASI-90 at Week 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Week 24",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in Weekly Mean PSSD Symptom Score at Week 16 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Composite",
+        "timeframe": "Baseline and Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving an ssPGA of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 16 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving PASI-100 at Week 16 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving PASI-100 at Week 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Week 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving an sPGA of Clear (0) at Week 16 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants with a Baseline DLQI Score >=2 who Achieve DLQI Score of 0/1 at Week 16 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants with a Baseline PSSD >=1 who Achieve a Weekly Mean PSSD Symptom Score of 0 at Week 16 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Composite",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in NAPSI, Among Participants with Nail Involvement at Baseline at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline, Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving an ssPGA of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Week 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline and Week 24",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in DLQI at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline, Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in BSA Affected by Psoriasis at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Baseline, Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percent Change from Baseline in BSA Affected by Psoriasis at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Baseline, Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving an sPGA of Clear (0) at Week 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants with a Baseline DLQI Score >=2 who Achieve a DLQI Score of 0/1 at Week 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants with a Baseline PSSD >=1 who Achieve a Weekly Mean PSSD Symptom Score of 0 at Week 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Composite",
+        "timeframe": "Week 24",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in ssPGA at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Baseline, Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving a PGA of the Hands and/or Feet of Clear (0) or Almost Clear (1) with a >=2-Point Decrease From Baseline at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline, Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in SF-36 Version 2 Scores at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Patient-Reported",
+        "timeframe": "Baseline, Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in the EQ-5D-5L Scores at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline, Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Change from Baseline in the WPAI-PSO Scores at Weeks 16 and 24 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Patient-Reported",
+        "timeframe": "Baseline, Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving an sPGA of Clear (0) or Almost Clear (1) with a >=2-Point Decrease from Baseline at Weeks 24, 40, and 52 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline, Weeks 24, 40 and 52",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving PASI-75 at Weeks 24, 40, and 52 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Weeks 24, 40 and 52",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving PASI-90 at Weeks 24, 40, and 52 Comparing TAK-279 Against Apremilast",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Weeks 24, 40 and 52",
+        "is_primary": false
+      },
+      {
+        "text": "Number of Participants with Treatment-emergent Adverse Events (TEAEs) and Adverse Events of Special Interest (AESI)",
+        "endpoint_type": "Safety",
+        "timeframe": "Up to Week 56",
+        "is_primary": false
+      },
+      {
+        "text": "Number of Participants with Clinically Significant Vital Signs",
+        "endpoint_type": "Safety",
+        "timeframe": "Up to Week 56",
+        "is_primary": false
+      },
+      {
+        "text": "Number of Participants with Clinically Significant Laboratory Values",
+        "endpoint_type": "Safety",
+        "timeframe": "Up to Week 56",
+        "is_primary": false
+      },
+      {
+        "text": "Number of Participants with Clinically Significant Electrocardiogram (ECG) Findings",
+        "endpoint_type": "Safety",
+        "timeframe": "Up to Week 56",
         "is_primary": false
       }
     ],
     "trial_integrity": {
-      "masking_level": "Open-label",
+      "masking_level": "Double-blind",
       "blinding_validation_method": "Not specified",
       "concomitant_therapy_controls": "Standardized background care"
     },
@@ -191,14 +388,14 @@
       "control_type": "Standard of Care",
       "superiority_type": "Superiority"
     },
-    "indication": "non-small cell lung cancer",
+    "indication": "plaque psoriasis",
     "randomization": {
       "randomization_type": "Simple",
-      "allocation_ratio": "1:1",
+      "allocation_ratio": "1:1:1",
       "stratification_factors": [
-        "Age"
+        "Center"
       ],
-      "randomization_description": "Stratified by Age. Simple randomization."
+      "randomization_description": "Stratified by Center. Simple randomization."
     },
     "adaptive_designs": {
       "has_adaptive_features": false,
@@ -213,7 +410,240 @@
       "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
       "ae_types_detected": [],
       "class_effects_known": [
-        "ALT elevation",
+        "AST elevation",
+        "Infections (general)"
+      ],
+      "safety_endpoints": [
+        "Number of Participants with Treatment-emergent Adverse Events (TEAEs) and Adverse Events of Special Interest (AESI)"
+      ],
+      "sae_stopping_rules": "Not specified in protocol text",
+      "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+    },
+    "pharmacogenetics": {
+      "genetic_biomarkers_mentioned": [
+        {
+          "gene": "TYK2",
+          "drug_class": "tyk2_inhibitor",
+          "known_effects": [
+            "Treatment response - JAK-STAT pathway inhibition"
+          ]
+        }
+      ],
+      "genetic_screen_failure": [],
+      "genetic_screen_failure_summary": null,
+      "gwas_associations_found": [],
+      "pharmacogenetic_subgroups": [],
+      "stratification_opportunity": null,
+      "safety_pharmacogenetics": [],
+      "summary": "Genes detected (TYK2) but could not map indication \"plaque psoriasis\" to a GWAS EFO trait. Try alternative trait name.",
+      "detected_drug_classes": [
+        "tyk2_inhibitor"
+      ]
+    },
+    "eligibility_yield_simulation": {
+      "baseline_yield": 1.0,
+      "relaxations": []
+    },
+    "summary": {
+      "Statistical Power": 2,
+      "Feasibility": 2,
+      "Safety": 3
+    },
+    "drug": "Zasocitinib (TAK-279)"
+  },
+  "NCT04167462": {
+    "nct_id": "NCT04167462",
+    "title": "An Investigational Study to Evaluate Experimental Medication BMS-986165 Compared to Placebo in Participants With Plaque Psoriasis (POETYK-PSO-3) in Mainland China, Taiwan, and South Korea",
+    "phase": "PHASE3",
+    "eligibility": [
+      {
+        "text": "Plaque psoriasis for at least 6 months",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion helps ensure a sufficient sample size to detect a treatment effect.",
+        "competing_risk": false
+      },
+      {
+        "text": "Moderate to severe disease",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures the study population is representative of patients with moderate to severe psoriasis, maximizing the likelihood of detecting a treatment effect.",
+        "competing_risk": false
+      },
+      {
+        "text": "Candidate for phototherapy or systemic therapy",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion helps ensure that participants are eligible for treatment and can be followed up with appropriate interventions.",
+        "competing_risk": false
+      },
+      {
+        "text": "Other forms of psoriasis",
+        "reasoning_category": "Safety",
+        "justification": "This criterion is likely to serve as a safety measure, ensuring the study population is not overly diverse in terms of other skin conditions.",
+        "competing_risk": false
+      },
+      {
+        "text": "History of recent infection",
+        "reasoning_category": "Safety",
+        "justification": "This criterion helps ensure that participants are healthy enough to participate in the trial and minimize potential complications from infections.",
+        "competing_risk": false
+      },
+      {
+        "text": "Prior exposure to BMS-986165",
+        "reasoning_category": "Safety",
+        "justification": "This criterion is likely a safety measure, ensuring that participants are not already receiving treatment with BMS-986165.",
+        "competing_risk": false
+      },
+      {
+        "text": "Other inclusion/exclusion criteria may apply.",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion is likely to serve as a safety measure, ensuring that participants are eligible for treatment and can be followed up with appropriate interventions.",
+        "competing_risk": false
+      }
+    ],
+    "criteria_metadata": {
+      "total_parsed": 7,
+      "classified": 7,
+      "batches": 1,
+      "batch_size": 20
+    },
+    "population": {
+      "sex": "ALL",
+      "age_range": "18 Years+",
+      "std_ages": [],
+      "healthy_volunteers": false,
+      "age_restrictiveness": "Moderate",
+      "has_competing_risk_exclusions": false,
+      "recruitment_yield_estimate": "Moderate (5-20% screen-to-enroll)",
+      "enrollment_count": 220,
+      "enrollment_type": "ACTUAL"
+    },
+    "sample_size": {
+      "enrollment_actual": 220,
+      "estimated_n_per_arm": 110,
+      "num_arms": 2,
+      "primary_endpoint_type": "Dichotomous (Proportion)",
+      "estimated_control_event_rate": 0.1,
+      "indication_params_used": {
+        "control_rate_dichotomous": 0.1
+      },
+      "power_analysis": {
+        "alpha": 0.05,
+        "power_target": 0.8,
+        "test_type": "Two-sided",
+        "detectable_absolute_difference": 0.15,
+        "estimated_power_for_20pct_improvement": 0.96,
+        "assessment": "Borderline"
+      }
+    },
+    "endpoints": [
+      {
+        "text": "The Percentage of Participants With sPGA Response of 0 or 1",
+        "endpoint_type": "Clinical",
+        "timeframe": "At week 16",
+        "is_primary": true
+      },
+      {
+        "text": "The Percentage of Participants With PASI 75 Response",
+        "endpoint_type": "Surrogate",
+        "timeframe": "At week 16",
+        "is_primary": true
+      },
+      {
+        "text": "The Percentage of Participants With PASI 90 Response",
+        "endpoint_type": "Surrogate",
+        "timeframe": "At week 16",
+        "is_primary": false
+      },
+      {
+        "text": "The Percentage of Participants With PASI 100 Response",
+        "endpoint_type": "Surrogate",
+        "timeframe": "At week 16",
+        "is_primary": false
+      },
+      {
+        "text": "The Percentage of Participants With sPGA 0 Response",
+        "endpoint_type": "Clinical",
+        "timeframe": "At week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change From Baseline in PSSD Symptom Score",
+        "endpoint_type": "Patient-Reported",
+        "timeframe": "Baseline and at Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "The Percentage of Participants With Ss-PGA Score of 0 or 1",
+        "endpoint_type": "Surrogate",
+        "timeframe": "At week 16",
+        "is_primary": false
+      },
+      {
+        "text": "The Percentage of Participants With DLQI Score of 0 or 1",
+        "endpoint_type": "Patient-Reported",
+        "timeframe": "At week 16",
+        "is_primary": false
+      },
+      {
+        "text": "The Percentage of Participants With PGA-F Score of 0 or 1",
+        "endpoint_type": "Surrogate",
+        "timeframe": "At week 16",
+        "is_primary": false
+      },
+      {
+        "text": "The Percentage of Participants With PSSD Symptom Score of 0",
+        "endpoint_type": "Clinical",
+        "timeframe": "At week 16",
+        "is_primary": false
+      },
+      {
+        "text": "The Percentage of Participants With Pp-PGA Score of 0 or 1",
+        "endpoint_type": "Clinical",
+        "timeframe": "At week 16",
+        "is_primary": false
+      },
+      {
+        "text": "The Percentage of Participants With PASI 75 Response at Week 52",
+        "endpoint_type": "Surrogate",
+        "timeframe": "At week 52",
+        "is_primary": false
+      },
+      {
+        "text": "The Percentage of Participants With sPGA Response of 0 or 1 at Week 52",
+        "endpoint_type": "Clinical",
+        "timeframe": "At week 52",
+        "is_primary": false
+      }
+    ],
+    "trial_integrity": {
+      "masking_level": "Double-blind",
+      "blinding_validation_method": "Not specified",
+      "concomitant_therapy_controls": "Standardized background care"
+    },
+    "trial_design": {
+      "design_type": "Parallel RCT",
+      "control_type": "Standard of Care",
+      "superiority_type": "Superiority"
+    },
+    "indication": "plaque psoriasis",
+    "randomization": {
+      "randomization_type": "Simple",
+      "allocation_ratio": "1:1",
+      "stratification_factors": [],
+      "randomization_description": "Simple randomization."
+    },
+    "adaptive_designs": {
+      "has_adaptive_features": false,
+      "adaptive_types": [],
+      "interim_analysis_mentioned": false,
+      "stopping_rules": "Not mentioned",
+      "dose_escalation_method": null,
+      "description": "Standard fixed-design trial. No adaptive features detected."
+    },
+    "safety_adverse_events": {
+      "ae_reporting_method": "Not explicitly specified",
+      "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
+      "ae_types_detected": [],
+      "class_effects_known": [
         "AST elevation",
         "Infections (general)"
       ],
@@ -222,20 +652,428 @@
       "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
     },
     "pharmacogenetics": {
-      "genetic_biomarkers_mentioned": [],
+      "genetic_biomarkers_mentioned": [
+        {
+          "gene": "TYK2",
+          "drug_class": "tyk2_inhibitor",
+          "known_effects": [
+            "Treatment response - JAK-STAT pathway inhibition"
+          ]
+        }
+      ],
       "genetic_screen_failure": [],
       "genetic_screen_failure_summary": null,
       "gwas_associations_found": [],
       "pharmacogenetic_subgroups": [],
       "stratification_opportunity": null,
       "safety_pharmacogenetics": [],
-      "summary": "No known pharmacogenetic drug classes or genes detected in protocol text."
+      "summary": "Genes detected (TYK2) but could not map indication \"plaque psoriasis\" to a GWAS EFO trait. Try alternative trait name.",
+      "detected_drug_classes": [
+        "tyk2_inhibitor"
+      ]
+    },
+    "eligibility_yield_simulation": {
+      "baseline_yield": 1.0,
+      "relaxations": []
     },
     "summary": {
-      "Statistical Power": 1,
-      "Feasibility": 4,
-      "Safety": 11
+      "Statistical Power": 2,
+      "Feasibility": 2,
+      "Safety": 3
     },
-    "drug": "NCT00526643"
+    "drug": "Deucravacitinib (BMS-986165)"
+  },
+  "NCT06220604": {
+    "nct_id": "NCT06220604",
+    "title": "A Study of JNJ-77242113 for the Treatment of Participants With Moderate to Severe Plaque Psoriasis (ICONIC-ADVANCE 2)",
+    "phase": "PHASE3",
+    "eligibility": [
+      {
+        "text": "Diagnosis of plaque psoriasis, with or without psoriatic arthritis (PsA), for at least 26 weeks prior to the first administration of study intervention",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion ensures a sufficient duration of disease and helps in identifying patients who are likely to benefit from treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Total body surface area (BSA) greater than or equal to (>=)10 percent (%) at screening and baseline",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures that the study population is large enough for statistical analysis.",
+        "competing_risk": false
+      },
+      {
+        "text": "Total psoriasis area and severity index (PASI) >=12 at screening and baseline",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion helps to identify patients with a high level of disease severity, which is likely to respond better to treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Total investigator global assessment (IGA) >=3 at screening and baseline",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion helps to identify patients with a high level of disease severity, which is likely to respond better to treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Candidate for phototherapy or systemic treatment for plaque psoriasis",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion ensures that the study population has a need for treatment and are eligible for intervention.",
+        "competing_risk": false
+      },
+      {
+        "text": "Nonplaque form of psoriasis (for example, erythrodermic, guttate, or pustular)",
+        "reasoning_category": "Statistical Power",
+        "justification": "This criterion helps to identify patients with a high level of disease severity, which is likely to respond better to treatment.",
+        "competing_risk": false
+      },
+      {
+        "text": "Current drug-induced psoriasis (for example, a new onset of psoriasis or an exacerbation of psoriasis from beta blockers, calcium channel blockers, or lithium)",
+        "reasoning_category": "Safety",
+        "justification": "This criterion helps to identify patients who are at risk for adverse events related to the study intervention.",
+        "competing_risk": false
+      },
+      {
+        "text": "A current diagnosis or signs or symptoms of severe, progressive, or uncontrolled renal, liver, cardiac, vascular, pulmonary, gastrointestinal, endocrine, neurologic, hematologic, rheumatologic, psychiatric, or metabolic disturbances",
+        "reasoning_category": "Safety",
+        "justification": "This criterion helps to identify patients who are at risk for adverse events related to the study intervention.",
+        "competing_risk": false
+      },
+      {
+        "text": "Known allergies, hypersensitivity, or intolerance to JNJ-77242113, deucravacitinib or to any of the excipients or components of the study intervention",
+        "reasoning_category": "Safety",
+        "justification": "This criterion helps to identify patients who are at risk for adverse events related to the study intervention.",
+        "competing_risk": false
+      },
+      {
+        "text": "Major surgical procedure, (for example, requiring general anesthesia) within 8 weeks before screening, or will not have fully recovered from surgical procedure, or has a surgical procedure planned during the time the participant is expected to participate in the study",
+        "reasoning_category": "Feasibility",
+        "justification": "This criterion helps to ensure that participants are healthy enough to participate in the study.",
+        "competing_risk": false
+      }
+    ],
+    "criteria_metadata": {
+      "total_parsed": 10,
+      "classified": 10,
+      "batches": 1,
+      "batch_size": 20
+    },
+    "population": {
+      "sex": "ALL",
+      "age_range": "18 Years+",
+      "std_ages": [],
+      "healthy_volunteers": false,
+      "age_restrictiveness": "Moderate",
+      "has_competing_risk_exclusions": false,
+      "recruitment_yield_estimate": "Moderate (5-20% screen-to-enroll)",
+      "enrollment_count": 731,
+      "enrollment_type": "ACTUAL"
+    },
+    "sample_size": {
+      "enrollment_actual": 731,
+      "estimated_n_per_arm": 243,
+      "num_arms": 3,
+      "primary_endpoint_type": "Dichotomous (Proportion)",
+      "estimated_control_event_rate": 0.1,
+      "indication_params_used": {
+        "control_rate_dichotomous": 0.1
+      },
+      "power_analysis": {
+        "alpha": 0.05,
+        "power_target": 0.8,
+        "test_type": "Two-sided",
+        "detectable_absolute_difference": 0.09,
+        "estimated_power_for_20pct_improvement": 1.0,
+        "assessment": "Adequately Powered"
+      }
+    },
+    "endpoints": [
+      {
+        "text": "Percentage of Participants Who Achieved an Investigator's Global Assessment (IGA) Score of 0 or 1 and Greater Than or Equal to (>=) 2-Grade Improvement From Baseline at Week 16",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": true
+      },
+      {
+        "text": "Percentage of Participants Who Achieved Psoriasis Area and Severity Index (PASI) 90 Response at Week 16",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": true
+      },
+      {
+        "text": "Percentage of Participants Who Achieved IGA Score of 0 at Week 16",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved PASI 75 Response at Weeks 4 and 16",
+        "endpoint_type": "Clinical",
+        "timeframe": "Weeks 4 and 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved PASI 90 Response at Week 8",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 8",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved PASI 100 Response at Week 16",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved Scalp Specific (ss)-IGA Score of 0 or 1 and >=2-Grade Improvement From Baseline at Week 16 Among Participants With a Baseline Ss-IGA Score >=2",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved Psoriasis Symptom and Signs Diary (PSSD) Symptom Score of 0 at Weeks 8 and 16 Among Participants With a Baseline PSSD Symptom Score >0",
+        "endpoint_type": "Clinical",
+        "timeframe": "Weeks 8 and 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved >=4-Point Improvement From Baseline in PSSD Itch Score at Weeks 4 and 16 Among Participants With a Baseline PSSD Itch Score >=4",
+        "endpoint_type": "Clinical",
+        "timeframe": "Weeks 4 and 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved an IGA Score of 0 or 1 and >=2-Grade Improvement From Baseline at Weeks 16 and 24",
+        "endpoint_type": "Clinical",
+        "timeframe": "Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved an IGA Score of 0 at Weeks 16 and 24",
+        "endpoint_type": "Surrogate",
+        "timeframe": "Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved PASI 75 Response at Weeks 16 and 24",
+        "endpoint_type": "Clinical",
+        "timeframe": "Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved PASI 90 Response at Weeks 16 and 24",
+        "endpoint_type": "Clinical",
+        "timeframe": "Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved PASI 100 Response at Weeks 16 and 24",
+        "endpoint_type": "Clinical",
+        "timeframe": "Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved PSSD Symptom Score of 0 at Week 16 Among Participants With a Baseline PSSD Symptom Score >0",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change From Baseline in Body Surface Area (BSA) at Week 16",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline (Week 0), Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change From Baseline in PASI Total Score at Week 16",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline (Week 0), Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percent Change From Baseline in PASI Total Score at Week 16",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline (Week 0), Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved Static Physician's Global Assessment of Genitalia (sPGA-G) Score of 0 or 1 and a >=2-Grade Improvement From Baseline at Week 16 Among Participants With a Baseline sPGA-G Score >=2",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved Physician's Global Assessment of Hands and Feet (Hf-PGA) Score of 0 or 1 and a >=2-Grade Improvement From Baseline at Week 16 Among Participants With a Baseline Hf-PGA Score >=2",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percent Change From Baseline in Modified Nail Psoriasis Severity Index (mNAPSI) Score at Week 16 Among Participants With a Baseline mNAPSI Score >0",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline (Week 0), Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved Fingernail Physician's Global Assessment (f-PGA) Score of 0 or 1 at Week 16 Among Participants With a Baseline f-PGA Score >=2",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change From Baseline in PSSD Symptom Score at Week 16",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline (Week 0), Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change From Baseline in PSSD Sign Score at Week 16",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline (Week 0), Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved PSSD Sign Score of 0 at Week 16 Among Participants With a Baseline Sign Score >0",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved Genital Psoriasis Sexual Frequency Questionnaire (GenPs-SFQ) Item 2 Score of 0 or 1 at Week 16 Among Participants With a Baseline GenPS-SFQ Item 2 Score >=2 and With a Baseline sPGA-G Score >=3",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved Dermatological Life Quality Index (DLQI) Score of 0 or 1 at Week 16 Among Participants With a Baseline DLQI Score >1",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change From Baseline in Total DLQI Score at Week 16",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline (Week 0), Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Change From Baseline in Domain Scores of the Patient Reported Outcomes Measurement Information System-29 (PROMIS-29) Score at Week 16",
+        "endpoint_type": "Clinical",
+        "timeframe": "Baseline (Week 0), Week 16",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved DLQI Score of 0 or 1 at Weeks 16 and 24 Among Participants With a Baseline DLQI Score >1",
+        "endpoint_type": "Clinical",
+        "timeframe": "Weeks 16 and 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved PSSD Symptoms Score of 0 at Week 24 Among Participants With a Baseline PSSD Symptom Score >0",
+        "endpoint_type": "Clinical",
+        "timeframe": "Week 24",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Who Achieved PASI 75 After Week 24, Among PASI 75 Nonresponders to Deucravacitinib at Week 24",
+        "endpoint_type": "Surrogate",
+        "timeframe": "From Week 24 up to Week 160",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving PASI 90 After Week 24, Among PASI 90 Nonresponders to Deucravacitinib at Week 24",
+        "endpoint_type": "Surrogate",
+        "timeframe": "From Week 24 up to Week 160",
+        "is_primary": false
+      },
+      {
+        "text": "Percentage of Participants Achieving IGA Score of 0 or 1 After Week 24, Among Participants in the Deucravacitinib Group With IGA Score >=2 at Week 24",
+        "endpoint_type": "Surrogate",
+        "timeframe": "From Week 24 up to Week 160",
+        "is_primary": false
+      },
+      {
+        "text": "Number of Participants With Treatment-emergent Adverse Events (TEAEs)",
+        "endpoint_type": "Safety",
+        "timeframe": "From Week 0 to Week 160",
+        "is_primary": false
+      },
+      {
+        "text": "Number of Participants With Treatment-emergent Serious Adverse Events (TESAEs)",
+        "endpoint_type": "Safety",
+        "timeframe": "From Week 0 to Week 160",
+        "is_primary": false
+      }
+    ],
+    "trial_integrity": {
+      "masking_level": "Double-blind",
+      "blinding_validation_method": "Not specified",
+      "concomitant_therapy_controls": "Standardized background care"
+    },
+    "trial_design": {
+      "design_type": "Parallel RCT",
+      "control_type": "Standard of Care",
+      "superiority_type": "Superiority"
+    },
+    "indication": "plaque psoriasis",
+    "randomization": {
+      "randomization_type": "Blocked",
+      "allocation_ratio": "1:1:1",
+      "stratification_factors": [
+        "Baseline",
+        "Pasi"
+      ],
+      "randomization_description": "Stratified by Baseline, Pasi. Blocked randomization."
+    },
+    "adaptive_designs": {
+      "has_adaptive_features": false,
+      "adaptive_types": [],
+      "interim_analysis_mentioned": false,
+      "stopping_rules": "Not mentioned",
+      "dose_escalation_method": null,
+      "description": "Standard fixed-design trial. No adaptive features detected."
+    },
+    "safety_adverse_events": {
+      "ae_reporting_method": "Not explicitly specified",
+      "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
+      "ae_types_detected": [],
+      "class_effects_known": [
+        "AST elevation"
+      ],
+      "safety_endpoints": [
+        "Number of Participants With Treatment-emergent Adverse Events (TEAEs)",
+        "Number of Participants With Treatment-emergent Serious Adverse Events (TESAEs)"
+      ],
+      "sae_stopping_rules": "Not specified in protocol text",
+      "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+    },
+    "pharmacogenetics": {
+      "genetic_biomarkers_mentioned": [
+        {
+          "gene": "TYK2",
+          "drug_class": "tyk2_inhibitor",
+          "known_effects": [
+            "Treatment response - JAK-STAT pathway inhibition"
+          ]
+        }
+      ],
+      "genetic_screen_failure": [],
+      "genetic_screen_failure_summary": null,
+      "gwas_associations_found": [],
+      "pharmacogenetic_subgroups": [],
+      "stratification_opportunity": null,
+      "safety_pharmacogenetics": [],
+      "summary": "Genes detected (TYK2) but could not map indication \"plaque psoriasis\" to a GWAS EFO trait. Try alternative trait name.",
+      "detected_drug_classes": [
+        "tyk2_inhibitor"
+      ]
+    },
+    "eligibility_yield_simulation": {
+      "baseline_yield": 1.0,
+      "relaxations": []
+    },
+    "summary": {
+      "Statistical Power": 4,
+      "Feasibility": 3,
+      "Safety": 3
+    },
+    "drug": "JNJ-77242113"
   }
 }
