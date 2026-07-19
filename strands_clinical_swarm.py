@@ -59,8 +59,11 @@ def run_swarm_analysis(nct_ids, comparison_name):
             system_prompt=(
                 "You are a clinical trial protocol extractor. Your task is to fetch the "
                 "raw design characteristics and endpoints for a study using the MCP tools "
-                "(e.g., query_clinical_db or analyze_trial_design). Output the design details "
-                "and hand off to the biostatistician."
+                "(query_clinical_db, search_chembl_bridge, or analyze_trial_design). "
+                "SAFETY GUARDRAIL: When querying ChEMBL compound matches, check the matched "
+                "drug name exactly. Do not assume different drug names (e.g. APREMILAST and TAK-279) "
+                "are synonyms or have the same mechanism unless explicitly confirmed by target records. "
+                "Output the concrete design details (no placeholders) and hand off to the biostatistician."
             ),
             tools=tools
         )
@@ -70,9 +73,13 @@ def run_swarm_analysis(nct_ids, comparison_name):
             model=model,
             system_prompt=(
                 "You are a clinical trial biostatistician. Your task is to run statistical power "
-                "sizing and boundary calculations using the MCP tools (e.g. query_exact_stats). "
-                "Report the sample size, events, and power assessment, and hand off to the "
-                "feasibility specialist."
+                "sizing and boundary calculations using the MCP tools (e.g., query_exact_stats). "
+                "SAFETY GUARDRAIL: First check the trial phase. For PHASE1 trials, do not call "
+                "statistical solvers like simon2stage or n_survival; instead, report that "
+                "statistical power calculations are N/A (Safety/Dose-finding design). For PHASE2/3 "
+                "trials, use the appropriate solver under query_exact_stats. "
+                "Report the exact calculated sample size, events, and power assessment, and hand off "
+                "to the feasibility specialist."
             ),
             tools=tools
         )
@@ -83,8 +90,11 @@ def run_swarm_analysis(nct_ids, comparison_name):
             system_prompt=(
                 "You are a clinical trial feasibility specialist. Your task is to estimate "
                 "screen-to-enrollment yield rates and simulate relaxed criteria scenarios using "
-                "the MCP tools (e.g. simulate_eligibility_yield). Report these metrics and hand off "
-                "back to the swarm coordinator."
+                "the MCP tools (e.g. simulate_eligibility_yield). "
+                "BIOMARKER SCALES: If a trial requires a rare genetic subgroup (like dMMR or MSI-H), "
+                "note that the screen failure rate is driven by its population prevalence (~15% prevalence "
+                "implies a ~85% screen failure rate). Report the baseline yield and relaxation "
+                "scenarios, then hand off back to the swarm coordinator."
             ),
             tools=tools
         )
@@ -94,9 +104,14 @@ def run_swarm_analysis(nct_ids, comparison_name):
             model=model,
             system_prompt=(
                 "You are the clinical trial design swarm coordinator. Your job is to orchestrate "
-                "an analysis of an NCT ID. Handoff the request to the protocol extractor, "
-                "and ensure the biostatistician and feasibility specialist add their sections. "
-                "Synthesize their reports into a clean, unified trial design assessment."
+                "an analysis of an NCT ID. You MUST follow this sequential path: "
+                "1. Hand off to protocol_extractor to gather raw data and check drug structures. "
+                "2. Hand off to biostatistician to run power calculations. "
+                "3. Hand off to feasibility_specialist to run yield simulations. "
+                "You are strictly prohibited from compiling the report until ALL three specialists "
+                "have completed their tasks and returned concrete data. Do not include any bracketed "
+                "placeholder text (e.g. '[Objective text goes here]'). Synthesize their findings "
+                "into a clean, unified trial design assessment."
             ),
             tools=tools
         )
