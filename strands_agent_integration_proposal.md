@@ -48,58 +48,55 @@ We can organize our codebase as a set of specialized tools for the following Str
 
 ---
 
+## 🔗 Decoupled Architecture via Model Context Protocol (MCP)
+
+To achieve enterprise-grade isolation, security, and scalability, Strands Agents do not import Python modules or access local databases directly. Instead, they interact with the **Clinical Trial Agent MCP Server** (`clinical_agent_mcp.py`) that we constructed in Phase 4.
+
+This decoupled architecture provides significant advantages:
+1. **Infrastructure Sandbox:** The R kernel (`rpy2`), PostgreSQL database pools, and CPU-intensive cohort simulations run inside an isolated execution environment (e.g. an ECS container or local daemon). The Strands Agents run in a serverless context (e.g. AWS Lambda) and consume them purely as stateless, stdio-connected MCP tools.
+2. **Standardized Tool Contracts:** The LLM agents use the tools exactly as registered on the MCP server: `analyze_trial_design`, `simulate_eligibility_yield`, `query_exact_stats`, `search_chembl_bridge`, and `query_clinical_db`.
+
+---
+
 ## 💻 Concrete Code Blueprint: `strands_clinical_swarm.py`
 
-Below is a blueprint of how this multi-agent swarm is initialized, equipped with tools from our `clintrial_agent` package, and orchestrated:
+Below is a blueprint of how this multi-agent swarm is initialized, equipped with tools directly from our Phase 4 MCP server, and orchestrated:
 
 ```python
 from strands import Agent
 from strands.multiagent import Swarm
-from clintrial_agent.data import fetch_trial
-from clintrial_agent.stats import RBridge
-from clintrial_agent.eligibility import parse_constraints, generate_synthetic_cohort, simulate_relaxation
+from strands.mcp import MCPToolProvider
+
+# Initialize the MCP Tool Provider pointing to our Phase 4 MCP server
+mcp_server = MCPToolProvider(
+    command="/Users/leelasdodda/Documents/Codes/local_clintrial_agent/.venv/bin/python",
+    args=["/Users/leelasdodda/Documents/Codes/local_clintrial_agent/clinical_agent_mcp.py"]
+)
 
 # ==============================================================================
-# 1. DEFINE DOMAIN TOOLS
-# ==============================================================================
-def get_trial_protocol(nct_id: str) -> dict:
-    """Fetch the full clinical trial protocol from the database."""
-    return fetch_trial(nct_id)
-
-def calculate_statistical_power(solver: str, params: dict) -> dict:
-    """Run exact statistical boundary calculations using RBridge solvers."""
-    bridge = RBridge()
-    # Wraps our existing R exact calculations
-    return bridge.query_exact_stats(solver, params)
-
-def run_cohort_yield_simulation(nct_id: str) -> dict:
-    """Simulate eligibility criteria yield and relaxation scenarios on a synthetic cohort."""
-    protocol = fetch_trial(nct_id)
-    criteria = protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
-    constraints = parse_constraints(criteria)
-    cohort = generate_synthetic_cohort(size=10000)
-    return simulate_relaxation(cohort, constraints)
-
-# ==============================================================================
-# 2. INITIALIZE SPECIALIZED STRANDS AGENTS
+# INITIALIZE SPECIALIZED STRANDS AGENTS (Equipped via MCP)
 # ==============================================================================
 extractor_agent = Agent(
     name="protocol_extractor",
     system_prompt=(
         "You are a clinical trial data extraction expert. Your job is to fetch "
-        "and clean trial metadata, intervention arms, and primary/secondary endpoints."
+        "and clean trial metadata, intervention arms, and primary/secondary endpoints "
+        "by querying the database via MCP tools."
     ),
-    tools=[get_trial_protocol]
+    # Dynamically inject the database query tools from the MCP server
+    tools=mcp_server.get_tools(["query_clinical_db"])
 )
 
 statistician_agent = Agent(
     name="biostatistician",
     system_prompt=(
         "You are an expert biostatistician. Your job is to perform statistical "
-        "power analysis. If a trial is underpowered, request the feasibility agent "
-        "to check if any criteria can be relaxed to boost enrollment."
+        "power analysis. Call the RBridge statistical solver via MCP. "
+        "If a trial is underpowered, request the feasibility agent to check if "
+        "any criteria can be relaxed to boost enrollment."
     ),
-    tools=[calculate_statistical_power]
+    # Inject exact RBridge stats solver from MCP server
+    tools=mcp_server.get_tools(["query_exact_stats"])
 )
 
 feasibility_agent = Agent(
@@ -109,7 +106,8 @@ feasibility_agent = Agent(
         "is to evaluate eligibility criteria restrictiveness and run simulations "
         "to estimate cohort yields and relaxation multiplier benefits."
     ),
-    tools=[run_cohort_yield_simulation]
+    # Inject simulation tools from MCP server
+    tools=mcp_server.get_tools(["simulate_eligibility_yield"])
 )
 
 coordinator_agent = Agent(
@@ -119,11 +117,13 @@ coordinator_agent = Agent(
         "the user, delegate protocol extraction, biostatistics power sizing, and "
         "eligibility yield simulations to the respective specialists, and synthesize "
         "the final structured comparison report."
-    )
+    ),
+    # Inject search and analysis tools from MCP server
+    tools=mcp_server.get_tools(["analyze_trial_design", "search_chembl_bridge"])
 )
 
 # ==============================================================================
-# 3. CREATE THE COOPERATIVE SWARM
+# CREATE THE COOPERATIVE SWARM & EXECUTE
 # ==============================================================================
 clinical_swarm = Swarm(
     agents=[coordinator_agent, extractor_agent, statistician_agent, feasibility_agent],
