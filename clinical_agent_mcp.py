@@ -1,0 +1,255 @@
+import json
+import logging
+import re
+from typing import Dict, List, Any
+from mcp.server.fastmcp import FastMCP
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("clinical-agent-mcp")
+
+# Initialize FastMCP server
+mcp = FastMCP("clinical-trial-agent")
+
+@mcp.tool()
+def analyze_trial_design(nct_id: str) -> str:
+    """
+    Run the full multi-agent clinical trial analysis pipeline for a target NCT ID.
+    Fetches the protocol details from local PostgreSQL (or API fallback),
+    classifies trial designs, computes statistical power/sample sizes,
+    analyzes safety/adverse events, checks pharmacogenetics (GWAS),
+    and runs LLM eligibility criteria classification.
+    
+    Args:
+        nct_id: The NCT identifier of the clinical trial (e.g. 'NCT06088043').
+    """
+    try:
+        from design_agent_pipeline import analyze_trial
+        result = analyze_trial(nct_id)
+        return json.dumps(result, indent=2, default=str)
+    except Exception as e:
+        logger.error(f"Error running analyze_trial_design for {nct_id}: {e}")
+        return f"Error executing pipeline for {nct_id}: {str(e)}"
+
+@mcp.tool()
+def simulate_eligibility_yield(nct_id: str, cohort_size: int = 10000) -> str:
+    """
+    Deterministically extract numerical eligibility constraints (Age, ECOG, Hb,
+    Platelets, ANC, Bilirubin, Transaminases) from a trial's criteria text
+    and simulate cohort screen-to-enroll yields and relaxation scenarios.
+    
+    Args:
+        nct_id: The NCT ID of the trial.
+        cohort_size: The number of synthetic patients to generate for the simulation (default: 10000).
+    """
+    try:
+        from clintrial_agent.data import fetch_trial
+        from clintrial_agent.eligibility import parse_constraints, generate_synthetic_cohort, simulate_relaxation
+        
+        protocol = fetch_trial(nct_id)
+        eligibility_text = protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
+        if not eligibility_text:
+            return f"No eligibility criteria text found for {nct_id}."
+            
+        constraints = parse_constraints(eligibility_text)
+        cohort_df = generate_synthetic_cohort(size=cohort_size)
+        yield_results = simulate_relaxation(cohort_df, constraints)
+        return json.dumps(yield_results, indent=2, default=str)
+    except Exception as e:
+        logger.error(f"Error running simulate_eligibility_yield for {nct_id}: {e}")
+        return f"Error running eligibility simulation for {nct_id}: {str(e)}"
+
+@mcp.tool()
+def query_exact_stats(solver: str, params: dict) -> str:
+    """
+    Query the in-process RBridge statistical kernel via rpy2 for exact sequential designs,
+    log-rank survival sizing, bioequivalence crossover sizing, or CRM dose monitoring.
+    
+    Args:
+        solver: The R statistical solver to run. Options:
+            - 'simon2stage': Simon's Two-Stage optimal/minimax Phase II designs (clinfun).
+              Params: pu (float), pa (float), ep1 (float, alpha), ep2 (float, beta).
+            - 'n_survival': log-rank survival sample size sizing (gsDesign).
+              Params: lambda1 (float), lambda2 (float), ratio (float), alpha (float), beta (float).
+            - 'powertost': bioequivalence crossover TOST sizing (PowerTOST).
+              Params: alpha (float), target_power (float), cv (float), theta0 (float), theta1 (float), theta2 (float).
+            - 'group_sequential': group sequential design boundaries (rpact).
+              Params: alpha (float), beta (float), sided (int), information_rates (list of floats).
+            - 'crm': Continual Reassessment Method for Phase I dose monitoring (dfcrm).
+              Params: prior (list of floats), target (float), tox (list of ints), level (list of ints).
+        params: Dict of parameters specific to the chosen solver.
+    """
+    try:
+        from clintrial_agent.stats import RBridge
+        bridge = RBridge()
+        
+        if solver == 'simon2stage':
+            res = bridge.clinfun_simon2stage(
+                pu=float(params.get('pu', 0.1)),
+                pa=float(params.get('pa', 0.3)),
+                ep1=float(params.get('ep1', 0.05)),
+                ep2=float(params.get('ep2', 0.2))
+            )
+        elif solver == 'n_survival':
+            res = bridge.gsdesign_fixed_survival(
+                lambda1=float(params.get('lambda1', 0.0461)),
+                lambda2=float(params.get('lambda2', 0.0307)),
+                ratio=float(params.get('ratio', 1.0)),
+                alpha=float(params.get('alpha', 0.025)),
+                beta=float(params.get('beta', 0.1)),
+                sided=int(params.get('sided', 1))
+            )
+        elif solver == 'powertost':
+            res = bridge.powertost_sample_size(
+                alpha=float(params.get('alpha', 0.05)),
+                target_power=float(params.get('target_power', 0.8)),
+                cv=float(params.get('cv', 0.2)),
+                theta0=float(params.get('theta0', 0.95)),
+                theta1=float(params.get('theta1', 0.8)),
+                theta2=float(params.get('theta2', 1.25)),
+                design=params.get('design', '2x2')
+            )
+        elif solver == 'group_sequential':
+            res = bridge.rpact_group_sequential(
+                alpha=float(params.get('alpha', 0.025)),
+                beta=float(params.get('beta', 0.2)),
+                sided=int(params.get('sided', 1)),
+                information_rates=params.get('information_rates'),
+                spending_function=params.get('spending_function', 'asOF')
+            )
+        elif solver == 'crm':
+            res = bridge.dfcrm_crm(
+                prior=params.get('prior', []),
+                target=float(params.get('target', 0.25)),
+                tox=params.get('tox', []),
+                level=params.get('level', [])
+            )
+        else:
+            return f"Unsupported solver: '{solver}'. Choose from: 'simon2stage', 'n_survival', 'powertost', 'group_sequential', 'crm'."
+            
+        return json.dumps(res, indent=2, default=str)
+    except Exception as e:
+        logger.error(f"Error running query_exact_stats for {solver}: {e}")
+        return f"Error executing solver '{solver}' via RBridge: {str(e)}"
+
+@mcp.tool()
+def search_chembl_bridge(nct_id: str) -> str:
+    """
+    Query the local PostgreSQL ChEMBL drug bridge to find compound mechanisms,
+    targets, clinical indications, and approval phases linked to a trial's NCT ID.
+    
+    Args:
+        nct_id: The NCT ID of the clinical trial.
+    """
+    try:
+        from clintrial_agent.data.db import get_db_connection
+        from psycopg2.extras import DictCursor
+        
+        conn = get_db_connection()
+        cur = conn.cursor(cursor_factory=DictCursor)
+        
+        # Query ChEMBL clinical trial bridge table
+        cur.execute(
+            "SELECT DISTINCT pref_name, chembl_id, max_phase_for_ind, mesh_heading "
+            "FROM bridge.chembl_clinical_trials "
+            "WHERE nct_id = %s",
+            (nct_id,)
+        )
+        trials = [dict(row) for row in cur.fetchall()]
+        
+        if not trials:
+            # Fallback: Query interventions table and try to fuzzy match in ChEMBL dictionary
+            cur.execute(
+                "SELECT name FROM ctgov.interventions WHERE nct_id = %s AND intervention_type = 'DRUG'",
+                (nct_id,)
+            )
+            interventions = [row['name'] for row in cur.fetchall()]
+            if interventions:
+                matched_drugs = []
+                for name in interventions:
+                    cur.execute(
+                        "SELECT pref_name, chembl_id, max_phase, withdrawn_flag "
+                        "FROM public.molecule_dictionary "
+                        "WHERE pref_name ILIKE %s OR chembl_id ILIKE %s LIMIT 1",
+                        (f"%{name}%", name)
+                    )
+                    row = cur.fetchone()
+                    if row:
+                        matched_drugs.append(dict(row))
+                return json.dumps({
+                    "nct_id": nct_id,
+                    "message": "No direct FDW bridge record found. Matched by fuzzy-matching intervention drug names.",
+                    "fuzzy_matches": matched_drugs
+                }, indent=2)
+                
+            return f"No ChEMBL compounds mapped to {nct_id}."
+            
+        # Get mechanism information for each matched compound
+        for t in trials:
+            cur.execute(
+                "SELECT dm.mechanism_of_action, dm.action_type, td.pref_name as target_name "
+                "FROM public.drug_mechanism dm "
+                "JOIN public.molecule_dictionary md ON dm.molregno = md.molregno "
+                "LEFT JOIN public.target_dictionary td ON dm.tid = td.tid "
+                "WHERE md.chembl_id = %s",
+                (t['chembl_id'],)
+            )
+            t['mechanisms'] = [dict(row) for row in cur.fetchall()]
+            
+        cur.close()
+        conn.close()
+        return json.dumps(trials, indent=2, default=str)
+    except Exception as e:
+        logger.error(f"Error running search_chembl_bridge for {nct_id}: {e}")
+        return f"Error querying ChEMBL database for {nct_id}: {str(e)}"
+
+@mcp.tool()
+def query_clinical_db(sql: str) -> str:
+    """
+    Execute a read-only SQL SELECT query directly against the local PostgreSQL
+    database instance (containing ChEMBL 37 and AACT schema). Returns a maximum of 100 rows.
+    
+    Args:
+        sql: A read-only SELECT query (e.g. 'SELECT count(*) FROM ctgov.studies WHERE phase = \'PHASE3\'').
+    """
+    sql_stripped = sql.strip().lower()
+    
+    # 1. Read-only SELECT enforcement
+    if not sql_stripped.startswith("select"):
+        return "Security Violation: Only SELECT queries are permitted."
+        
+    forbidden_keywords = ["insert", "update", "delete", "drop", "alter", "create", "truncate", "grant", "revoke", "replace"]
+    for kw in forbidden_keywords:
+        if re.search(r'\b' + kw + r'\b', sql_stripped):
+            return f"Security Violation: Mutating keyword '{kw}' is prohibited."
+            
+    try:
+        from clintrial_agent.data.db import get_db_connection
+        from psycopg2.extras import DictCursor
+        
+        conn = get_db_connection()
+        cur = conn.cursor(cursor_factory=DictCursor)
+        
+        # Execute query
+        cur.execute(sql)
+        rows = cur.fetchall()
+        
+        # Convert to dicts and cap at 100
+        results = [dict(row) for row in rows[:100]]
+        
+        cur.close()
+        conn.close()
+        
+        response = {
+            "row_count": len(results),
+            "truncated": len(rows) > 100,
+            "results": results
+        }
+        return json.dumps(response, indent=2, default=str)
+    except Exception as e:
+        logger.error(f"Error running query_clinical_db: {e}")
+        return f"Database Error: {str(e)}"
+
+if __name__ == "__main__":
+    # Start the stdio MCP server
+    mcp.run()
