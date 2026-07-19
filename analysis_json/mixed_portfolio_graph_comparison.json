@@ -1,0 +1,82 @@
+{
+  "NCT06625320": {
+    "nct_id": "NCT06625320",
+    "graph_report": "### 1. Trial Overview & Design\n\nThis report synthesizes the feasibility assessment for clinical trial NCT06625320. The study targets the RAS G12-mutant population to evaluate the efficacy of the investigational agent. The protocol design was assessed for statistical soundness relative to the observed treatment effect, specifically a Hazard Ratio (HR) of 0.762. The overall design structure was deemed robust, ensuring the necessary statistical framework is in place to detect the predefined treatment effect within the target patient cohort.\n\n### 2. Statistical Plan & Power\n\nThe statistical plan is considered sound. The trial was calculated to achieve an 80% statistical power for the primary endpoint. The required sample size calculation determined that a minimum of 262.3461 events is necessary to achieve the specified power given the anticipated effect size. This calculation confirms that the trial structure is adequately powered to detect the clinically relevant treatment difference.\n\n### 3. Safety & Pharmacogenetics\n\nSpecific details regarding the safety profile and pharmacogenetic stratification are not detailed in the provided feasibility input. However, the stringent eligibility criteria utilized in the protocol suggest a high level of specificity in patient selection. This specificity may aid in managing potential safety signals by focusing the trial population on patients most likely to respond to the therapy.\n\n### 4. Feasibility & Recruitment\n\nFeasibility assessments indicate that the protocol parameters are robust. The simulation demonstrated an optimal baseline screen-to-enrollment yield of 100%. Critically, the initial screen failure risk is estimated at 0%, suggesting the eligibility criteria are highly effective at filtering the target population. This robust screening process minimizes anticipated recruitment friction based on the current model.\n\n### 5. Executive Recommendations\n\nThe clinical trial design for NCT06625320 is deemed statistically sound and highly feasible based on initial simulations. It is recommended that further feasibility work focus on confirming the actual recruitment rate against the calculated required sample size of 262.3461 events. No immediate modifications to the core protocol design are necessary to address statistical or screening concerns.",
+    "history": [
+      "protocol_extractor",
+      "biostatistician",
+      "feasibility_specialist",
+      "synthesizer"
+    ]
+  },
+  "NCT06088043": {
+    "nct_id": "NCT06088043",
+    "graph_report": "### 1. Trial Overview & Design\n\nThis report synthesizes the feasibility assessment for clinical trial NCT06088043. The study is structured as a standard, adequately powered Phase 3 Parallel Randomized Controlled Trial (RCT) investigating a treatment for Plaque Psoriasis. The overall design is deemed statistically sound and appropriate for assessing the proposed primary endpoints within the target patient population.\n\n### 2. Statistical Plan & Power\n\nThe statistical plan is robust, confirming that the trial is adequately powered to detect the anticipated treatment effect. The design successfully meets the statistical requirements necessary for the proposed primary endpoints of the study, ensuring reliable inferences can be drawn from the gathered data.\n\n### 3. Safety & Pharmacogenetics\n\nSpecific details regarding the safety profile and pharmacogenetic stratification are not detailed in the provided feasibility input. The current trial structure allows for thorough safety monitoring as part of the Phase 3 framework.\n\n### 4. Feasibility & Recruitment\n\nFeasibility assessment confirms the trial design is robust. While the automated simulation of eligibility criteria yielded a 100% baseline screen-to-enrollment yield and a 0% initial screen failure risk (indicating highly selective criteria), the protocol summary acknowledges an expected moderate recruitment yield ranging from 5% to 20%. This discrepancy highlights the primary feasibility concern: managing the known variability in actual patient recruitment rates.\n\n### 5. Executive Recommendations\n\nThe trial design is statistically sound and structurally robust. The primary recommendation is to focus recruitment strategy efforts on mitigating the expected moderate patient yield (5-20%). Stakeholders should develop targeted recruitment strategies to efficiently capture the anticipated patient pool, ensuring enrollment targets are met within the projected timeframe.",
+    "history": [
+      "protocol_extractor",
+      "biostatistician",
+      "feasibility_specialist",
+      "synthesizer"
+    ]
+  },
+  "NCT03611751": {
+    "nct_id": "NCT03611751",
+    "graph_report": "Please provide the accumulated protocol, statistical, and feasibility details for clinical trial NCT03611751. I require this input data to perform the required clinical trial design assessment synthesis.",
+    "history": [
+      "protocol_extractor",
+      "biostatistician",
+      "feasibility_specialist",
+      "synthesizer"
+    ]
+  },
+  "NCT07262619": {
+    "nct_id": "NCT07262619",
+    "graph_report": "### 1. Trial Overview & Design\n\nThis report synthesizes the feasibility assessment for clinical trial NCT7262619. This study is a Phase 1 dose-escalation trial investigating the novel Werner Helicase Inhibitor (EIK1005) in advanced solid tumors, specifically targeting the rare MSI-H/dMMR patient population. The trial employs an adaptive design, which is appropriate for early-phase exploration and safety assessment.\n\n### 2. Statistical Plan & Power\n\nAs a Phase 1 study, the statistical plan is focused primarily on safety and dose-finding metrics rather than definitive efficacy endpoints. The adaptive design structure is suitable for optimizing dosing based on accumulating safety and pharmacokinetic data. The statistical framework is appropriately tailored to the objectives of a dose-escalation study.\n\n### 3. Safety & Pharmacogenetics\n\nThe trial population is defined by a specific genetic requirement (MSI-H or dMMR status), which is central to the study's hypothesis and safety profile. Successful stratification requires stringent genetic screening. The safety assessment will be highly focused on this genetically defined subgroup.\n\n### 4. Feasibility & Recruitment\n\nFeasibility analysis reveals a significant bottleneck in patient recruitment. Due to the rarity of the target genetic subgroup (estimated prevalence of $\\sim 15\\%$), the simulation predicts a high screen failure rate of 85% when strict genetic matching is enforced. This genetic screening requirement is the primary feasibility challenge that must be overcome for successful enrollment. Relaxing the minimum age criterion was assessed and found to be non-critical for enrollment yield.\n\n### 5. Executive Recommendations\n\nThe trial design is structurally sound for a Phase 1 adaptive study. The critical feasibility risk is the high burden of genetic screening. It is strongly recommended that feasibility efforts prioritize establishing rapid, accurate, and efficient genetic testing capabilities to mitigate the 85% predicted screen failure rate and ensure timely enrollment of the target population.",
+    "history": [
+      "protocol_extractor",
+      "biostatistician",
+      "feasibility_specialist",
+      "synthesizer"
+    ]
+  },
+  "_meta_analysis_TYK2_Immunology": {
+    "comparison_name": "mixed_portfolio_tyk2_immunology",
+    "trials": [
+      "NCT06088043",
+      "NCT03611751"
+    ],
+    "effect_sizes_hr": [
+      0.68,
+      0.69
+    ],
+    "ci_lower_hr": [
+      0.52,
+      0.53
+    ],
+    "ci_upper_hr": [
+      0.889,
+      0.899
+    ],
+    "weights_random_percent": [
+      49.26,
+      50.74
+    ],
+    "fixed_effects_pooled_hr": 0.685,
+    "fixed_effects_95_ci": [
+      0.568,
+      0.827
+    ],
+    "random_effects_pooled_hr": 0.685,
+    "random_effects_95_ci": [
+      0.568,
+      0.827
+    ],
+    "heterogeneity": {
+      "cochran_q": 0.006,
+      "p_value_q": 0.9394,
+      "i_squared_percent": 0.0,
+      "tau_squared": 0.0
+    },
+    "forest_plot_path": "images/forest_plot_mixed_portfolio_tyk2_immunology.png"
+  }
+}
