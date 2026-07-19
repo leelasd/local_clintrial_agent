@@ -63,15 +63,26 @@ This decoupled architecture provides significant advantages:
 Below is a blueprint of how this multi-agent swarm is initialized, equipped with tools directly from our Phase 4 MCP server, and orchestrated:
 
 ```python
+import logging
+from mcp import stdio_client, StdioServerParameters
 from strands import Agent
 from strands.multiagent import Swarm
-from strands.mcp import MCPToolProvider
+from strands.tools.mcp import MCPClient
 
-# Initialize the MCP Tool Provider pointing to our Phase 4 MCP server
-mcp_server = MCPToolProvider(
-    command="/Users/leelasdodda/Documents/Codes/local_clintrial_agent/.venv/bin/python",
-    args=["/Users/leelasdodda/Documents/Codes/local_clintrial_agent/clinical_agent_mcp.py"]
+# Enable debug logs for the multiagent swarm
+logging.getLogger("strands.multiagent").setLevel(logging.DEBUG)
+logging.basicConfig(
+    format="%(levelname)s | %(name)s | %(message)s",
+    handlers=[logging.StreamHandler()]
 )
+
+# Initialize the stdio-based MCP Client pointing to our Phase 4 clinical MCP server
+mcp_client = MCPClient(lambda: stdio_client(
+    StdioServerParameters(
+        command="/Users/leelasdodda/Documents/Codes/local_clintrial_agent/.venv/bin/python",
+        args=["/Users/leelasdodda/Documents/Codes/local_clintrial_agent/clinical_agent_mcp.py"]
+    )
+))
 
 # ==============================================================================
 # INITIALIZE SPECIALIZED STRANDS AGENTS (Equipped via MCP)
@@ -83,8 +94,8 @@ extractor_agent = Agent(
         "and clean trial metadata, intervention arms, and primary/secondary endpoints "
         "by querying the database via MCP tools."
     ),
-    # Dynamically inject the database query tools from the MCP server
-    tools=mcp_server.get_tools(["query_clinical_db"])
+    # Equips the agent with the MCP client (connecting on demand)
+    tools=[mcp_client]
 )
 
 statistician_agent = Agent(
@@ -95,8 +106,7 @@ statistician_agent = Agent(
         "If a trial is underpowered, request the feasibility agent to check if "
         "any criteria can be relaxed to boost enrollment."
     ),
-    # Inject exact RBridge stats solver from MCP server
-    tools=mcp_server.get_tools(["query_exact_stats"])
+    tools=[mcp_client]
 )
 
 feasibility_agent = Agent(
@@ -106,8 +116,7 @@ feasibility_agent = Agent(
         "is to evaluate eligibility criteria restrictiveness and run simulations "
         "to estimate cohort yields and relaxation multiplier benefits."
     ),
-    # Inject simulation tools from MCP server
-    tools=mcp_server.get_tools(["simulate_eligibility_yield"])
+    tools=[mcp_client]
 )
 
 coordinator_agent = Agent(
@@ -118,16 +127,18 @@ coordinator_agent = Agent(
         "eligibility yield simulations to the respective specialists, and synthesize "
         "the final structured comparison report."
     ),
-    # Inject search and analysis tools from MCP server
-    tools=mcp_server.get_tools(["analyze_trial_design", "search_chembl_bridge"])
+    tools=[mcp_client]
 )
 
 # ==============================================================================
 # CREATE THE COOPERATIVE SWARM & EXECUTE
 # ==============================================================================
 clinical_swarm = Swarm(
-    agents=[coordinator_agent, extractor_agent, statistician_agent, feasibility_agent],
-    entry_point=coordinator_agent
+    [coordinator_agent, extractor_agent, statistician_agent, feasibility_agent],
+    entry_point=coordinator_agent,
+    max_handoffs=20,
+    max_iterations=20,
+    execution_timeout=900.0
 )
 
 def analyze_trial_swarm(nct_id: str) -> str:
@@ -138,11 +149,12 @@ def analyze_trial_swarm(nct_id: str) -> str:
         "recruitment yield, and compile a verified report."
     )
     # The swarm handles the handoffs and returns the final coordinated output
-    return clinical_swarm(prompt)
+    result = clinical_swarm(prompt)
+    return result.status
 
 if __name__ == "__main__":
-    report = analyze_trial_swarm("NCT00526643")
-    print(report)
+    status = analyze_trial_swarm("NCT00526643")
+    print(f"Swarm run status: {status}")
 ```
 
 ---
