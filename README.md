@@ -87,12 +87,18 @@ uv run clinical_agent_mcp.py
 
 ---
 
-## 🤖 AWS Strands Multi-Agent Swarm (Under Development)
+---
 
-We have authored an architectural design proposal to migrate this pipeline to the **AWS Strands Agents SDK** ([strands_agent_integration_proposal.md](file:///Users/leelasdodda/Documents/Codes/local_clintrial_agent/strands_agent_integration_proposal.md)):
-*   **Collaborative Swarm:** Organizes specialized agents (*Extractor*, *Biostatistician*, *Safety*, *Feasibility*) coordinating state and context using autonomous handoffs.
-*   **Local Inference Backends:** Supports local **Ollama** (`gemma2:2b`) and high-performance **llama.cpp** servers running cached model files (e.g. `gemma-4-E2B-it-Q8_0.gguf`) with Metal GPU acceleration.
-*   **Decoupled MCP Integration:** Uses `MCPClient` and `StdioServerParameters` stdio transport to bind our MCP server tools directly into the agents.
+## 🕸️ AWS Strands State-Machine Graph & Model Benchmarks
+
+The project includes both Swarm (`strands_clinical_swarm.py`) and deterministic State-Machine Graph (`strands_clinical_graph.py`) orchestrators built on the **AWS Strands Agents SDK**:
+
+*   **Deterministic Pipeline:** `protocol_extractor ➔ biostatistician ➔ feasibility_specialist ➔ synthesizer`
+*   **Model Backend Benchmark:** Evaluated against local GGUF models on Metal GPU. **Gemma-4 (Q8_0)** is configured as the default backend for 100% execution stability and concise report generation. (See [MODEL_BENCHMARK.md](MODEL_BENCHMARK.md)).
+*   **Execution:**
+    ```bash
+    python strands_clinical_graph.py --trials NCT06625320 NCT06088043 NCT07262619 --comparison-name my_portfolio
+    ```
 
 ---
 
