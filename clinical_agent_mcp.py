@@ -289,6 +289,29 @@ def query_clinical_db(sql: str) -> str:
         logger.error(f"Error running query_clinical_db: {e}")
         return f"Database Error: {str(e)}"
 
+@mcp.tool()
+@redirect_stdout_to_stderr
+def run_cross_trial_meta_analysis(trial_data_json: str, comparison_name: str) -> str:
+    """
+    Performs cross-trial meta-analysis (Inverse-Variance Fixed-Effects and DerSimonian-Laird Random-Effects),
+    computes heterogeneity metrics (Cochran's Q, p-value, I^2 %, tau^2), and generates a publication-grade
+    Forest Plot PNG saved to the images/ directory.
+    
+    Args:
+        trial_data_json: JSON string containing a list of trial dicts with 'nct_id', 'hr' (or 'or'), 'ci_lower', 'ci_upper', 'n_evaluable'.
+                         Example: '[{"nct_id": "NCT06625320", "hr": 0.762, "ci_lower": 0.61, "ci_upper": 0.95}]'
+        comparison_name: Name of the portfolio comparison (e.g. 'oncology_kras_portfolio').
+    """
+    try:
+        from clintrial_agent.stats.meta_analysis import calculate_meta_analysis
+        data = json.loads(trial_data_json)
+        res = calculate_meta_analysis(data, comparison_name)
+        return json.dumps(res.to_dict(), indent=2)
+    except Exception as e:
+        logger.error(f"Error running run_cross_trial_meta_analysis: {e}")
+        return f"Error executing meta-analysis: {str(e)}"
+
 if __name__ == "__main__":
     # Start the stdio MCP server
     mcp.run()
+

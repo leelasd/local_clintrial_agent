@@ -1,0 +1,66 @@
+{
+  "NCT06625320": {
+    "nct_id": "NCT06625320",
+    "graph_report": "## Clinical Trial Design Assessment Report: NCT06625320\n\n### 1. Trial Overview and Design Specification\n\n**Trial Title:** Phase 3 Study of Daraxonrasib (RMC-6236) in Patients With Previously Treated Metastatic Pancreatic Ductal Adenocarcinoma (PDAC).\n\n**Phase:** Phase 3\n\n**Study Design:** The trial is structured as a Parallel Randomized Controlled Trial (RCT) utilizing a 1:1 randomization ratio, comparing Daraxonrasib against the Standard of Care (SOC) for the specified indication.\n\n**Indication:** Metastatic Pancreatic Ductal Adenocarcinoma (PDAC).\n\n**Statistical Parameters:** The study was determined to be adequately powered for the primary endpoint, requiring an enrollment of approximately 263 patients under the specified assumptions. The actual enrollment target of 500 patients provides a safety margin for recruitment variance.\n\n### 2. Feasibility Assessment and Risk Analysis\n\n**Population Specificity:** The inclusion criteria are highly restrictive, requiring patients to have metastatic PDAC, prior exposure to RAS-targeted therapy, and the presence of a specific *KRAS*, *NRAS*, or *HRAS* mutation. This specificity inherently limits the potential applicant pool.\n\n**Genetic Bottleneck (Primary Risk):** The requirement for a specific RAS mutation constitutes the single largest predicted bottleneck for recruitment. Protocol analysis estimates a worst-case screen failure rate of approximately 70% based on the prevalence of this genetic subgroup within the target population.\n\n**Screen-to-Enrollment Yield:** Based on the highly specific inclusion criteria, the estimated screen-to-enrollment yield is classified as Low to Moderate, ranging from 5% to 20%.\n\n### 3. Recruitment Strategy and Scenario Analysis\n\nThe primary feasibility challenge is the genetic requirement, which significantly constrains the potential patient pool. To mitigate this risk, three criteria relaxation scenarios were simulated to determine the optimal balance between recruitment yield and scientific specificity.\n\n| Scenario | Relaxation Applied | Estimated Yield Change | Feasibility Impact | Primary Risk/Benefit |\n| :--- | :--- | :--- | :--- | :--- |\n| **A (Recommended)** | Remove strict requirement for specific RAS mutation. | Increase from 5-20% to 30-50%. | Improves enrollment rate substantially while maintaining core scientific focus. | Best balance of recruitment and signal maintenance. |\n| **B (Contingency)** | Remove requirement for *prior* therapy with RAS-targeted therapy. | Increase from 5-20% to 15-35%. | Expands the population, reducing specificity but retaining some targeted therapy history. | Broader pool, acceptable if clinical rationale supports untreated patients. |\n| **C (Maximum Yield)** | Remove all specific genetic and prior treatment requirements. | Increase to 40-60%. | Highest potential recruitment, but introduces high heterogeneity and necessitates a complete reassessment of statistical power. | Highest recruitment, highest risk to cohort relevance. |\n\n### 4. Conclusion and Recommendation\n\n**Design Status:** The trial possesses an Adequate Statistical Design and a sufficient enrollment buffer (500 actual vs. 263 required). However, recruitment feasibility is significantly constrained by the restrictive genetic inclusion criteria, posing a high risk of failing to meet enrollment targets.\n\n**Recommendation:**\nThe primary strategy should be the implementation of **Scenario A (Relaxing the RAS Mutation Requirement)**. This approach offers the optimal balance, projected to increase the screen-to-enrollment yield to the 30% to 50% range while preserving the core scientific focus of the trial.\n\n**Contingency Plan:** A contingency plan must be developed to transition immediately to **Scenario B** if enrollment targets under Scenario A are not met.\n\n**Operational Strategy:** To maximize efficiency and minimize screening bottlenecks associated with the genetic requirements, the implementation of a highly efficient pre-screening process utilizing rapid molecular testing is strongly recommended.",
+    "history": [
+      "protocol_extractor",
+      "biostatistician",
+      "feasibility_specialist",
+      "synthesizer"
+    ]
+  },
+  "NCT06088043": {
+    "nct_id": "NCT06088043",
+    "graph_report": "## Clinical Trial Design Assessment Report: NCT06088043\n\n### 1. Trial Overview and Design Specification\n\n**Trial Title:** A Study About How Well TAK-279 Works and Its Safety in Participants With Moderate-to-severe Plaque Psoriasis During 52 Weeks of Treatment.\n\n**Phase:** Phase 3\n\n**Study Design:** The study employs a Parallel Randomized Controlled Trial (RCT) design, comparing the efficacy and safety profile of TAK-279 against a Placebo and an active comparator arm.\n\n**Indication:** Treatment of Moderate-to-severe plaque psoriasis with a minimum duration of six months.\n\n**Statistical Parameters:** The protocol confirms that the study is Adequately Powered to detect clinically meaningful differences in the primary endpoints, specifically the skin Pruritus Global Assessment (sPGA) and the Psoriasis Area and Severity Index 75 (PASI-75) response, utilizing an 80% statistical power. The trial has successfully enrolled 693 patients, providing a strong basis for study continuation.\n\n### 2. Feasibility Assessment and Risk Analysis\n\n**Population Definition:** The inclusion criteria are carefully defined, focusing on establishing a relatively homogeneous patient group by requiring established disease severity (Moderate-to-severe plaque psoriasis) and a minimum disease duration of six months.\n\n**Exclusion Criteria:** The exclusion criteria, specifically ruling out other forms of psoriasis and a history of recent infection, are standard and serve to maintain the purity and focus of the target patient population.\n\n**Recruitment Estimate:** The protocol summary estimates the baseline screen-to-enrollment yield to be Moderate, ranging between 5% and 20%.\n\n**Primary Risk Driver:** The main feasibility hurdle lies in identifying patients who satisfy the dual requirement of meeting both the specific disease severity definition and the minimum six-month disease duration criterion simultaneously.\n\n### 3. Screen-to-Enrollment Yield Analysis\n\nBased on the defined inclusion and exclusion criteria, the estimated screen-to-enrollment yield is established as Moderate, with a baseline range of 5% to 20%.\n\nThe feasibility analysis explored three scenarios to optimize recruitment yield while assessing the impact on clinical relevance:\n\n| Scenario | Relaxation Applied | Estimated Yield Change | Feasibility Impact | Clinical Relevance Impact |\n| :--- | :--- | :--- | :--- | :--- |\n| **A (Recommended)** | Reduce the minimum disease duration requirement from 6 months to 3 months, or remove the duration requirement entirely. | Increase from 5-20% to 25-40%. | Improves enrollment by capturing a wider patient group. | Increases disease state heterogeneity, requiring careful interpretation of response endpoints. |\n| **B (High Yield)** | Expand inclusion criteria to include patients with mild-to-moderate psoriasis, provided they meet the minimum duration requirement. | Increase from 5-20% to 35-55%. | Offers the highest potential for recruitment. | Dilutes the study focus, as the response metrics may be less pronounced in a less severe population. |\n| **C (Candidate Relaxation)** | Remove requirements regarding the patient being a \"candidate for phototherapy or systemic therapy,\" and remove exclusion criteria related to prior exposure to TAK-279 or an active comparator. | Increase from 5-20% to 20-35%. | Maximizes enrollment by broadening treatment-na\u00efve access. | Risks introducing patients whose prior treatments may confound the comparison between TAK-279 and the comparator. |\n\n### 4. Conclusion and Recommendation\n\n**Feasibility Profile:** The trial exhibits a Moderate Feasibility Profile. The successful enrollment of 693 patients confirms that the current inclusion criteria, despite being restrictive, are sufficient to capture the necessary target population for the study's objectives.\n\n**Recommendation:**\n1.  **Maintain Core Criteria:** The primary recommendation is to maintain the current core criteria (Moderate-to-severe disease and $\\ge$ 6 months duration) as they define the target population and maintain the integrity of the primary endpoint analysis.\n2.  **Targeted Relaxation:** If enrollment targets are not met, **Scenario A (Relaxing Disease Duration)** is the most justifiable initial strategy. This modification targets a key variable known to influence treatment response and offers a pragmatic increase in yield (25-40%) while attempting to maintain clinical relevance.\n3.  **Safety Monitoring:** Given the focus on safety endpoints up to Week 56, rigorous monitoring of Treatment-Emergent Adverse Events (TEAEs) and laboratory values throughout the enrollment phase is essential to ensure the safety profile remains acceptable.",
+    "history": [
+      "protocol_extractor",
+      "biostatistician",
+      "feasibility_specialist",
+      "synthesizer"
+    ]
+  },
+  "NCT07262619": {
+    "nct_id": "NCT07262619",
+    "error": "Agent has reached an unrecoverable state due to max_tokens limit. For more information see: https://strandsagents.com/latest/user-guide/concepts/agents/agent-loop/#maxtokensreachedexception"
+  },
+  "_cross_trial_meta_analysis": {
+    "comparison_name": "meta_portfolio",
+    "trials": [
+      "NCT06625320",
+      "NCT06088043"
+    ],
+    "effect_sizes_hr": [
+      0.762,
+      0.68
+    ],
+    "ci_lower_hr": [
+      0.61,
+      0.52
+    ],
+    "ci_upper_hr": [
+      0.952,
+      0.889
+    ],
+    "weights_random_percent": [
+      59.21,
+      40.79
+    ],
+    "fixed_effects_pooled_hr": 0.727,
+    "fixed_effects_95_ci": [
+      0.613,
+      0.863
+    ],
+    "random_effects_pooled_hr": 0.727,
+    "random_effects_95_ci": [
+      0.613,
+      0.863
+    ],
+    "heterogeneity": {
+      "cochran_q": 0.41,
+      "p_value_q": 0.5219,
+      "i_squared_percent": 0.0,
+      "tau_squared": 0.0
+    },
+    "forest_plot_path": "images/forest_plot_meta_portfolio.png"
+  }
+}
