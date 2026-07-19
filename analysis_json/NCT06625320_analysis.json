@@ -6,73 +6,73 @@
     {
       "text": "At least 18 years old and has provided informed consent.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures compliance with legal and ethical requirements for clinical trials involving human subjects.",
+      "justification": "This criterion ensures compliance with legal requirements for clinical trials involving human subjects.",
       "competing_risk": false
     },
     {
       "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1.",
       "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure patients are physically capable of participating in the trial and managing potential side effects.",
+      "justification": "This criterion limits patients to those who are able to tolerate the study's demands, ensuring their safety and well-being.",
       "competing_risk": false
     },
     {
       "text": "Histologically or cytologically confirmed PDAC with metastatic disease.",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a homogeneous patient population for comparison between treatment groups, maximizing the likelihood of detecting a statistically significant difference.",
+      "justification": "This criterion ensures a homogeneous patient population for the study's primary endpoint, maximizing the likelihood of detecting treatment effects.",
       "competing_risk": false
     },
     {
       "text": "Measurable disease per RECIST 1.1.",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures that patients have measurable disease to allow for accurate assessment of treatment efficacy.",
+      "justification": "This criterion ensures a consistent and measurable outcome for comparison between groups, enhancing the study's ability to detect treatment effects.",
       "competing_risk": false
     },
     {
       "text": "Adequate organ function (bone marrow, liver, kidney, coagulation)",
       "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure the patient's ability to tolerate and metabolize study medication safely.",
+      "justification": "This criterion ensures patients have sufficient physiological capacity to tolerate the study's demands and minimize potential risks.",
       "competing_risk": false
     },
     {
       "text": "Documented RAS mutation status, either mutant or wild-type. RAS mutations defined as nonsynonymous mutations in KRAS, NRAS, or HRAS at codons 12, 13, or 61 (G12, G13, or Q61).",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a homogeneous patient population for comparison between treatment groups, maximizing the likelihood of detecting a statistically significant difference.",
+      "justification": "This criterion ensures a homogeneous patient population for the study's primary endpoint, maximizing the likelihood of detecting treatment effects.",
       "competing_risk": false
     },
     {
       "text": "Able to take oral medications.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure patients can effectively receive study medication and avoid complications from non-oral administration.",
+      "justification": "This criterion ensures patients can effectively receive the study treatment and minimizes potential complications.",
       "competing_risk": false
     },
     {
       "text": "Prior therapy with direct RAS-targeted therapy (eg. degraders and/or inhibitors).",
       "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure patients have not received prior treatment that could interfere with the study medication's efficacy or safety.",
+      "justification": "This criterion excludes patients who have already received prior treatment, potentially impacting the study's ability to assess the efficacy of the new treatment.",
       "competing_risk": false
     },
     {
       "text": "History of or known central nervous system metastatic disease.",
       "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure patients are free from conditions that may compromise their ability to participate in the trial and manage potential side effects.",
+      "justification": "This criterion excludes patients with a higher risk of complications, ensuring their safety and well-being.",
       "competing_risk": false
     },
     {
       "text": "Any conditions that may affect the ability to take or absorb study treatment",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure patients can effectively receive study medication and avoid complications from non-compliance with protocol requirements.",
+      "justification": "This criterion ensures patient compliance with protocol requirements and minimizes potential complications.",
       "competing_risk": false
     },
     {
       "text": "Major surgery within 4 weeks prior to randomization.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure patients have sufficient time for recovery before starting the study medication and avoid potential complications from surgical procedures.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion excludes patients who have undergone major surgery, potentially impacting their recovery and ability to participate in the study.",
       "competing_risk": false
     },
     {
       "text": "Patient is unable or unwilling to comply with protocol-required study visits or procedures.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure patients can effectively participate in the trial and adhere to study protocols, ensuring data quality.",
+      "justification": "This criterion ensures patient compliance with study requirements, ensuring data integrity and minimizing potential complications.",
       "competing_risk": false
     }
   ],
@@ -113,9 +113,7 @@
       "control_median_months": 3.5,
       "implied_treatment_median_months": 4.6,
       "median_improvement_months": 1.1,
-      "assessment": "Adequately Powered (R-exact)",
-      "r_exact_required_sample_size": 262.3461,
-      "r_exact_required_events": 245.5869
+      "assessment": "Underpowered"
     }
   },
   "endpoints": [
@@ -277,8 +275,8 @@
     "relaxations": []
   },
   "summary": {
-    "Feasibility": 5,
-    "Safety": 4,
+    "Feasibility": 4,
+    "Safety": 5,
     "Statistical Power": 3
   }
 }

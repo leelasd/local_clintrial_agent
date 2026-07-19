@@ -1,0 +1,41 @@
+## Clinical Trial Design Assessment Report: NCT07262619
+
+### 1. Trial Overview and Design
+
+**Trial Title:** EIK1005-002: A Clinical Research Study Evaluating EIK1005, a Werner Helicase Inhibitor, as Monotherapy and in Combination With Pembrolizumab in Participants With Advanced Solid Tumors Including Microsatellite Instability High (MSI-H) Tumors.
+
+**Phase:** Phase 1/Phase 2
+
+**Study Design:** The study employs an Adaptive Design. The primary focus is on Safety Assessment and Dose-Finding (MTD).
+
+**Primary Endpoints:** The study design prioritizes safety metrics, with the primary endpoints being Dose-Limiting Toxicity (DLT) and overall Adverse Events (AEs). Efficacy endpoints, including Overall Response Rate (OR), Duration of Response (DOR), and Progression-Free Survival (PFS), are designated as secondary.
+
+### 2. Statistical Assessment and Power
+
+**Statistical Justification:** The trial is correctly classified as "Not Powered for Efficacy." This classification is appropriate for a Phase 1/2 trial whose primary purpose is dose-finding and safety profiling, as statistical power calculations for efficacy endpoints are not applicable to this phase. The statistical focus is exclusively on determining the Dose-Limiting Toxicity (DLT) and the overall safety profile.
+
+### 3. Safety and Pharmacogenetics Profile
+
+**Safety Monitoring:** Safety data will be collected via investigator reporting, supported by sponsor oversight. No Data Safety Monitoring Board (DSMB) is currently planned.
+
+**Safety Concerns:** Two known class effects require focused monitoring: potential for Aspartate Aminotransferase (AST) elevation and general Infections.
+
+**Pharmacogenetic Requirements:** Eligibility criteria explicitly target patients with tumors exhibiting Microsatellite Instability High (MSI-H) or mismatch repair deficiency (dMMR).
+
+**Screening Risk:** The requirement for this specific molecular biomarker presents the most significant feasibility hurdle. Given an estimated population prevalence of approximately 15% for the MSI-H/dMMR status, the projected screen failure rate arising from this criterion is estimated at 85%.
+
+### 4. Feasibility and Recruitment Analysis
+
+**Estimated Screen-to-Enrollment Yield:** The estimated screen-to-enrollment yield is projected to be Low, falling within the range of 5% to 20%. This low projection is almost entirely driven by the high probability of screening failure associated with identifying the target MSI-H/dMMR population.
+
+**Impact of Criteria Relaxation:** Simulation results confirm that the molecular criterion is the primary bottleneck to recruitment. Relaxing the minimum age requirement from 18 years to 13 years showed no change in the calculated yield, confirming that the molecular biomarker requirement, not the age window, is the critical barrier to enrollment.
+
+### 5. Conclusion and Strategic Recommendations
+
+The trial design is statistically sound and appropriately structured for its intended Phase 1/2 purpose of safety and dose-finding. However, the recruitment strategy must be aggressively tailored to address the severe biomarker bottleneck.
+
+**Recommendations:**
+
+1.  **Biomarker Strategy Implementation:** Given the high projected screen failure rate of 85% for the required MSI-H/dMMR status, the immediate establishment of a dedicated, high-throughput molecular screening pipeline is mandatory prior to initiating patient recruitment. This is the single largest threat to enrollment success.
+2.  **Recruitment Focus:** Recruitment efforts should be concentrated on maximizing the identification of patients who meet the core tumor criteria, even if they are borderline on other factors, to compensate for the low overall yield.
+3.  **Safety Protocol:** Ensure that robust safety monitoring protocols are fully in place to detect the known class effects, specifically AST elevation and infections.

@@ -1,0 +1,52 @@
+## Clinical Trial Design Assessment Report: NCT06625320
+
+### 1. Trial Overview and Design
+
+**Trial Title:** Phase 3 Study of Daraxonrasib (RMC-6236) in Patients With Previously Treated Metastatic Pancreatic Ductal Adenocarcinoma (PDAC).
+
+**Phase:** Phase 3
+
+**Study Design:** The trial employs a Parallel Randomized Controlled Trial (RCT) design, incorporating a Standard of Care comparator arm.
+
+**Primary Endpoints:** The study is designed to assess the efficacy of Daraxonrasib in the RAS G12-mutant population, with the primary endpoints defined as Progression-Free Survival (PFS) and Overall Survival (OS).
+
+### 2. Statistical and Power Assessment
+
+**Target Efficacy:** The study is powered to detect a Hazard Ratio (HR) of 0.762, representing a 24% reduction in the hazard rate.
+
+**Statistical Parameters:**
+*   **Significance Level ($\alpha$):** 0.05
+*   **Desired Power:** 80%
+*   **Estimated Required Sample Size:** Approximately 262.3 patients were calculated to be required for the primary endpoint analysis.
+
+**Power Adequacy Concern:** Programmatic verification of the required sample size indicated that the trial is currently assessed as Underpowered based on the provided statistical estimates. Re-evaluation of the sample size or trial duration is recommended.
+
+### 3. Safety and Pharmacogenetics Profile
+
+**Safety Monitoring:** Safety data will be collected via investigator reporting, supplemented by sponsor oversight. No Data Safety Monitoring Board (DSMB) is currently planned.
+
+**Safety Concerns:** A known class effect associated with Daraxonrasib necessitates monitoring for potential elevated Aspartate Aminotransferase (AST) levels.
+
+**Pharmacogenetic Requirements:** Enrollment is strictly dependent on the presence of a RAS mutation (KRAS, NRAS, or HRAS). The estimated population prevalence for this required RAS mutation is approximately 30%.
+
+**Screening Risk:** Due to the strict requirement for the RAS mutation status, the genetic screening criteria pose a significant bottleneck, projecting an estimated screen failure rate of approximately 70% based on the molecular test requirement alone.
+
+### 4. Feasibility and Recruitment Analysis
+
+**Estimated Screen-to-Enrollment Yield:** The overall estimated yield is considered Moderate to Low, projecting between 10% and 20%. This yield is driven primarily by the stringent requirements for the RAS mutation biomarker.
+
+**Impact of Criteria Relaxation:** Simulations demonstrated the impact of relaxing specific criteria on recruitment feasibility:
+*   **Relaxing Prior Therapy Requirement:** Relaxing the requirement for prior therapy with direct RAS-targeted therapy increased the estimated yield to 1.2 (120%).
+*   **Relaxing Organ Function Criteria:** Allowing for mild abnormalities in Organ Function criteria increased the estimated yield to 1.35 (135%).
+
+**Conclusion and Strategic Recommendations:**
+
+The trial possesses a robust clinical design (Phase 3, clear endpoints), but two critical feasibility hurdles must be addressed: statistical power and recruitment yield.
+
+**Recommendations for Mitigation:**
+
+1.  **Statistical Power Re-assessment:** The team must re-run the sample size calculation using the most conservative estimates for the event rate and hazard ratio to definitively confirm if the trial remains adequate.
+2.  **Recruitment Strategy Development:** A robust strategy is required to mitigate the high screen failure rate, including:
+    *   Implementing a centralized, high-throughput molecular screening pipeline.
+    *   Exploring eligibility adjustments, such as defining a broader acceptable range for organ function parameters.
+    *   Investigating the feasibility of conducting a biomarker-agnostic sub-study if the target population size remains insufficient for the primary analysis.
