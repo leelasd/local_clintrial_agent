@@ -74,13 +74,16 @@ class RBridge:
         """
         self._ensure_jsonlite()
         escaped = r_expr.replace("\\", "\\\\").replace("'", "\\'")
+        from rpy2.robjects import conversion
         try:
-            ro.r(f"eval(parse(text='{escaped}'))")
-            json_str = ro.r(
-                "jsonlite::toJSON(.result, auto_unbox=TRUE, "
-                'null="null", na="null")'
-            )[0]
-            return json.loads(json_str)
+            conversion.set_conversion(ro.default_converter)
+            with ro.default_converter.context():
+                ro.r(f"eval(parse(text='{escaped}'))")
+                json_str = ro.r(
+                    "jsonlite::toJSON(.result, auto_unbox=TRUE, "
+                    'null="null", na="null")'
+                )[0]
+                return json.loads(json_str)
         except RRuntimeError as e:
             raise RRuntimeError(
                 f"R evaluation failed:\n{r_expr}\n\nR error: {e}"
@@ -146,7 +149,10 @@ class RBridge:
                 f"informationRates = c({ir_str}), "
                 f"typeOfDesign = '{sf}')"
             )
-            ro.r(design_code)
+            from rpy2.robjects import conversion
+            with ro.default_converter.context():
+                conversion.set_conversion(ro.default_converter)
+                ro.r(design_code)
             design_arg = ".design"
         else:
             design_arg = "getDesignGroupSequential()"
@@ -556,11 +562,16 @@ class RBridge:
                 "carat", "mmrm", "lme4", "metafor", "mice", "rbmi",
                 "dfcrm",
             ]
-        ro.r('installed <- rownames(installed.packages())')
+        from rpy2.robjects import conversion
+        with ro.default_converter.context():
+            conversion.set_conversion(ro.default_converter)
+            ro.r('installed <- rownames(installed.packages())')
         results = {}
         for pkg in packages:
             try:
-                is_installed = bool(ro.r(f'"{pkg}" %in% installed')[0])
+                with ro.default_converter.context():
+                    conversion.set_conversion(ro.default_converter)
+                    is_installed = bool(ro.r(f'"{pkg}" %in% installed')[0])
                 results[pkg] = is_installed
             except Exception:
                 results[pkg] = False
