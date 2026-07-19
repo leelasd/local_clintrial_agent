@@ -69,6 +69,7 @@ from strands import Agent
 from strands.multiagent import Swarm
 from strands.tools.mcp import MCPClient
 from strands.models.ollama import OllamaModel
+from strands.models.llamacpp import LlamaCppModel
 
 # Enable debug logs for the multiagent swarm
 logging.getLogger("strands.multiagent").setLevel(logging.DEBUG)
@@ -77,10 +78,17 @@ logging.basicConfig(
     handlers=[logging.StreamHandler()]
 )
 
-# Initialize local Ollama model instance (gemma2:2b-instruct-q4_K_M)
-ollama_model = OllamaModel(
-    host="http://localhost:11434",
-    model_id="gemma2:2b-instruct-q4_K_M"
+# --- CONFIG OPTION A: Local Ollama Server ---
+# ollama_model = OllamaModel(
+#     host="http://localhost:11434",
+#     model_id="gemma2:2b-instruct-q4_K_M"
+# )
+
+# --- CONFIG OPTION B: llama.cpp Server (Recommended for Gemma-4 8B Q8) ---
+# Start server: llama-server -m ~/.cache/huggingface/hub/models--ggml-org--gemma-4-E2B-it-GUF/snapshots/a1dac71d3ab220618f5a7573a52acdc4baf3ae3b/gemma-4-E2B-it-Q8_0.gguf -c 8192 --port 8080
+active_model = LlamaCppModel(
+    base_url="http://localhost:8080",
+    model_id="gemma-4"
 )
 
 # Initialize the stdio-based MCP Client pointing to our Phase 4 clinical MCP server
@@ -96,7 +104,7 @@ mcp_client = MCPClient(lambda: stdio_client(
 # ==============================================================================
 extractor_agent = Agent(
     name="protocol_extractor",
-    model=ollama_model,
+    model=active_model,
     system_prompt=(
         "You are a clinical trial data extraction expert. Your job is to fetch "
         "and clean trial metadata, intervention arms, and primary/secondary endpoints "
@@ -108,7 +116,7 @@ extractor_agent = Agent(
 
 statistician_agent = Agent(
     name="biostatistician",
-    model=ollama_model,
+    model=active_model,
     system_prompt=(
         "You are an expert biostatistician. Your job is to perform statistical "
         "power analysis. Call the RBridge statistical solver via MCP. "
@@ -120,7 +128,7 @@ statistician_agent = Agent(
 
 feasibility_agent = Agent(
     name="feasibility_specialist",
-    model=ollama_model,
+    model=active_model,
     system_prompt=(
         "You are a clinical trial recruitment and operations analyst. Your job "
         "is to evaluate eligibility criteria restrictiveness and run simulations "
@@ -131,7 +139,7 @@ feasibility_agent = Agent(
 
 coordinator_agent = Agent(
     name="swarm_coordinator",
-    model=ollama_model,
+    model=active_model,
     system_prompt=(
         "You are the clinical trial design coordinator. You receive NCT IDs from "
         "the user, delegate protocol extraction, biostatistics power sizing, and "
