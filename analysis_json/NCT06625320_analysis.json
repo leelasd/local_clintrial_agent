@@ -12,67 +12,67 @@
     {
       "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1.",
       "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure patients are physically capable of participating in the trial and managing potential side effects.",
+      "justification": "This criterion is a safety measure to ensure patients are physically capable of participating in the trial.",
       "competing_risk": false
     },
     {
       "text": "Histologically or cytologically confirmed PDAC with metastatic disease.",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a homogeneous patient population for comparison to the control group, maximizing the likelihood of detecting treatment effects.",
+      "justification": "This criterion ensures that participants have a specific diagnosis and disease stage, which is relevant for assessing treatment efficacy.",
       "competing_risk": false
     },
     {
       "text": "Measurable disease per RECIST 1.1.",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion helps ensure a consistent and measurable endpoint for comparison between groups.",
+      "justification": "This criterion ensures the study can detect a treatment effect by measuring tumor size and response to therapy.",
       "competing_risk": false
     },
     {
       "text": "Adequate organ function (bone marrow, liver, kidney, coagulation)",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patients have sufficient physiological capacity to tolerate the study treatment and potential side effects.",
+      "justification": "This criterion is a safety measure to ensure patients have sufficient organ function to tolerate the study treatment.",
       "competing_risk": false
     },
     {
       "text": "Documented RAS mutation status, either mutant or wild-type. RAS mutations defined as nonsynonymous mutations in KRAS, NRAS, or HRAS at codons 12, 13, or 61 (G12, G13, or Q61).",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a consistent and measurable endpoint for comparison between groups.",
+      "justification": "This criterion ensures the study population is homogenous and allows for comparison of treatment effects based on RAS mutation status.",
       "competing_risk": false
     },
     {
       "text": "Able to take oral medications.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure patients can effectively receive the study treatment.",
+      "justification": "This criterion ensures patients can effectively receive the study treatment.",
       "competing_risk": false
     },
     {
       "text": "Prior therapy with direct RAS-targeted therapy (eg. degraders and/or inhibitors).",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures a consistent baseline for comparison between groups, minimizing confounding factors from prior treatment.",
+      "justification": "This criterion is a safety measure to ensure patients have not received prior treatment that could interfere with the study treatment.",
       "competing_risk": false
     },
     {
       "text": "History of or known central nervous system metastatic disease.",
       "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure patients are physically capable of participating in the trial and managing potential side effects.",
+      "justification": "This criterion ensures patients are free from conditions that may affect their ability to participate in the trial.",
       "competing_risk": false
     },
     {
       "text": "Any conditions that may affect the ability to take or absorb study treatment",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patient compliance with protocol requirements, minimizing potential for non-compliance and data inconsistencies.",
+      "justification": "This criterion is a feasibility measure to ensure patients can adhere to the study protocol and receive the study treatment.",
       "competing_risk": false
     },
     {
       "text": "Major surgery within 4 weeks prior to randomization.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure patients have sufficient recovery time before starting the study treatment, minimizing potential for complications or delays in data collection.",
+      "justification": "This criterion ensures that patients have sufficient recovery time before starting the trial.",
       "competing_risk": false
     },
     {
       "text": "Patient is unable or unwilling to comply with protocol-required study visits or procedures.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion helps ensure patient compliance with the study protocol, minimizing potential for non-compliance and data inconsistencies.",
+      "justification": "This criterion ensures patient compliance and adherence to the study protocol.",
       "competing_risk": false
     }
   ],
@@ -85,10 +85,7 @@
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
-    "std_ages": [
-      "ADULT",
-      "OLDER_ADULT"
-    ],
+    "std_ages": [],
     "healthy_volunteers": false,
     "age_restrictiveness": "Moderate",
     "has_competing_risk_exclusions": false,
@@ -116,7 +113,9 @@
       "control_median_months": 3.5,
       "implied_treatment_median_months": 4.6,
       "median_improvement_months": 1.1,
-      "assessment": "Underpowered"
+      "assessment": "Adequately Powered (R-exact)",
+      "r_exact_required_sample_size": 262.3461,
+      "r_exact_required_events": 245.5869
     }
   },
   "endpoints": [
@@ -200,10 +199,10 @@
   },
   "trial_design": {
     "design_type": "Parallel RCT",
-    "control_type": "Active Comparator",
+    "control_type": "Standard of Care",
     "superiority_type": "Superiority"
   },
-  "indication": "pdac",
+  "indication": "metastatic pancreatic ductal adenocarcinoma (pdac)",
   "randomization": {
     "randomization_type": "Simple",
     "allocation_ratio": "1:1",
@@ -230,6 +229,52 @@
     ],
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+  },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "KRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      },
+      {
+        "gene": "NRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      },
+      {
+        "gene": "HRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [
+      {
+        "biomarker_key": "RAS_mutation_any",
+        "population_prevalence": 0.3,
+        "estimated_screen_failure_rate": 0.7,
+        "matched_text": "codons 12"
+      }
+    ],
+    "genetic_screen_failure_summary": "Detected 1 genetic biomarker requirement(s) in eligibility: RAS_mutation_any (pop. prevalence ~30%, ~70% screen fail). Worst-case screen failure rate from genetic criteria: ~70%.",
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (KRAS, NRAS, HRAS) but could not map indication \"metastatic pancreatic ductal adenocarcinoma (pdac)\" to a GWAS EFO trait. Try alternative trait name.",
+    "detected_drug_classes": [
+      "ras_multi_inhibitor"
+    ]
+  },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 1.0,
+    "relaxations": []
   },
   "summary": {
     "Feasibility": 5,

@@ -1,60 +1,60 @@
 {
   "nct_id": "NCT05379985",
   "title": "Study of RMC-6236 in Patients With Advanced Solid Tumors Harboring Specific Mutations in RAS",
-  "phase": "PHASE1",
+  "phase": "PHASE1/PHASE2",
   "eligibility": [
     {
       "text": "Histologically confirmed advanced solid tumor with specific KRAS G12 mutations (dose escalation) or RAS mutations (dose optimization/expansion) identified through deoxyribonucleic acid (DNA) sequencing. PDAC with wild-type RAS (expansion).",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study population is representative of a specific group for which treatment efficacy is being assessed.",
+      "justification": "This criterion ensures the study population is representative of a specific patient group for which treatment efficacy is being evaluated.",
       "competing_risk": true
     },
     {
       "text": "Treatment naive or have received prior standard therapy appropriate for tumor type and stage",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study population is comparable to historical controls, maximizing the likelihood of detecting a treatment effect.",
+      "justification": "This criterion ensures the study population has not received previous treatments that could confound the results of the trial.",
       "competing_risk": true
     },
     {
       "text": "Have Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures participants can tolerate the study's demands, promoting data quality and compliance.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patients are able to tolerate the study's demands and participate in the trial.",
       "competing_risk": false
     },
     {
       "text": "Adequate organ function",
-      "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by ensuring they have sufficient physiological capacity to handle treatment.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients have sufficient physiological capacity to participate in the trial.",
       "competing_risk": false
     },
     {
       "text": "Primary central nervous system (CNS) tumors",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study population is representative of a specific group for which treatment efficacy is being assessed.",
+      "justification": "This criterion ensures the study population is representative of a specific patient group for which treatment efficacy is being evaluated.",
       "competing_risk": true
     },
     {
       "text": "Active, untreated brain metastases",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by ensuring they are not already experiencing neurological complications that could be exacerbated by the study treatment.",
+      "justification": "This criterion ensures patients are not already receiving treatment that could interfere with the study's results.",
       "competing_risk": false
     },
     {
       "text": "Known or suspected impairment of gastrointestinal function that may prohibit ability to swallow or absorb an oral medication",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures participants can tolerate the study's demands, promoting data quality and compliance.",
+      "justification": "This criterion ensures patients can safely receive the study treatment.",
       "competing_risk": false
     },
     {
       "text": "History of any other unstable or clinically significant concurrent medical condition that would, in the opinion of the investigator, jeopardize the safety of a participant, impact their expected survival through the end of the study participation, and/or impact their ability to comply with the protocol prior/concomitant therapy",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures participants are not at increased risk for complications or adverse events related to the study treatment.",
+      "justification": "This criterion ensures patients are healthy enough to participate in the trial.",
       "competing_risk": false
     },
     {
       "text": "Other inclusion/exclusion criteria may apply.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion acknowledges that additional factors might influence participant eligibility and data quality, requiring further assessment.",
+      "justification": "This criterion allows for additional considerations that might affect patient eligibility or study feasibility.",
       "competing_risk": false
     }
   ],
@@ -67,10 +67,7 @@
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
-    "std_ages": [
-      "ADULT",
-      "OLDER_ADULT"
-    ],
+    "std_ages": [],
     "healthy_volunteers": false,
     "age_restrictiveness": "Moderate",
     "has_competing_risk_exclusions": true,
@@ -176,7 +173,7 @@
     "control_type": "None (Single-Arm)",
     "superiority_type": "Unclear"
   },
-  "indication": "solid_tumor",
+  "indication": "non-small cell lung cancer",
   "randomization": {
     "randomization_type": "Not described",
     "allocation_ratio": "1:1",
@@ -207,9 +204,48 @@
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "KRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      },
+      {
+        "gene": "NRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      },
+      {
+        "gene": "HRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [],
+    "genetic_screen_failure_summary": null,
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (KRAS, NRAS, HRAS) but could not map indication \"non-small cell lung cancer\" to a GWAS EFO trait. Try alternative trait name.",
+    "detected_drug_classes": [
+      "ras_multi_inhibitor"
+    ]
+  },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 1.0,
+    "relaxations": []
+  },
   "summary": {
     "Statistical Power": 3,
-    "Feasibility": 3,
-    "Safety": 3
+    "Safety": 3,
+    "Feasibility": 3
   }
 }

@@ -1,120 +1,120 @@
 {
   "nct_id": "NCT03989115",
   "title": "Dose-Esc/Exp RMC4630 & Cobi in Relapsed/Refractory Solid Tumors & RMC4630& Osi in EGFR+ Locally Adv/Meta NSCLC",
-  "phase": "PHASE1",
+  "phase": "PHASE1/PHASE2",
   "eligibility": [
     {
       "text": "Age \u226518 years",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures eligibility for the trial and is not related to safety or efficacy.",
+      "justification": "This criterion ensures eligibility for the trial and is a standard inclusion criteria.",
       "competing_risk": false
     },
     {
       "text": "For RMC-4630 + Cobimetinib only - Participants who have advanced solid tumors that have failed, are intolerant to, or are considered ineligible for standard of care anti-cancer treatments including approved drugs for oncogenic drivers in their tumor type.",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety concerns regarding treatment eligibility.",
       "competing_risk": true
     },
     {
       "text": "For RMC-4630 + Osimertinib only - Locally advanced or metastatic EGFR mutant NSCLC not amenable to curative surgery or radiotherapy",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with statistical power considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with statistical power concerns regarding disease severity.",
       "competing_risk": false
     },
     {
       "text": "For RMC-4630 + Cobimetinib only - Participants must have one of the following genotypic aberrations: KRAS mutations and amplifications, BRAF Class 3 mutations, or NF1 LOF mutations",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with statistical power considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with statistical power concerns regarding disease severity.",
       "competing_risk": false
     },
     {
       "text": "For RMC-4630 + Osimertinib only - Evidence of radiological documentation of progression with osimertinib monotherapy or an osimertinib containing regimen. Participants should not be considered a current candidate for 1st generation EGFR TKI's by the investigator.",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with statistical power considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with statistical power concerns regarding disease progression.",
       "competing_risk": false
     },
     {
       "text": "Eastern Cooperative Oncology Group (ECOG) performance status of \u22641",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety concerns regarding patient health.",
       "competing_risk": false
     },
     {
       "text": "Adequate hematological, hepatic, and renal function",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with feasibility considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with feasibility concerns regarding patient health.",
       "competing_risk": false
     },
     {
       "text": "Capable of giving signed informed consent form (ICF). Willing and able to compile with study requirements and restrictions",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with feasibility considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with feasibility concerns regarding patient understanding.",
       "competing_risk": false
     },
     {
       "text": "Life expectancy >12 weeks",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety concerns regarding patient health.",
       "competing_risk": false
     },
     {
       "text": "Female of childbearing potential and males with partners of childbearing potential must comply with effective contraception criteria.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with feasibility considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with feasibility concerns regarding pregnancy.",
       "competing_risk": false
     },
     {
       "text": "Primary central nervous system (CNS) tumors.",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety concerns regarding CNS health.",
       "competing_risk": true
     },
     {
       "text": "Known or suspected leptomeningeal or brain metastases or spinal cord compression.",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety concerns regarding neurological health.",
       "competing_risk": false
     },
     {
       "text": "For RMC-4630 + osimertinib arm only - Known or suspected Small cell, squamous, or pleomorphic lung transformations",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety concerns regarding lung health.",
       "competing_risk": false
     },
     {
       "text": "Clinically significant cardiac disease",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety concerns regarding cardiovascular health.",
       "competing_risk": false
     },
     {
       "text": "Active, clinically signi\ufb01cant interstitial lung disease or pneumonitis",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety concerns regarding respiratory health.",
       "competing_risk": false
     },
     {
       "text": "History or current evidence of retinal pigment epithelial detachment (RPED), central serous retinopathy, retinal vein occlusion, or predisposing factors to RPED or RVO",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety concerns regarding eye health.",
       "competing_risk": false
     },
     {
       "text": "Known HIV infection or active/chronic hepatitis B or C infection.",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety concerns regarding immune system health.",
       "competing_risk": true
     },
     {
       "text": "Any other unstable or clinically signi\ufb01cant concurrent medical condition that would, in the opinion of the investigator, jeopardize the safety of a participant, impact their expected survival through the end of the study participation, and/or impact their ability to comply with the protocol prior/concomitant therapy",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety considerations.",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety concerns regarding overall health.",
       "competing_risk": false
     },
     {
       "text": "Females who are pregnant or breastfeeding",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the patient is eligible for treatment and aligns with feasibility considerations.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures the patient is eligible for treatment and aligns with safety concerns regarding pregnancy and breastfeeding.",
       "competing_risk": false
     }
   ],
@@ -127,10 +127,7 @@
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
-    "std_ages": [
-      "ADULT",
-      "OLDER_ADULT"
-    ],
+    "std_ages": [],
     "healthy_volunteers": false,
     "age_restrictiveness": "Moderate",
     "has_competing_risk_exclusions": true,
@@ -214,11 +211,11 @@
     "concomitant_therapy_controls": "Standardized background care"
   },
   "trial_design": {
-    "design_type": "Single-Arm",
-    "control_type": "None (Single-Arm)",
+    "design_type": "Nonrandomized Concurrent Control",
+    "control_type": "Standard of Care",
     "superiority_type": "Unclear"
   },
-  "indication": "nsclc",
+  "indication": "non-small cell lung cancer",
   "randomization": {
     "randomization_type": "Not described",
     "allocation_ratio": "1:1",
@@ -249,9 +246,60 @@
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "EGFR",
+        "drug_class": "egfr_inhibitor",
+        "known_effects": [
+          "Treatment response - mutation-dependent efficacy"
+        ]
+      },
+      {
+        "gene": "KRAS",
+        "drug_class": "egfr_inhibitor",
+        "known_effects": [
+          "Resistance - mutation predicts non-response"
+        ]
+      },
+      {
+        "gene": "PTPN11",
+        "drug_class": "shp2_inhibitor",
+        "known_effects": [
+          "Treatment response - SHP2 inhibition",
+          "upstream of RAS"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [],
+    "genetic_screen_failure_summary": null,
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (EGFR, KRAS, PTPN11) but could not map indication \"non-small cell lung cancer\" to a GWAS EFO trait. Try alternative trait name.",
+    "detected_drug_classes": [
+      "egfr_inhibitor",
+      "shp2_inhibitor"
+    ]
+  },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 1.0,
+    "relaxations": [
+      {
+        "variable": "age_min",
+        "original_value": 18.0,
+        "relaxed_value": 13.0,
+        "description": "Decrease minimum age from 18 to 13 years",
+        "new_yield": 1.0,
+        "multiplier": 1.0,
+        "raw_text": "* Age \u226518 years"
+      }
+    ]
+  },
   "summary": {
-    "Feasibility": 5,
-    "Safety": 11,
+    "Feasibility": 4,
+    "Safety": 12,
     "Statistical Power": 3
   }
 }

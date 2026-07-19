@@ -12,7 +12,7 @@
     {
       "text": "Subject must have pathologically documented, locally advanced or metastatic KRASG12C-mutated solid tumor malignancy (not amenable to curative surgery) that has previously been treated with standard-of-care therapies for respective tumor types, is intolerant to, or is considered ineligible for standard-of-care anticancer treatments.",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study population is representative of a specific patient group likely to respond to treatment.",
+      "justification": "This criterion ensures the study population is representative of a specific patient group likely to benefit from treatment.",
       "competing_risk": true
     },
     {
@@ -24,49 +24,49 @@
     {
       "text": "Prior treatment with a KRASG12C (OFF) inhibitor allowed for dose escalation and for NSCLC in dose expansion",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study population is representative of patients who have previously received standard-of-care treatments.",
+      "justification": "This criterion ensures patients have received prior treatment, allowing for comparison of the new treatment to previous therapies.",
       "competing_risk": false
     },
     {
       "text": "Adequate organ function",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by ensuring they are healthy enough to participate in the trial.",
+      "justification": "This criterion ensures patients are healthy enough to tolerate the trial's interventions.",
       "competing_risk": false
     },
     {
       "text": "Primary central nervous system (CNS) tumors",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion limits the study population to a specific group of patients, potentially impacting recruitment and data quality.",
+      "justification": "This criterion limits the study population, potentially impacting recruitment and data quality.",
       "competing_risk": true
     },
     {
       "text": "Active brain metastases",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patient safety by excluding those with active brain lesions that could be affected by the treatment.",
+      "justification": "This criterion ensures patients are healthy enough to tolerate the trial's interventions.",
       "competing_risk": false
     },
     {
       "text": "Known impairment of GI function that would alter the absorption",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from the treatment.",
+      "justification": "This criterion limits the study population, potentially impacting recruitment and data quality.",
       "competing_risk": false
     },
     {
       "text": "Major surgical procedures within 28 days or non-study-related minor procedures within 7 days of treatment.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patients are healthy enough to participate in the trial and avoid potential complications from the treatment.",
+      "justification": "This criterion limits the study population, potentially impacting recruitment and data quality.",
       "competing_risk": false
     },
     {
       "text": "Prior therapy with KRASG12C (ON) inhibitor",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patient safety by excluding those who have previously received a KRASG12C inhibitor, which could potentially interact with the study treatment.",
+      "justification": "This criterion ensures patients are healthy enough to tolerate the trial's interventions.",
       "competing_risk": false
     },
     {
       "text": "Other inclusion/exclusion criteria may apply.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion allows for flexibility in the trial design and ensures that all necessary criteria are met to ensure patient safety and data quality.",
+      "justification": "This criterion allows for flexibility in recruitment and data quality.",
       "competing_risk": false
     }
   ],
@@ -79,10 +79,7 @@
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
-    "std_ages": [
-      "ADULT",
-      "OLDER_ADULT"
-    ],
+    "std_ages": [],
     "healthy_volunteers": false,
     "age_restrictiveness": "Moderate",
     "has_competing_risk_exclusions": true,
@@ -188,7 +185,7 @@
     "control_type": "None (Single-Arm)",
     "superiority_type": "Unclear"
   },
-  "indication": "solid_tumor",
+  "indication": "non-small cell lung cancer",
   "randomization": {
     "randomization_type": "Not described",
     "allocation_ratio": "1:1",
@@ -214,12 +211,63 @@
     "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
     "ae_types_detected": [],
     "class_effects_known": [
-      "ALT elevation",
-      "AST elevation"
+      "AST elevation",
+      "ALT elevation"
     ],
     "safety_endpoints": [],
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+  },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "KRAS",
+        "drug_class": "kras_g12c_inhibitor",
+        "known_effects": [
+          "Treatment response - KRAS G12C mutation required"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [
+      {
+        "biomarker_key": "KRAS_G12C",
+        "population_prevalence": 0.13,
+        "estimated_screen_failure_rate": 0.87,
+        "matched_text": "krasg12c"
+      }
+    ],
+    "genetic_screen_failure_summary": "Detected 1 genetic biomarker requirement(s) in eligibility: KRAS_G12C (pop. prevalence ~13%, ~87% screen fail). Worst-case screen failure rate from genetic criteria: ~87%.",
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (KRAS) but could not map indication \"non-small cell lung cancer\" to a GWAS EFO trait. Try alternative trait name.",
+    "detected_drug_classes": [
+      "kras_g12c_inhibitor"
+    ]
+  },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 0.388,
+    "relaxations": [
+      {
+        "variable": "age_min",
+        "original_value": 18.0,
+        "relaxed_value": 13.0,
+        "description": "Decrease minimum age from 18 to 13 years",
+        "new_yield": 0.388,
+        "multiplier": 1.0,
+        "raw_text": "* Subject must be \u226518 years of age."
+      },
+      {
+        "variable": "ecog_max",
+        "original_value": 0.0,
+        "relaxed_value": 1.0,
+        "description": "Increase ECOG ceiling from 0 to 1",
+        "new_yield": 0.843,
+        "multiplier": 2.173,
+        "raw_text": "* ECOG performance status 0 or 1"
+      }
+    ]
   },
   "summary": {
     "Feasibility": 5,

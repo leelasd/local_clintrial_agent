@@ -12,67 +12,67 @@
     {
       "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 or 1.",
       "reasoning_category": "Safety",
-      "justification": "This criterion limits the trial to patients who are able to tolerate treatment and participate in the study.",
+      "justification": "This criterion helps ensure patients are able to tolerate the study's demands and participate in the trial.",
       "competing_risk": false
     },
     {
       "text": "Pathologically documented, locally advanced or metastatic KRAS G12V-mutated solid tumor malignancy.",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures that patients are selected for a specific disease group and allows for comparison of treatment effects.",
+      "justification": "This criterion ensures patients are eligible for a treatment that targets the specific mutation.",
       "competing_risk": true
     },
     {
       "text": "Received and progressed or been intolerant to prior standard therapy (including targeted therapy) appropriate for tumor type and stage.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that patients have a history of treatment failure, which may affect their ability to tolerate the study drug.",
+      "justification": "This criterion ensures patients have exhausted other treatment options, potentially impacting their ability to adhere to the study protocol.",
       "competing_risk": true
     },
     {
       "text": "Measurable per RECIST v1.1",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures that patients are selected for a specific disease group and allows for comparison of treatment effects.",
+      "justification": "This criterion helps ensure that the trial can detect a treatment effect by measuring tumor response.",
       "competing_risk": false
     },
     {
-      "text": "Adequate organ function (bone marrow, liver, kidney, coagulation). ",
+      "text": "Adequate organ function (bone marrow, liver, kidney, coagulation)",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures that patients are healthy enough to tolerate the study drug and its potential side effects.",
+      "justification": "This criterion ensures patients have sufficient organ function to tolerate the study's demands and potential side effects of treatment.",
       "competing_risk": false
     },
     {
       "text": "Able to take oral medications.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that patients can receive the study drug as prescribed.",
+      "justification": "This criterion helps ensure patient compliance with the study protocol by considering their ability to swallow medication.",
       "competing_risk": false
     },
     {
       "text": "Primary central nervous system (CNS) tumors",
       "reasoning_category": "Safety",
-      "justification": "This criterion limits the trial to patients with specific types of cancer, ensuring their safety and suitability for treatment.",
+      "justification": "This criterion ensures patients have a specific type of tumor that is being studied in the trial.",
       "competing_risk": true
     },
     {
       "text": "Prior therapy with KRAS G12V inhibitor or direct RAS-targeted therapy (eg. degraders and/or inhibitors).",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures that patients have a history of treatment failure, which may affect their ability to tolerate the study drug.",
+      "justification": "This criterion helps ensure patients have received prior treatment that may influence their response to the study drug.",
       "competing_risk": false
     },
     {
       "text": "Any conditions that may affect the ability to take or absorb study drug.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that patients are healthy enough to receive the study drug and its potential side effects.",
+      "justification": "This criterion ensures patient compliance with the study protocol by considering potential medication interactions or absorption issues.",
       "competing_risk": false
     },
     {
       "text": "Major surgery within 28 days prior to receiving study drug(s).",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that patients have recovered sufficiently from previous surgeries, which may affect their ability to participate in the study.",
+      "justification": "This criterion helps ensure patients have sufficient recovery time before starting the study medication.",
       "competing_risk": false
     },
     {
       "text": "Patient is unable or unwilling to comply with protocol-required study visits or procedures.",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that patients are able to adhere to the study's requirements and participate in its protocols.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patient safety by preventing participation in a trial if they are not able to follow the protocol.",
       "competing_risk": false
     }
   ],
@@ -85,10 +85,7 @@
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
-    "std_ages": [
-      "ADULT",
-      "OLDER_ADULT"
-    ],
+    "std_ages": [],
     "healthy_volunteers": false,
     "age_restrictiveness": "Moderate",
     "has_competing_risk_exclusions": true,
@@ -190,11 +187,11 @@
     "concomitant_therapy_controls": "Standardized background care"
   },
   "trial_design": {
-    "design_type": "Single-Arm",
-    "control_type": "None (Single-Arm)",
+    "design_type": "Nonrandomized Concurrent Control",
+    "control_type": "Standard of Care",
     "superiority_type": "Unclear"
   },
-  "indication": "solid_tumor",
+  "indication": "non-small cell lung cancer",
   "randomization": {
     "randomization_type": "Not described",
     "allocation_ratio": "1:1:1",
@@ -225,9 +222,48 @@
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "KRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      },
+      {
+        "gene": "NRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      },
+      {
+        "gene": "HRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [],
+    "genetic_screen_failure_summary": null,
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (KRAS, NRAS, HRAS) but could not map indication \"non-small cell lung cancer\" to a GWAS EFO trait. Try alternative trait name.",
+    "detected_drug_classes": [
+      "ras_multi_inhibitor"
+    ]
+  },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 1.0,
+    "relaxations": []
+  },
   "summary": {
-    "Feasibility": 6,
-    "Safety": 4,
+    "Feasibility": 5,
+    "Safety": 5,
     "Statistical Power": 2
   }
 }

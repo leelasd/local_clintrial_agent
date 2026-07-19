@@ -1,7 +1,7 @@
 {
   "nct_id": "NCT06445062",
   "title": "Study of RAS(ON) Inhibitors in Patients With Gastrointestinal Solid Tumors",
-  "phase": "PHASE1",
+  "phase": "PHASE1/PHASE2",
   "eligibility": [
     {
       "text": "\u2265 18 years of age",
@@ -11,50 +11,50 @@
     },
     {
       "text": "ECOG PS is 0 to 1",
-      "reasoning_category": "Safety",
-      "justification": "This criterion ensures patients are not too ill to participate in the trial, which protects them from harm.",
+      "reasoning_category": "Statistical Power",
+      "justification": "The ECOG performance status score helps assess the likelihood of patients responding to treatment, thus impacting statistical power.",
       "competing_risk": false
     },
     {
       "text": "Adequate organ function as outlined by the study",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion is a feasibility factor ensuring patients can tolerate the treatment and participate in the trial.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures patient safety and minimizes potential complications from treatment.",
       "competing_risk": false
     },
     {
       "text": "Pathologically or cytologically documented pancreatic carcinoma or poorly differentiated pancreatic carcinoma with metastatic disease or RAS-mutated, histologically or cytologically confirmed colorectal adenocarcinoma with documented unresectable or metastatic disease (Subprotocol A, B, and C)",
       "reasoning_category": "Safety",
-      "justification": "This criterion is a safety criterion as it excludes patients with specific cancers.",
+      "justification": "This criterion is a safety measure to exclude patients with specific cancers.",
       "competing_risk": false
     },
     {
       "text": "Presence of RAS G12D mutation (Subprotocol D, E, F)",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study population is suitable for evaluating the treatment's effectiveness in patients with specific mutations.",
+      "justification": "The presence of the RAS G12D mutation is a factor that influences treatment efficacy and thus impacts statistical power.",
       "competing_risk": false
     },
     {
       "text": "Primary central nervous system (CNS) tumors",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients who may be at risk of complications from the treatment, protecting them from harm.",
+      "justification": "This criterion excludes patients with CNS tumors, which can be associated with increased risk of complications or treatment failure.",
       "competing_risk": true
     },
     {
       "text": "Impaired gastrointestinal (GI) function that may significantly alter the absorption of RMC drugs",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patients can tolerate the treatment and participate in the trial, as it affects drug absorption.",
+      "justification": "This criterion ensures patients can tolerate the drug and its potential side effects, impacting feasibility.",
       "competing_risk": false
     },
     {
       "text": "Major surgery within 28 days of first dose",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from harm by ensuring they have adequate time to recover before starting the treatment.",
+      "justification": "This criterion is a safety measure to prevent complications from surgery and treatment.",
       "competing_risk": false
     },
     {
       "text": "Other inclusion/exclusion criteria may apply.",
       "reasoning_category": "Feasibility",
-      "justification": "This is a general feasibility criterion, as it allows for flexibility in the trial design and ensures that all patients meet the study's requirements.",
+      "justification": "This is a general feasibility criterion, as the specific criteria will vary based on the study design.",
       "competing_risk": false
     }
   ],
@@ -67,10 +67,7 @@
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
-    "std_ages": [
-      "ADULT",
-      "OLDER_ADULT"
-    ],
+    "std_ages": [],
     "healthy_volunteers": false,
     "age_restrictiveness": "Moderate",
     "has_competing_risk_exclusions": true,
@@ -154,11 +151,11 @@
     "concomitant_therapy_controls": "Standardized background care"
   },
   "trial_design": {
-    "design_type": "Single-Arm",
-    "control_type": "None (Single-Arm)",
+    "design_type": "Nonrandomized Concurrent Control",
+    "control_type": "Standard of Care",
     "superiority_type": "Unclear"
   },
-  "indication": "solid_tumor",
+  "indication": "gastrointestinal cancer",
   "randomization": {
     "randomization_type": "Not described",
     "allocation_ratio": "1:1:1:1:1:1",
@@ -183,16 +180,104 @@
     "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
     "ae_types_detected": [],
     "class_effects_known": [
-      "ALT elevation",
-      "AST elevation"
+      "AST elevation",
+      "ALT elevation"
     ],
     "safety_endpoints": [],
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "KRAS",
+        "drug_class": "kras_g12d_inhibitor",
+        "known_effects": [
+          "Treatment response - KRAS G12D mutation required"
+        ]
+      },
+      {
+        "gene": "NRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      },
+      {
+        "gene": "HRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [
+      {
+        "biomarker_key": "KRAS_G12D",
+        "population_prevalence": 0.05,
+        "estimated_screen_failure_rate": 0.95,
+        "matched_text": "ras g12d"
+      }
+    ],
+    "genetic_screen_failure_summary": "Detected 1 genetic biomarker requirement(s) in eligibility: KRAS_G12D (pop. prevalence ~5%, ~95% screen fail). Worst-case screen failure rate from genetic criteria: ~95%.",
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [
+      {
+        "gene": "KRAS",
+        "drug_class": "kras_g12d_inhibitor",
+        "known_effects": [
+          "Treatment response - KRAS G12D mutation required"
+        ],
+        "gwas_associations_count": 0,
+        "recommended_subgroup_analysis": true,
+        "recommended_safety_monitoring": false
+      },
+      {
+        "gene": "NRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ],
+        "gwas_associations_count": 0,
+        "recommended_subgroup_analysis": true,
+        "recommended_safety_monitoring": false
+      },
+      {
+        "gene": "HRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ],
+        "gwas_associations_count": 0,
+        "recommended_subgroup_analysis": true,
+        "recommended_safety_monitoring": false
+      }
+    ],
+    "stratification_opportunity": "Yes \u2014 genotype-stratified randomization or pre-planned subgroup analysis warranted. Per textbook Ch. 9: \"one would in subgroup analysis compare treatment responses such as serious adverse events.\"",
+    "safety_pharmacogenetics": [],
+    "summary": "Found 0 GWAS association(s) relevant to 3 pharmacogenetic subgroup(s) in family history of upper gastrointestinal cancer. 1 genetic screen requirement(s) detected. Stratification opportunity identified.",
+    "detected_drug_classes": [
+      "ras_multi_inhibitor",
+      "kras_g12d_inhibitor"
+    ]
+  },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 1.0,
+    "relaxations": [
+      {
+        "variable": "age_min",
+        "original_value": 18.0,
+        "relaxed_value": 13.0,
+        "description": "Decrease minimum age from 18 to 13 years",
+        "new_yield": 1.0,
+        "multiplier": 1.0,
+        "raw_text": "* \u2265 18 years of age"
+      }
+    ]
+  },
   "summary": {
-    "Feasibility": 4,
-    "Safety": 4,
-    "Statistical Power": 1
+    "Feasibility": 3,
+    "Statistical Power": 2,
+    "Safety": 4
   }
 }

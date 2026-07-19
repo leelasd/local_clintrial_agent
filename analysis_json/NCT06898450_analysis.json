@@ -1,54 +1,54 @@
 {
   "nct_id": "NCT06898450",
   "title": "A Study to Assess the Safety, Tolerability, and Efficacy of NDI-219216 in Patients With Advanced Solid Tumors.",
-  "phase": "PHASE1",
+  "phase": "PHASE1/PHASE2",
   "eligibility": [
     {
       "text": "Eastern Cooperative Oncology Group (ECOG) performance status score of 0 or 1",
-      "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from harm by ensuring they are able to tolerate the study's demands.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients can participate in the trial and are able to tolerate the study's demands.",
       "competing_risk": false
     },
     {
       "text": "Have unresectable and/or metastatic solid tumors (with or without MSI-H/dMMR) refractory to or intolerant to previous SoC therapy or for which no SoC therapy exists",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study population is representative of a specific patient group and maximizes the likelihood of detecting treatment effects.",
+      "justification": "This criterion ensures the study population is representative of a specific patient group and allows for comparison with historical data.",
       "competing_risk": true
     },
     {
       "text": "Presence of measurable disease according to RECIST version 1.1 except for Part A (Dose Escalation)",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures that patients have a measurable disease, which is essential for detecting treatment effects.",
+      "justification": "This criterion ensures the study population is representative of a specific patient group and allows for comparison with historical data.",
       "competing_risk": false
     },
     {
       "text": "Adequate bone marrow / hematologic, end-organ, and cardiovascular function",
-      "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the study can be conducted safely and with minimal risk of complications.",
+      "reasoning_category": "Safety",
+      "justification": "This criterion ensures the study population is healthy enough to tolerate the study's demands.",
       "competing_risk": false
     },
     {
       "text": "Resolution of all acute (or toxic) adverse effects of prior therapies, radiation therapy, or surgical procedures to Grade \u2264 1 (except fatigue, alopecia, and peripheral neuropathy)",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patients are free from severe side effects that could interfere with the study's objectives.",
+      "justification": "This criterion ensures the study population is healthy enough to tolerate the study's demands.",
       "competing_risk": false
     },
     {
       "text": "Clinically significant cardiovascular disease.",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from harm by excluding those who may be at increased risk of adverse events related to cardiovascular disease.",
+      "justification": "This criterion ensures the study population is healthy enough to tolerate the study's demands.",
       "competing_risk": false
     },
     {
       "text": "Patients with known WRN syndrome",
       "reasoning_category": "Safety",
-      "justification": "This criterion prioritizes patient safety by excluding individuals with a known genetic predisposition for specific health risks.",
+      "justification": "This criterion ensures the study population is healthy enough to tolerate the study's demands.",
       "competing_risk": false
     },
     {
       "text": "Pregnancy, breastfeeding, or intention of becoming pregnant during the study.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that the study is conducted safely and ethically by excluding women who are pregnant or planning to become pregnant.",
+      "justification": "This criterion excludes women who are pregnant or may become pregnant during the study. This is a feasibility concern for recruitment and data quality.",
       "competing_risk": false
     }
   ],
@@ -61,10 +61,7 @@
   "population": {
     "sex": "ALL",
     "age_range": "18 Years - 99 Years",
-    "std_ages": [
-      "ADULT",
-      "OLDER_ADULT"
-    ],
+    "std_ages": [],
     "healthy_volunteers": false,
     "age_restrictiveness": "High",
     "has_competing_risk_exclusions": true,
@@ -221,10 +218,10 @@
   },
   "trial_design": {
     "design_type": "Adaptive Design",
-    "control_type": "None (Single-Arm)",
+    "control_type": "Standard of Care",
     "superiority_type": "Unclear"
   },
-  "indication": "solid_tumor",
+  "indication": null,
   "randomization": {
     "randomization_type": "Not described",
     "allocation_ratio": "1:1:1",
@@ -255,9 +252,41 @@
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "WRN",
+        "drug_class": "wrn_inhibitor",
+        "known_effects": [
+          "Treatment response - WRN helicase inhibition in dMMR/MSI-H tumors"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [
+      {
+        "biomarker_key": "dMMR_MSI_H",
+        "population_prevalence": 0.15,
+        "estimated_screen_failure_rate": 0.85,
+        "matched_text": "dmmr"
+      }
+    ],
+    "genetic_screen_failure_summary": "Detected 1 genetic biomarker requirement(s) in eligibility: dMMR_MSI_H (pop. prevalence ~15%, ~85% screen fail). Worst-case screen failure rate from genetic criteria: ~85%.",
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (WRN) but indication is unknown. Cannot query GWAS without indication.",
+    "detected_drug_classes": [
+      "wrn_inhibitor"
+    ]
+  },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 1.0,
+    "relaxations": []
+  },
   "summary": {
-    "Safety": 4,
+    "Feasibility": 2,
     "Statistical Power": 2,
-    "Feasibility": 2
+    "Safety": 4
   }
 }

@@ -1,7 +1,7 @@
 {
   "nct_id": "NCT06710847",
   "title": "A Study to Investigate the Safety, Pharmacokinetics, and Preliminary Effectiveness of GSK4418959 Alone or in Combination With Other Anti-cancer Agents in Participants With Solid Tumors",
-  "phase": "PHASE1",
+  "phase": "PHASE1/PHASE2",
   "eligibility": [
     {
       "text": "Has a histologically diagnosed advanced (unresectable, metastatic or recurrent) solid tumor",
@@ -12,115 +12,115 @@
     {
       "text": "Has a known dMMR/MSI-H status as determined by a certified local laboratory at the time of Pre-screening or has an unknown Mismatch repair (MMR)/ Microsatellite Instability (MSI) status at the time of Pre-screening and MMR/MSI status will be determined by central reference laboratory",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a specific population for analysis, maximizing the likelihood of detecting treatment effects.",
+      "justification": "This criterion ensures a homogenous population for comparison, maximizing the likelihood of detecting treatment effects.",
       "competing_risk": false
     },
     {
       "text": "Provides an archival or fresh (preferred) formalin fixed, paraffin embedded (FFPE) sample",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures proper sample collection and analysis for the study.",
+      "justification": "This criterion ensures adequate tissue samples for analysis and diagnosis.",
       "competing_risk": true
     },
     {
       "text": "Intends to receive GSK4418959 (alone or in combination with PD-1 inhibitor, as determined between Investigator and sponsor) as next line of treatment",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the study's focus on a specific treatment regimen.",
+      "justification": "This criterion ensures the patient's treatment plan aligns with the study protocol.",
       "competing_risk": false
     },
     {
       "text": "Has an Eastern Cooperative Oncology Group (ECOG) performance status of 0-2",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patients are able to tolerate the study's demands.",
+      "justification": "This criterion ensures patients are physically capable of participating in the trial and managing potential side effects.",
       "competing_risk": false
     },
     {
       "text": "Is expected to have a minimum of 3 months life expectancy",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patient survival for the duration of the study.",
+      "justification": "This criterion ensures patient survival is sufficient for the study duration.",
       "competing_risk": false
     },
     {
       "text": "Has adequate organ function, as defined in the protocol",
-      "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by ensuring their organs are functioning properly.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients have sufficient organ function to tolerate treatment and participate in the trial.",
       "competing_risk": false
     },
     {
       "text": "\u2022 Has histologically diagnosed advanced (unresectable, metastatic or recurrent) solid tumor and has exhausted all standard of care treatment options",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patients are not receiving other treatments that could interfere with the study's results.",
+      "justification": "This criterion ensures patients have exhausted other treatment options before participating in the trial.",
       "competing_risk": true
     },
     {
       "text": "Has histologically diagnosed advanced (unresectable, metastatic or recurrent) Colorectal cancer (CRC) or Endometrial cancer (EC)",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study focuses on a specific population for analysis.",
+      "justification": "This criterion ensures a homogenous population for comparison and maximizes the likelihood of detecting treatment effects.",
       "competing_risk": true
     },
     {
       "text": "Has received at least 1 but no more than 3 lines of systemic anticancer therapy for their advanced (unresectable, metastatic or recurrent) disease including at least one line of Immune checkpoint inhibitors (ICI) therapy",
-      "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a specific population for analysis.",
+      "reasoning_category": "Feasibility",
+      "justification": "This criterion ensures patients have received a sufficient number of treatment lines to allow for comparison with the study drug.",
       "competing_risk": true
     },
     {
       "text": "Has measurable disease (i.e., at least 1 target lesion) during the Screening period per RECIST 1.1, as determined by the investigator",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a specific population for analysis.",
+      "justification": "This criterion ensures patients have a measurable disease to allow for comparison with the study drug.",
       "competing_risk": false
     },
     {
       "text": "Has not recovered (i.e., to Grade \u22641 or to baseline) from prior anticancer therapy-induced AEs",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patient safety and prevents complications.",
+      "justification": "This criterion ensures patients have recovered sufficiently from previous treatment side effects before participating in the trial.",
       "competing_risk": true
     },
     {
       "text": "Has received prior treatment with a WRN inhibitor",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by ensuring they have not received specific treatments that could interfere with the study's results.",
+      "justification": "This criterion ensures patients have not received WRN inhibitors, which could confound the study results.",
       "competing_risk": false
     },
     {
       "text": "Is unable to swallow and retain orally administered study treatment",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patient safety and feasibility of administering the study drug.",
+      "justification": "This criterion ensures patient compliance with the study protocol.",
       "competing_risk": false
     },
     {
       "text": "Has symptomatic uncontrolled brain or leptomeningeal metastases",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by ensuring they have a confirmed diagnosis of a specific condition.",
+      "justification": "This criterion ensures patients have a condition that could be detrimental to their health and safety.",
       "competing_risk": false
     },
     {
       "text": "Has a known additional malignancy that progressed or required active treatment within the last 2 years because reoccurrence of another malignancy would confound interpretation by RECIST 1.1 criteria. Exceptions include basal cell carcinoma of the skin, squamous cell carcinoma of the skin that has undergone potentially curative therapy, or in situ cancer that is considered to be low risk for progression by the investigator",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by ensuring they have a confirmed diagnosis of a specific condition.",
+      "justification": "This criterion ensures patients have a condition that could be detrimental to their health and safety.",
       "competing_risk": true
     },
     {
       "text": "Has any impairment of gastrointestinal function or gastrointestinal disease that may significantly alter the absorption of study drugs",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patient safety and feasibility of administering the study drug.",
+      "justification": "This criterion ensures patients have a condition that could affect their ability to participate in the trial.",
       "competing_risk": false
     },
     {
       "text": "Has severe liver fibrosis",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by ensuring they have a confirmed diagnosis of a specific condition.",
+      "justification": "This criterion protects patients from harm by ensuring they have a condition that could be detrimental to their health and safety.",
       "competing_risk": false
     },
     {
       "text": "Has cirrhosis or current unstable liver or biliary disease",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by ensuring they have a confirmed diagnosis of a specific condition.",
+      "justification": "This criterion ensures patients have a condition that could be detrimental to their health and safety.",
       "competing_risk": true
     },
     {
       "text": "Has known hypersensitivity to any of the study interventions or any of their excipients",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by ensuring they have no known allergies to the study's components.",
+      "justification": "This criterion ensures patients have a condition that could be detrimental to their health and safety.",
       "competing_risk": false
     },
     {
@@ -132,13 +132,13 @@
     {
       "text": "Has an active autoimmune disease that has required systemic treatment in the past 2 years",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures feasibility by limiting the study population to those with a history of autoimmune disease requiring systemic treatment, which may impact data quality and recruitment.",
+      "justification": "This criterion ensures feasibility by limiting the study population to those with a history of active autoimmune disease requiring systemic treatment.",
       "competing_risk": false
     },
     {
       "text": "Has experienced any of the following with prior immunotherapy: any immune mediated adverse events (imAE) of Grade \u22653, immune-related severe neurologic events of any grade, exfoliative dermatitis of any grade (Stevens-Johnson Syndrome, toxic epidermal necrolysis, or Drug rash with eosinophilia and systemic signs syndrome /[DRESS/] syndrome), or myocarditis of any grade.",
       "reasoning_category": "Safety",
-      "justification": "This criterion prioritizes patient safety by excluding individuals who have experienced severe immune-mediated adverse events after prior immunotherapy.",
+      "justification": "This criterion prioritizes patient safety by excluding individuals who have experienced severe immune-related adverse events after prior immunotherapy.",
       "competing_risk": false
     },
     {
@@ -157,10 +157,7 @@
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
-    "std_ages": [
-      "ADULT",
-      "OLDER_ADULT"
-    ],
+    "std_ages": [],
     "healthy_volunteers": false,
     "age_restrictiveness": "Moderate",
     "has_competing_risk_exclusions": true,
@@ -226,60 +223,6 @@
       "is_primary": true
     },
     {
-      "text": "Part 1: Area under the concentration-time curve (AUC) for GSK4418959",
-      "endpoint_type": "Biomarker",
-      "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
-      "is_primary": false
-    },
-    {
-      "text": "Part 1: Maximum concentration (Cmax) for GSK4418959",
-      "endpoint_type": "Biomarker",
-      "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
-      "is_primary": false
-    },
-    {
-      "text": "Part 1: Time to maximum concentration (Tmax) for GSK4418959",
-      "endpoint_type": "Biomarker",
-      "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
-      "is_primary": false
-    },
-    {
-      "text": "Part 3: AUC for GSK4418959",
-      "endpoint_type": "Biomarker",
-      "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
-      "is_primary": false
-    },
-    {
-      "text": "Part 3: Cmax for GSK4418959",
-      "endpoint_type": "Biomarker",
-      "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
-      "is_primary": false
-    },
-    {
-      "text": "Part 3: Tmax for GSK4418959",
-      "endpoint_type": "Biomarker",
-      "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
-      "is_primary": false
-    },
-    {
-      "text": "Part 1: Number of participants with TEAEs",
-      "endpoint_type": "Surrogate",
-      "timeframe": "Up to approximately 42 months",
-      "is_primary": false
-    },
-    {
-      "text": "Part 2: Number of participants with TEAEs",
-      "endpoint_type": "Surrogate",
-      "timeframe": "Up to approximately 42 months",
-      "is_primary": false
-    },
-    {
-      "text": "Part 3: Number of participants with TEAEs",
-      "endpoint_type": "Surrogate",
-      "timeframe": "Up to approximately 42 months",
-      "is_primary": false
-    },
-    {
       "text": "Part 1: Number of participants with dosage interruptions, dose reductions, and drug discontinuations for TEAEs",
       "endpoint_type": "Clinical",
       "timeframe": "Up to approximately 42 months",
@@ -332,6 +275,60 @@
       "endpoint_type": "Biomarker",
       "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
       "is_primary": false
+    },
+    {
+      "text": "Part 1: Area under the concentration-time curve (AUC) for GSK4418959",
+      "endpoint_type": "Biomarker",
+      "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
+      "is_primary": false
+    },
+    {
+      "text": "Part 1: Maximum concentration (Cmax) for GSK4418959",
+      "endpoint_type": "Biomarker",
+      "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
+      "is_primary": false
+    },
+    {
+      "text": "Part 1: Time to maximum concentration (Tmax) for GSK4418959",
+      "endpoint_type": "Biomarker",
+      "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
+      "is_primary": false
+    },
+    {
+      "text": "Part 3: AUC for GSK4418959",
+      "endpoint_type": "Biomarker",
+      "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
+      "is_primary": false
+    },
+    {
+      "text": "Part 3: Cmax for GSK4418959",
+      "endpoint_type": "Biomarker",
+      "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
+      "is_primary": false
+    },
+    {
+      "text": "Part 3: Tmax for GSK4418959",
+      "endpoint_type": "Biomarker",
+      "timeframe": "From first day of dosing for the duration of treatment until end of interventional phase (EOI) (up to approximately 42 months)",
+      "is_primary": false
+    },
+    {
+      "text": "Part 1: Number of participants with TEAEs",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Up to approximately 42 months",
+      "is_primary": false
+    },
+    {
+      "text": "Part 2: Number of participants with TEAEs",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Up to approximately 42 months",
+      "is_primary": false
+    },
+    {
+      "text": "Part 3: Number of participants with TEAEs",
+      "endpoint_type": "Surrogate",
+      "timeframe": "Up to approximately 42 months",
+      "is_primary": false
     }
   ],
   "trial_integrity": {
@@ -341,10 +338,10 @@
   },
   "trial_design": {
     "design_type": "Adaptive Design",
-    "control_type": "None (Single-Arm)",
+    "control_type": "Standard of Care",
     "superiority_type": "Unclear"
   },
-  "indication": "solid_tumor",
+  "indication": "solid tumors",
   "randomization": {
     "randomization_type": "Not described",
     "allocation_ratio": "1:1:1",
@@ -372,16 +369,48 @@
       "Rash"
     ],
     "class_effects_known": [
-      "ALT elevation",
-      "AST elevation"
+      "AST elevation",
+      "ALT elevation"
     ],
     "safety_endpoints": [],
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "WRN",
+        "drug_class": "wrn_inhibitor",
+        "known_effects": [
+          "Treatment response - WRN helicase inhibition in dMMR/MSI-H tumors"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [
+      {
+        "biomarker_key": "dMMR_MSI_H",
+        "population_prevalence": 0.15,
+        "estimated_screen_failure_rate": 0.85,
+        "matched_text": "dmmr"
+      }
+    ],
+    "genetic_screen_failure_summary": "Detected 1 genetic biomarker requirement(s) in eligibility: dMMR_MSI_H (pop. prevalence ~15%, ~85% screen fail). Worst-case screen failure rate from genetic criteria: ~85%.",
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (WRN) but could not map indication \"solid tumors\" to a GWAS EFO trait. Try alternative trait name.",
+    "detected_drug_classes": [
+      "wrn_inhibitor"
+    ]
+  },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 1.0,
+    "relaxations": []
+  },
   "summary": {
-    "Safety": 14,
-    "Statistical Power": 4,
-    "Feasibility": 6
+    "Safety": 13,
+    "Statistical Power": 3,
+    "Feasibility": 8
   }
 }

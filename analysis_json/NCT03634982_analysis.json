@@ -6,97 +6,97 @@
     {
       "text": "Participant (male or female) \u226518 years of age",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures a manageable participant pool and is not related to safety, efficacy, or feasibility.",
+      "justification": "This criterion ensures a sufficient sample size and addresses potential recruitment challenges.",
       "competing_risk": false
     },
     {
       "text": "Participants who have advanced solid tumors that have failed, are intolerant to, or are considered ineligible for standard of care anticancer treatments including approved drugs for oncogenic drivers in their tumor type",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a population with a high likelihood of treatment response and is related to the study's primary objective.",
+      "justification": "This criterion ensures the study population is representative of patients with a specific condition and maximizes the likelihood of detecting treatment effects.",
       "competing_risk": true
     },
     {
       "text": "Eastern Cooperative Oncology Group (ECOG) performance status of 0 to 1",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patients are able to tolerate treatment and participate in the study safely.",
+      "justification": "This criterion ensures participants are able to tolerate the study's demands and minimize potential complications.",
       "competing_risk": false
     },
     {
       "text": "Participants in the Dose-Expansion Component must have one of the following genotypic aberrations: KRAS amplifications, KRASG12C (NSCLC), BRAF Class 3, or NF1 LOF (NSCLC and gynecological cancers) mutations",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures a population with specific genetic characteristics that are likely to respond to the intervention.",
+      "justification": "This criterion ensures participants are eligible for the dose-expansion component based on specific genetic markers.",
       "competing_risk": true
     },
     {
       "text": "Adequate hematologic, hepatic and renal function",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential adverse effects of treatment.",
+      "justification": "This criterion protects patients from potential adverse effects of the study treatment.",
       "competing_risk": false
     },
     {
       "text": "Participant able to understand and voluntarily sign the informed consent form (ICF) and able to comply with the study visit schedule and other protocol requirements.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patient comprehension and compliance, which are essential for successful trial participation.",
+      "justification": "This criterion ensures participant comprehension and compliance, which are essential for successful trial participation.",
       "competing_risk": false
     },
     {
       "text": "Participants willing to agree to not father a child/become pregnant and comply with effective contraception criteria",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the safety of potential future pregnancies and is related to the study's ethical considerations.",
+      "justification": "This criterion ensures the study population is free of potential pregnancy complications.",
       "competing_risk": false
     },
     {
       "text": "Known or suspected leptomeningeal or brain metastases or spinal cord compression",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients with conditions that could be exacerbated by treatment and is related to the study's safety objectives.",
+      "justification": "This criterion excludes patients with conditions that could be exacerbated by the study treatment.",
       "competing_risk": false
     },
     {
       "text": "Primary central nervous system (CNS) tumors",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients with CNS tumors, which may pose a risk of complications from treatment.",
+      "justification": "This criterion excludes patients with CNS tumors, which may be sensitive to the study treatment.",
       "competing_risk": true
     },
     {
       "text": "Clinically significant cardiac disease",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients with pre-existing heart conditions that could be exacerbated by treatment.",
+      "justification": "This criterion excludes patients with pre-existing cardiovascular conditions that could be exacerbated by the study treatment.",
       "competing_risk": false
     },
     {
       "text": "Active, clinically significant interstitial lung disease or pneumonitis",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients with lung diseases that may worsen due to treatment and is related to the study's safety objectives.",
+      "justification": "This criterion excludes patients with lung diseases that may be sensitive to the study treatment.",
       "competing_risk": false
     },
     {
       "text": "History or current evidence of retinal pigment epithelial detachment (RPED), central serous retinopathy, retinal vein occlusion (RVO), or predisposing factors to RPED or RVO",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients with eye conditions that could be exacerbated by treatment and is related to the study's safety objectives.",
+      "justification": "This criterion excludes patients with eye conditions that could be exacerbated by the study treatment.",
       "competing_risk": false
     },
     {
       "text": "Known HIV infection",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients with a known HIV infection, which may pose a risk of complications from treatment.",
+      "justification": "This criterion excludes patients with HIV, which may be sensitive to the study treatment.",
       "competing_risk": true
     },
     {
       "text": "Active/chronic hepatitis B or C infection",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients with active or chronic infections that could be exacerbated by treatment and is related to the study's safety objectives.",
+      "justification": "This criterion excludes patients with active or chronic liver infections that could be exacerbated by the study treatment.",
       "competing_risk": true
     },
     {
       "text": "Any other unstable or clinically significant concurrent medical condition that would, in the opinion of the investigator, jeopardize the safety of a participant, impact their expected survival through the end of the study participation, and/or impact their ability to comply with the protocol prior/concomitant therapy",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures patient safety by excluding those with conditions that could be exacerbated by treatment.",
+      "justification": "This criterion ensures patient safety by excluding those with conditions that could be exacerbated or negatively impacted by the study treatment.",
       "competing_risk": false
     },
     {
       "text": "Females who are pregnant or breastfeeding",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes women of childbearing potential to prevent unintended pregnancies during the study.",
+      "justification": "This criterion excludes women of childbearing potential to prevent pregnancy complications and ensure participant safety.",
       "competing_risk": false
     }
   ],
@@ -109,10 +109,7 @@
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
-    "std_ages": [
-      "ADULT",
-      "OLDER_ADULT"
-    ],
+    "std_ages": [],
     "healthy_volunteers": false,
     "age_restrictiveness": "Moderate",
     "has_competing_risk_exclusions": true,
@@ -200,7 +197,7 @@
     "control_type": "None (Single-Arm)",
     "superiority_type": "Unclear"
   },
-  "indication": "solid_tumor",
+  "indication": "relapsed/refractory solid tumors",
   "randomization": {
     "randomization_type": "Not described",
     "allocation_ratio": "1:1",
@@ -231,6 +228,49 @@
     "safety_endpoints": [],
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+  },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "PTPN11",
+        "drug_class": "shp2_inhibitor",
+        "known_effects": [
+          "Treatment response - SHP2 inhibition",
+          "upstream of RAS"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [
+      {
+        "biomarker_key": "KRAS_G12C",
+        "population_prevalence": 0.13,
+        "estimated_screen_failure_rate": 0.87,
+        "matched_text": "krasg12c"
+      }
+    ],
+    "genetic_screen_failure_summary": "Detected 1 genetic biomarker requirement(s) in eligibility: KRAS_G12C (pop. prevalence ~13%, ~87% screen fail). Worst-case screen failure rate from genetic criteria: ~87%.",
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (PTPN11) but could not map indication \"relapsed/refractory solid tumors\" to a GWAS EFO trait. Try alternative trait name.",
+    "detected_drug_classes": [
+      "shp2_inhibitor"
+    ]
+  },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 1.0,
+    "relaxations": [
+      {
+        "variable": "age_min",
+        "original_value": 18.0,
+        "relaxed_value": 13.0,
+        "description": "Decrease minimum age from 18 to 13 years",
+        "new_yield": 1.0,
+        "multiplier": 1.0,
+        "raw_text": "* Participant (male or female) \u226518 years of age"
+      }
+    ]
   },
   "summary": {
     "Feasibility": 2,

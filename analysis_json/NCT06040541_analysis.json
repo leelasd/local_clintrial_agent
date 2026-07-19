@@ -6,55 +6,55 @@
     {
       "text": "Pathologically documented, locally advanced or metastatic solid tumor with a KRAS G12D-mutation",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion is designed to select patients who are likely to benefit from the intervention by targeting a specific genetic mutation.",
+      "justification": "This criterion is designed to ensure the study population has a specific disease characteristic that will allow for comparison of treatment effects.",
       "competing_risk": true
     },
     {
       "text": "Received and progressed or been intolerant to prior standard therapy (including targeted therapy) appropriate for tumor type and stage",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the patient has received previous treatment, which may impact their ability to tolerate the intervention.",
+      "justification": "This criterion ensures the patient has a history of treatment failure, which may impact their ability to tolerate further interventions.",
       "competing_risk": true
     },
     {
       "text": "ECOG performance status 0 or 1",
       "reasoning_category": "Safety",
-      "justification": "This criterion helps ensure patients are able to participate in the trial and adhere to treatment plans.",
+      "justification": "This criterion is designed to ensure the patient can participate in the study and adhere to its requirements.",
       "competing_risk": false
     },
     {
       "text": "Adequate organ function",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the patient's health allows them to tolerate the intervention and its potential side effects.",
+      "justification": "This criterion ensures the patient has a baseline level of health that allows them to tolerate treatment and follow-up procedures.",
       "competing_risk": false
     },
     {
       "text": "Primary central nervous system (CNS) tumors",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion helps ensure patients are selected for a specific population that may benefit from the intervention.",
+      "justification": "This criterion is designed to ensure the study population has a specific disease characteristic that will allow for comparison of treatment effects.",
       "competing_risk": true
     },
     {
       "text": "Known or suspected leptomeningeal or active brain metastases or spinal cord compression",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients who might experience complications due to their condition, ensuring safety.",
+      "justification": "This criterion is designed to protect the patient from known harm by excluding those with a high risk of complications.",
       "competing_risk": false
     },
     {
       "text": "Known or suspected impairment of gastrointestinal function that may prohibit ability to swallow or absorb an oral medication",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the patient's digestive system can handle the intervention.",
+      "justification": "This criterion is designed to ensure the patient can participate in the study and adhere to its requirements.",
       "competing_risk": false
     },
     {
       "text": "Participant was previously treated with an investigational KRAS G12D inhibitor, pan- or multi-RAS inhibitor, or had prior therapy with any direct RAS-targeted therapy (eg, degraders and inhibitors)",
       "reasoning_category": "Safety",
-      "justification": "This criterion ensures the patient has not already received a similar treatment that may interfere with the intervention's effectiveness.",
+      "justification": "This criterion is designed to protect the patient from known harm by excluding those who have already experienced adverse effects from similar treatments.",
       "competing_risk": false
     },
     {
       "text": "Other inclusion/exclusion criteria may apply.",
       "reasoning_category": "Feasibility",
-      "justification": "This is a general statement, and its specific meaning depends on the context of the trial. It could be related to feasibility or safety.",
+      "justification": "This criterion is a general exclusionary clause that allows for the inclusion of additional factors that may impact patient safety or study feasibility.",
       "competing_risk": false
     }
   ],
@@ -67,10 +67,7 @@
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
-    "std_ages": [
-      "ADULT",
-      "OLDER_ADULT"
-    ],
+    "std_ages": [],
     "healthy_volunteers": false,
     "age_restrictiveness": "Moderate",
     "has_competing_risk_exclusions": true,
@@ -172,11 +169,11 @@
     "concomitant_therapy_controls": "Standardized background care"
   },
   "trial_design": {
-    "design_type": "Single-Arm",
-    "control_type": "None (Single-Arm)",
+    "design_type": "Nonrandomized Concurrent Control",
+    "control_type": "Standard of Care",
     "superiority_type": "Unclear"
   },
-  "indication": "solid_tumor",
+  "indication": "non-small cell lung cancer",
   "randomization": {
     "randomization_type": "Not described",
     "allocation_ratio": "1:1",
@@ -206,6 +203,63 @@
     "safety_endpoints": [],
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
+  },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "KRAS",
+        "drug_class": "kras_g12d_inhibitor",
+        "known_effects": [
+          "Treatment response - KRAS G12D mutation required"
+        ]
+      },
+      {
+        "gene": "NRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      },
+      {
+        "gene": "HRAS",
+        "drug_class": "ras_multi_inhibitor",
+        "known_effects": [
+          "Treatment response - RAS multi-selective inhibition"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [
+      {
+        "biomarker_key": "KRAS_G12D",
+        "population_prevalence": 0.05,
+        "estimated_screen_failure_rate": 0.95,
+        "matched_text": "kras g12d"
+      }
+    ],
+    "genetic_screen_failure_summary": "Detected 1 genetic biomarker requirement(s) in eligibility: KRAS_G12D (pop. prevalence ~5%, ~95% screen fail). Worst-case screen failure rate from genetic criteria: ~95%.",
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (KRAS, NRAS, HRAS) but could not map indication \"non-small cell lung cancer\" to a GWAS EFO trait. Try alternative trait name.",
+    "detected_drug_classes": [
+      "ras_multi_inhibitor",
+      "kras_g12d_inhibitor"
+    ]
+  },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 0.388,
+    "relaxations": [
+      {
+        "variable": "ecog_max",
+        "original_value": 0.0,
+        "relaxed_value": 1.0,
+        "description": "Increase ECOG ceiling from 0 to 1",
+        "new_yield": 0.843,
+        "multiplier": 2.173,
+        "raw_text": "* ECOG performance status 0 or 1"
+      }
+    ]
   },
   "summary": {
     "Statistical Power": 2,

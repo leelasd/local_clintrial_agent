@@ -6,25 +6,25 @@
     {
       "text": "Subject must be \u226518 years of age.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the trial can recruit participants within a specific age range, which is important for feasibility.",
+      "justification": "Age is a standard feasibility criterion for clinical trials.",
       "competing_risk": false
     },
     {
       "text": "Subject must have pathologically documented, locally advanced or metastatic KRASG12C NSCLC (not amenable to curative surgery) that has progressed on prior standard therapies (no more than 3 prior lines of therapies are allowed)",
       "reasoning_category": "Statistical Power",
-      "justification": "This criterion ensures the study population is homogeneous and likely to show a treatment effect.",
+      "justification": "This criterion ensures the study population is representative of a specific patient group with a known treatment challenge.",
       "competing_risk": false
     },
     {
       "text": "Exclusion Criteria",
-      "reasoning_category": "Safety",
-      "justification": "This criterion serves as an exclusion criteria, not directly related to statistical power or feasibility.",
+      "reasoning_category": "Feasibility",
+      "justification": "The text itself indicates that this is an exclusion criteria, not a criterion for inclusion.",
       "competing_risk": false
     },
     {
       "text": "Primary central nervous system (CNS) tumors",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by excluding those with CNS tumors.",
+      "justification": "This criterion protects the patient from potential harm by excluding those with CNS tumors.",
       "competing_risk": true
     },
     {
@@ -42,13 +42,13 @@
     {
       "text": "Known impairment of GI function that would alter the absorption",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patient compliance and data quality, as it may impact treatment efficacy.",
+      "justification": "This criterion ensures patient compliance and data quality, as it relates to medication absorption.",
       "competing_risk": false
     },
     {
       "text": "Active autoimmune disease requiring systemic treatment within past 2 years",
       "reasoning_category": "Safety",
-      "justification": "This criterion protects patients from potential harm by excluding those with active autoimmune diseases that could interfere with treatment.",
+      "justification": "This criterion protects patients from potential harm by excluding those with active autoimmune diseases that may interfere with the study intervention.",
       "competing_risk": false
     },
     {
@@ -60,13 +60,13 @@
     {
       "text": "Major surgical procedures within 28 days or non-study-related minor procedures within 7 days of treatment.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures patient safety and data quality by excluding individuals who may experience complications from surgery or other medical interventions.",
+      "justification": "This criterion ensures patient safety and data quality by excluding individuals who may be at risk for complications from surgery or other medical interventions.",
       "competing_risk": false
     },
     {
       "text": "Prior therapy with KRASG12C inhibitor and/or SHP2 inhibitor",
-      "reasoning_category": "Safety",
-      "justification": "This criterion prioritizes patient safety by excluding individuals who have received prior treatment with KRASG12C inhibitors or SHP2 inhibitors.",
+      "reasoning_category": "Statistical Power",
+      "justification": "This criterion ensures the study population is representative of a specific patient group with a known treatment challenge.",
       "competing_risk": false
     }
   ],
@@ -79,10 +79,7 @@
   "population": {
     "sex": "ALL",
     "age_range": "18 Years+",
-    "std_ages": [
-      "ADULT",
-      "OLDER_ADULT"
-    ],
+    "std_ages": [],
     "healthy_volunteers": false,
     "age_restrictiveness": "Moderate",
     "has_competing_risk_exclusions": true,
@@ -183,10 +180,10 @@
   },
   "trial_design": {
     "design_type": "Adaptive Design",
-    "control_type": "None (Single-Arm)",
-    "superiority_type": "Unclear"
+    "control_type": "Standard of Care",
+    "superiority_type": "Superiority"
   },
-  "indication": "nsclc",
+  "indication": "non-small cell lung cancer",
   "randomization": {
     "randomization_type": "Not described",
     "allocation_ratio": "1:1",
@@ -209,16 +206,67 @@
     "ae_ascertainment": "Not explicitly described (assumed standard investigator reporting)",
     "ae_types_detected": [],
     "class_effects_known": [
-      "ALT elevation",
-      "AST elevation"
+      "AST elevation",
+      "ALT elevation"
     ],
     "safety_endpoints": [],
     "sae_stopping_rules": "Not specified in protocol text",
     "safety_monitoring": "Investigator-reported with sponsor oversight (no DSMB mentioned)"
   },
+  "pharmacogenetics": {
+    "genetic_biomarkers_mentioned": [
+      {
+        "gene": "PTPN11",
+        "drug_class": "shp2_inhibitor",
+        "known_effects": [
+          "Treatment response - SHP2 inhibition",
+          "upstream of RAS"
+        ]
+      },
+      {
+        "gene": "KRAS",
+        "drug_class": "kras_g12c_inhibitor",
+        "known_effects": [
+          "Treatment response - KRAS G12C mutation required"
+        ]
+      }
+    ],
+    "genetic_screen_failure": [
+      {
+        "biomarker_key": "KRAS_G12C",
+        "population_prevalence": 0.13,
+        "estimated_screen_failure_rate": 0.87,
+        "matched_text": "krasg12c"
+      }
+    ],
+    "genetic_screen_failure_summary": "Detected 1 genetic biomarker requirement(s) in eligibility: KRAS_G12C (pop. prevalence ~13%, ~87% screen fail). Worst-case screen failure rate from genetic criteria: ~87%.",
+    "gwas_associations_found": [],
+    "pharmacogenetic_subgroups": [],
+    "stratification_opportunity": null,
+    "safety_pharmacogenetics": [],
+    "summary": "Genes detected (PTPN11, KRAS) but could not map indication \"non-small cell lung cancer\" to a GWAS EFO trait. Try alternative trait name.",
+    "detected_drug_classes": [
+      "shp2_inhibitor",
+      "kras_g12c_inhibitor"
+    ]
+  },
+  "eligibility_yield_simulation": {
+    "baseline_yield": 1.0,
+    "relaxations": [
+      {
+        "variable": "age_min",
+        "original_value": 18.0,
+        "relaxed_value": 13.0,
+        "description": "Decrease minimum age from 18 to 13 years",
+        "new_yield": 1.0,
+        "multiplier": 1.0,
+        "raw_text": "* Subject must be \u226518 years of age."
+      }
+    ]
+  },
   "summary": {
-    "Feasibility": 3,
-    "Statistical Power": 1,
-    "Safety": 7
+    "Feasibility": 4,
+    "Statistical Power": 2,
+    "Safety": 5
   }
 }
