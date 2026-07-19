@@ -12,37 +12,37 @@
     {
       "text": ". Moderate to severe disease.",
       "reasoning_category": "Statistical Power",
-      "justification": "Moderate to severe disease severity is likely to be associated with greater treatment response and thus, higher statistical power.",
+      "justification": "Moderate to severe disease severity is likely to be associated with greater treatment response and thus, a stronger signal for efficacy.",
       "competing_risk": false
     },
     {
       "text": ". Candidate for phototherapy or systemic therapy.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures the patient's eligibility for a specific treatment modality, which is essential for study feasibility and data quality.",
+      "justification": "This criterion ensures that the patient population is suitable for the intervention being tested.",
       "competing_risk": false
     },
     {
       "text": ". Other forms of psoriasis.",
       "reasoning_category": "Safety",
-      "justification": "This criterion excludes patients with other types of psoriasis, potentially protecting them from harm or ensuring a homogenous patient population.",
+      "justification": "This criterion excludes patients with other types of psoriasis, which may be associated with different risks and outcomes.",
       "competing_risk": false
     },
     {
       "text": ". History of recent infection.",
       "reasoning_category": "Safety",
-      "justification": "This criterion aims to protect the patient from potential complications related to infections.",
+      "justification": "This criterion is likely to protect the patient from potential complications related to infections.",
       "competing_risk": false
     },
     {
       "text": ". Prior exposure to TAK-279 or active comparator.",
       "reasoning_category": "Feasibility",
-      "justification": "This criterion ensures that patients have not previously received treatment with TAK-279 or an active comparator, potentially impacting the study's ability to detect a treatment effect.",
+      "justification": "This criterion ensures that patients have not already received treatment with TAK-279 or an active comparator, which may influence the results of the study.",
       "competing_risk": false
     },
     {
       "text": "Other protocol defined inclusion/exclusion criteria apply.",
       "reasoning_category": "Safety",
-      "justification": "This criterion is likely included for safety reasons as it may address potential risks or complications associated with the study's design and procedures.",
+      "justification": "This criterion is likely to ensure patient safety by excluding individuals with specific medical conditions or risk factors.",
       "competing_risk": false
     }
   ],
