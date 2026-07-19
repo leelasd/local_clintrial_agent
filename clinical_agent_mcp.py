@@ -1,6 +1,9 @@
 import json
 import logging
 import re
+import sys
+import contextlib
+from functools import wraps
 from typing import Dict, List, Any
 from mcp.server.fastmcp import FastMCP
 
@@ -11,7 +14,15 @@ logger = logging.getLogger("clinical-agent-mcp")
 # Initialize FastMCP server
 mcp = FastMCP("clinical-trial-agent")
 
+def redirect_stdout_to_stderr(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        with contextlib.redirect_stdout(sys.stderr):
+            return func(*args, **kwargs)
+    return wrapper
+
 @mcp.tool()
+@redirect_stdout_to_stderr
 def analyze_trial_design(nct_id: str) -> str:
     """
     Run the full multi-agent clinical trial analysis pipeline for a target NCT ID.
@@ -32,6 +43,7 @@ def analyze_trial_design(nct_id: str) -> str:
         return f"Error executing pipeline for {nct_id}: {str(e)}"
 
 @mcp.tool()
+@redirect_stdout_to_stderr
 def simulate_eligibility_yield(nct_id: str, cohort_size: int = 10000) -> str:
     """
     Deterministically extract numerical eligibility constraints (Age, ECOG, Hb,
@@ -60,6 +72,7 @@ def simulate_eligibility_yield(nct_id: str, cohort_size: int = 10000) -> str:
         return f"Error running eligibility simulation for {nct_id}: {str(e)}"
 
 @mcp.tool()
+@redirect_stdout_to_stderr
 def query_exact_stats(solver: str, params: dict) -> str:
     """
     Query the in-process RBridge statistical kernel via rpy2 for exact sequential designs,
@@ -157,6 +170,7 @@ def query_exact_stats(solver: str, params: dict) -> str:
         return f"Error executing solver '{solver}' via RBridge: {str(e)}"
 
 @mcp.tool()
+@redirect_stdout_to_stderr
 def search_chembl_bridge(nct_id: str) -> str:
     """
     Query the local PostgreSQL ChEMBL drug bridge to find compound mechanisms,
@@ -228,6 +242,7 @@ def search_chembl_bridge(nct_id: str) -> str:
         return f"Error querying ChEMBL database for {nct_id}: {str(e)}"
 
 @mcp.tool()
+@redirect_stdout_to_stderr
 def query_clinical_db(sql: str) -> str:
     """
     Execute a read-only SQL SELECT query directly against the local PostgreSQL
