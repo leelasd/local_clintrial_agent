@@ -58,6 +58,53 @@ clinical-agent
 python power_visualization.py
 ```
 
+## 📊 Statistical Bridge (RBridge)
+
+The agent integrates direct ABI-compatible R package wrappers using `rpy2` under a unified `RBridge` class ([clintrial_agent/stats/r_bridge.py](file:///Users/leelasdodda/Documents/Codes/local_clintrial_agent/clintrial_agent/stats/r_bridge.py)), allowing exact mathematical calculations beyond fixed-sample formulas:
+
+*   **Group Sequential Designs (`rpact`):** Exact sample size, event counts, and boundary inflation factors using O'Brien-Fleming or Pocock alpha spending functions.
+*   **Simon's Two-Stage Design (`clinfun`):** Minimax and optimal sample sizes and critical values for Phase II oncology screening.
+*   **Non-Proportional Hazards (`gsDesign2`):** Sample size and event counting under non-proportional hazards (NPH) assumptions using MaxCombo or average hazard ratio solvers.
+*   **Graphical Multiplicity (`graphicalMCP`):** Exact alpha recycling and step-down testing rejections for multiple co-primary endpoints.
+
+---
+
+## 🔌 Model Context Protocol (MCP) Server
+
+The agent exposes a standardized **FastMCP Server** ([clinical_agent_mcp.py](file:///Users/leelasdodda/Documents/Codes/local_clintrial_agent/clinical_agent_mcp.py)) over stdio transport. It registers 5 production-grade tools:
+
+1.  **`analyze_trial_design`**: Runs the complete textbook-aligned analysis on any study by NCT ID.
+2.  **`simulate_eligibility_yield`**: Evaluates inclusion/exclusion criteria restrictiveness, generating a synthetic cohort and simulating relaxation multipliers.
+3.  **`query_exact_stats`**: Dispatches study parameters to the RBridge solver (`rpact`, `clinfun`, `gsDesign`, `gsDesign2`, `graphicalMCP`).
+4.  **`search_chembl_bridge`**: Queries intervention target structures in ChEMBL.
+5.  **`query_clinical_db`**: Secure, `SELECT`-only SQL gateway to the local AACT PostgreSQL database.
+
+### Registration:
+The server is registered globally inside `~/.gemini/config/mcp_config.json`. To run manually:
+```bash
+uv run clinical_agent_mcp.py
+```
+
+---
+
+## 🤖 AWS Strands Multi-Agent Swarm (Under Development)
+
+We have authored an architectural design proposal to migrate this pipeline to the **AWS Strands Agents SDK** ([strands_agent_integration_proposal.md](file:///Users/leelasdodda/Documents/Codes/local_clintrial_agent/strands_agent_integration_proposal.md)):
+*   **Collaborative Swarm:** Organizes specialized agents (*Extractor*, *Biostatistician*, *Safety*, *Feasibility*) coordinating state and context using autonomous handoffs.
+*   **Local Inference Backends:** Supports local **Ollama** (`gemma2:2b`) and high-performance **llama.cpp** servers running cached model files (e.g. `gemma-4-E2B-it-Q8_0.gguf`) with Metal GPU acceleration.
+*   **Decoupled MCP Integration:** Uses `MCPClient` and `StdioServerParameters` stdio transport to bind our MCP server tools directly into the agents.
+
+---
+
+## 🧪 Pipeline Validation Suite
+
+The agent includes a self-testing validation suite ([validate_pipeline.py](file:///Users/leelasdodda/Documents/Codes/local_clintrial_agent/validate_pipeline.py)) to verify database connectivity, statistical bridge exact calculations, and MCP safety guardrails:
+```bash
+python validate_pipeline.py
+```
+
+---
+
 ## Configuration
 
 All pipeline behavior is controlled by [`pipeline_config.yaml`](pipeline_config.yaml) (490 lines, 30+ top-level keys). The file must be in the same directory as `design_agent_pipeline.py`. Key sections:
