@@ -58,7 +58,7 @@ class RBridge:
                 except PackageNotInstalledError as e:
                     raise RPackageError(
                         f"R package '{pkg_name}' is not installed. "
-                        f"Install with: Rscript -e 'install.packages(\"{pkg_name}\")'"
+                        f"Run './setup_r_deps.R' or install via: Rscript -e 'install.packages(\"{pkg_name}\")'"
                     ) from e
 
     @staticmethod
@@ -81,7 +81,7 @@ class RBridge:
                 except PackageNotInstalledError as e:
                     raise RPackageError(
                         f"R package '{pkg_name}' is not installed. "
-                        f"Install with: Rscript -e 'install.packages(\"{pkg_name}\")'"
+                        f"Run './setup_r_deps.R' or install via: Rscript -e 'install.packages(\"{pkg_name}\")'"
                     ) from e
 
     def _eval_to_json(self, r_expr: str) -> dict | list:
