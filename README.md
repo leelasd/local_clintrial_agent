@@ -146,10 +146,10 @@ uv run python strands_clinical_graph.py \
   --comparison-name sle_tyk2_portfolio
 ```
 
-### Step 3: Run Multi-Agent Swarm Orchestrator
+### Step 3: Run Multi-Agent Swarm Orchestrator (Reference Example)
 Run the cooperative Swarm orchestrator with dynamic handoffs:
 ```bash
-uv run python strands_clinical_swarm.py \
+uv run python examples/strands_clinical_swarm.py \
   --trials NCT03252587 NCT05617677 NCT05620407 \
   --comparison-name sle_tyk2_swarm
 ```

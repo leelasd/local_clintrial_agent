@@ -17,7 +17,7 @@ R engine ≥4.2 with packages: `rpact`, `gsDesign`, `gsDesign2`, `graphicalMCP` 
 | Command | File | LLM | Needs DB | Needs R |
 |---|---|---|---|---|
 | `python strands_clinical_graph.py --trials NCT1 NCT2 --comparison-name foo` | `strands_clinical_graph.py` | llama-server :8080 | yes | yes (metafor) |
-| `python strands_clinical_swarm.py --trials NCT1 NCT2 --comparison-name foo` | `strands_clinical_swarm.py` | llama-server :8080 | yes | yes |
+| `python examples/strands_clinical_swarm.py --trials NCT1 NCT2 --comparison-name foo` | `examples/strands_clinical_swarm.py` | llama-server :8080 | yes | yes |
 | `uv run clinical_agent_mcp.py` | `clinical_agent_mcp.py` | none (server only) | yes | yes |
 | `python design_agent_pipeline.py [--trials NCT1 ...] [--comparison-name foo]` | `design_agent_pipeline.py` | Ollama | optional* | optional* |
 | `python validate_pipeline.py` | `validate_pipeline.py` | none | yes | yes |
