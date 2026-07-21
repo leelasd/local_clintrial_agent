@@ -14,6 +14,9 @@ dependencies = [
     "pingouin>=0.6.1",
     "rpy2>=3.6.7",
     "plotnine>=0.15.7",
+    "psycopg2-binary>=2.9.12",
+    "mcp>=1.28.1",
+    "strands-agents>=1.48.0",
 ]
 
 [project.scripts]

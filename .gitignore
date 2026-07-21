@@ -13,5 +13,12 @@ legacy_tests/
 # Session logs
 session-*.md
 
+# Vim & Editor swap files
+*.swp
+*.swo
+
+# Temporary Memory Pointers
+*_pointer.json
+
 # OS
 .DS_Store
