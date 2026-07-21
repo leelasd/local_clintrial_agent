@@ -1,34 +1,35 @@
+import os
 import requests
 import json
 import math
 import re
-import ollama
+import logging
 import argparse
 from pathlib import Path
 from collections import Counter
-from scipy import stats
-import yaml
 
 # Import clintrial_agent modules
 from clintrial_agent.config import CONFIG, INDICATION_PARAMS, INDICATION_ALIASES, DEFAULT_INDICATION_PARAMS
 from clintrial_agent.data import fetch_trial
-from clintrial_agent.stats import analyze_sample_size, _dichotomous_power_curve, _survival_power_curve
+from clintrial_agent.stats import analyze_sample_size
 from clintrial_agent.llm import infer_indication, classify_eligibility_criteria
 from clintrial_agent.reporting import generate_power_plots
 from clintrial_agent.eligibility import parse_constraints, generate_synthetic_cohort, simulate_relaxation
 
-try:
-    import matplotlib
-    matplotlib.use('Agg')
-    import matplotlib.pyplot as plt
-    import matplotlib.ticker as mticker
-    import numpy as np
-    HAS_MPL = True
-except ImportError:
-    HAS_MPL = False
+logger = logging.getLogger(__name__)
 
 
-# Indication inference imported from clintrial_agent.llm
+def get_protocol_text(protocol):
+    """Build concatenated lowercase description text from protocol modules.
+    
+    Combines briefSummary, detailedDescription, and eligibilityCriteria
+    into a single searchable text block for keyword matching.
+    """
+    return (
+        protocol.get('descriptionModule', {}).get('briefSummary', '') + ' ' +
+        (protocol.get('descriptionModule', {}).get('detailedDescription', '') or '') + ' ' +
+        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
+    ).lower()
 
 
 def classify_design_from_api(protocol):
@@ -92,11 +93,7 @@ def classify_design_from_api(protocol):
     
     # Determine superiority_type from phase and purpose
     # Noninferiority/equivalence trials are more common in Phase 3 with active comparators
-    description_text = (
-        protocol.get('descriptionModule', {}).get('briefSummary', '') + ' ' +
-        (protocol.get('descriptionModule', {}).get('detailedDescription', '') or '') + ' ' +
-        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
-    ).lower()
+    description_text = get_protocol_text(protocol)
     mentions_noninferiority = any(k in description_text for k in CONFIG['noninferiority_keywords'])
     
     if is_phase1:
@@ -194,11 +191,7 @@ def analyze_randomization(protocol):
     allocation_ratio = '1:1' if num_arms <= 2 else f'1:1:1' if num_arms == 3 else f'1:' * (num_arms - 1) + '1'
     
     # Check description text for randomization details
-    description_text = (
-        protocol.get('descriptionModule', {}).get('briefSummary', '') + ' ' +
-        protocol.get('descriptionModule', {}).get('detailedDescription', '') + ' ' +
-        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
-    ).lower()
+    description_text = get_protocol_text(protocol)
     
     # Detect randomization type from keywords
     has_stratified = any(k in description_text for k in ['stratified', 'stratum', 'stratification'])
@@ -236,11 +229,7 @@ def analyze_randomization(protocol):
 
 def analyze_adaptive_design(protocol, api_design):
     """Detect adaptive design features from protocol description text and API data."""
-    description_text = (
-        protocol.get('descriptionModule', {}).get('briefSummary', '') + ' ' +
-        (protocol.get('descriptionModule', {}).get('detailedDescription', '') or '') + ' ' +
-        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
-    ).lower()
+    description_text = get_protocol_text(protocol)
     
     # Check API for sequential/intervention model suggesting adaptation
     intervention_model = api_design.get('intervention_model', '')
@@ -315,11 +304,7 @@ def analyze_adaptive_design(protocol, api_design):
 
 def analyze_safety_adverse_events(protocol, endpoints):
     """Extract safety/AE reporting methods, known AE types, and stopping rules from protocol."""
-    description_text = (
-        protocol.get('descriptionModule', {}).get('briefSummary', '') + ' ' +
-        (protocol.get('descriptionModule', {}).get('detailedDescription', '') or '') + ' ' +
-        protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
-    ).lower()
+    description_text = get_protocol_text(protocol)
     
     outcomes = protocol.get('outcomesModule', {})
     safety_outcomes = []
@@ -780,8 +765,8 @@ def analyze_trial(nct_id):
     # Fetch trial data using local database + API fallback
     protocol = fetch_trial(nct_id)
     
-    ident = protocol['identificationModule']
-    design_mod = protocol['designModule']
+    ident = protocol.get('identificationModule', {})
+    design_mod = protocol.get('designModule', {})
     title = ident.get('briefTitle', 'N/A')
     phase = design_mod.get('phases', ['N/A'])[0] if design_mod.get('phases') else 'N/A'
     
@@ -867,7 +852,7 @@ def analyze_trial(nct_id):
     print(f"  Enrollment: {population['enrollment_count']} ({population['enrollment_type']})")
     
     # Run Eligibility Constraint & Yield Simulation
-    eligibility_text = protocol['eligibilityModule']['eligibilityCriteria']
+    eligibility_text = protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
     constraints = parse_constraints(eligibility_text)
     cohort_df = generate_synthetic_cohort(size=10000)
     yield_results = simulate_relaxation(cohort_df, constraints)
@@ -950,7 +935,7 @@ def analyze_trial(nct_id):
     print(f"  Summary: {pharmacogenetics['summary']}")
     
     # --- STEP 2: LLM classification of eligibility (batched) ---
-    eligibility_text = protocol['eligibilityModule']['eligibilityCriteria']
+    eligibility_text = protocol.get('eligibilityModule', {}).get('eligibilityCriteria', '')
     eligibility = classify_eligibility_criteria(protocol, api_design, eligibility_text)
     criteria_total = len(eligibility)
     criteria_classified = len(eligibility)
@@ -1031,6 +1016,7 @@ def analyze_trial(nct_id):
     }
     
     # Save
+    os.makedirs('analysis_json', exist_ok=True)
     output_file = f"analysis_json/{nct_id}_analysis.json"
     with open(output_file, 'w') as f:
         json.dump(final_output, indent=2, fp=f)
@@ -1101,9 +1087,13 @@ if __name__ == '__main__':
             nct_id, drug = entry
         else:
             nct_id, drug = entry, None
-        result = analyze_trial(nct_id)
-        result['drug'] = drug or result.get('drug', nct_id)
-        all_results.append(result)
+        try:
+            result = analyze_trial(nct_id)
+            result['drug'] = drug or result.get('drug', nct_id)
+            all_results.append(result)
+        except Exception as e:
+            logger.error(f"Failed to analyze {nct_id}: {e}", exc_info=True)
+            print(f"\n⚠ Skipped {nct_id} due to error: {e}")
     
     print("\n" + "=" * 80)
     print("POWER COMPARISON")

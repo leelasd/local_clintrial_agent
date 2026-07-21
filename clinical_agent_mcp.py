@@ -252,7 +252,9 @@ def query_clinical_db(sql: str) -> str:
     """
     sql_stripped = sql.strip().lower()
     
-    # 1. Read-only SELECT enforcement
+    # Defense-in-depth Layer 1: Regex keyword filter (soft guard)
+    # NOTE: This is NOT sufficient by itself — regex is trivially bypassable.
+    # The real security is Layer 2 (database-level read-only user below).
     if not sql_stripped.startswith("select"):
         return "Security Violation: Only SELECT queries are permitted."
         
@@ -262,10 +264,12 @@ def query_clinical_db(sql: str) -> str:
             return f"Security Violation: Mutating keyword '{kw}' is prohibited."
             
     try:
-        from clintrial_agent.data.db import get_db_connection
+        # Defense-in-depth Layer 2: Connect as clintrial_readonly (GRANT SELECT ONLY)
+        # Even if a SQL injection bypasses the regex filter, the DB will reject mutations.
+        from clintrial_agent.data.db import get_readonly_db_connection
         from psycopg2.extras import DictCursor
         
-        conn = get_db_connection()
+        conn = get_readonly_db_connection()
         cur = conn.cursor(cursor_factory=DictCursor)
         
         # Execute query

@@ -3,6 +3,7 @@
 __pycache__/
 *.pyc
 *.pyo
+*.egg-info/
 
 # Textbook (full text, not tracked)
 textbook/
@@ -22,3 +23,15 @@ session-*.md
 
 # OS
 .DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Environment / Secrets
+.env
+.env.local
+
+# Output artifacts (may contain sensitive clinical data)
+analysis_json/
+images/

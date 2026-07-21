@@ -12,6 +12,18 @@ def get_db_connection():
     user = CONFIG.get('db', {}).get('user', None)
     return psycopg2.connect(dbname=dbname, host=host, user=user)
 
+
+def get_readonly_db_connection():
+    """Create a read-only connection to PostgreSQL using the clintrial_readonly role.
+    
+    This user has GRANT SELECT only on ctgov.*, public.*, and bridge.* schemas.
+    Used by query_clinical_db MCP tool to enforce SQL injection safety at the
+    database level rather than relying on regex-based keyword blocking.
+    """
+    dbname = CONFIG.get('db', {}).get('name', 'chembl_37')
+    host = CONFIG.get('db', {}).get('host', 'localhost')
+    return psycopg2.connect(dbname=dbname, host=host, user='clintrial_readonly')
+
 def _map_phase(phase_str):
     if not phase_str:
         return ["N/A"]
