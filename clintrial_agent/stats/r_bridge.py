@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import subprocess
 from typing import Any
 from rpy2.rinterface_lib.embedded import RRuntimeError
@@ -24,6 +25,14 @@ if not _R_HOME:
 
 import rpy2.robjects as ro
 from rpy2.robjects.packages import PackageNotInstalledError, importr
+
+def _sanitize_id(val: str, name: str = "parameter") -> str:
+    """Sanitize a string parameter passed to R to prevent R code injection."""
+    if not isinstance(val, str):
+        val = str(val)
+    if not re.match(r'^[a-zA-Z0-9_\-\.\:]+$', val):
+        raise ValueError(f"Invalid characters in R parameter '{name}': {val!r}")
+    return val
 
 class RPackageError(Exception):
     """Raised when a required R package is not installed or fails to load."""
@@ -63,6 +72,7 @@ class RBridge:
 
     def _ensure_package(self, pkg_name: str) -> None:
         """Ensure an R package is loaded."""
+        pkg_name = _sanitize_id(pkg_name, "package_name")
         if pkg_name not in self._loaded_packages:
             from rpy2.robjects.conversion import localconverter
             with localconverter(ro.default_converter):
@@ -103,10 +113,12 @@ class RBridge:
         spending_function: str = "asOF",
     ) -> dict:
         """Create a group sequential design using rpact."""
+        alpha, beta, sided = float(alpha), float(beta), int(sided)
+        spending_function = _sanitize_id(spending_function, "spending_function")
         if information_rates is None:
             information_rates = [0.33, 0.7, 1.0]
 
-        ir_str = ",".join(str(x) for x in information_rates)
+        ir_str = ",".join(str(float(x)) for x in information_rates)
         r_code = f"""
         design <- getDesignGroupSequential(
             sided = {sided},
@@ -454,13 +466,14 @@ class RBridge:
     ) -> dict:
         """Generate a blocked randomization list for trial participants."""
         self._ensure_package("blockrand")
+        n, num_levels = int(n), int(num_levels)
         if levels is None:
             levels = [chr(65 + i) for i in range(num_levels)]
         if block_sizes is None:
             block_sizes = [2, 4]
 
-        levels_str = ",".join(f'"{l}"' for l in levels)
-        bs_str = ",".join(str(b) for b in block_sizes)
+        levels_str = ",".join(f'"{_sanitize_id(l, "level")}"' for l in levels)
+        bs_str = ",".join(str(int(b)) for b in block_sizes)
 
         r_code = f"""
         res <- blockrand(
@@ -490,6 +503,10 @@ class RBridge:
     ) -> dict:
         """Calculate sample size for bioequivalence testing (TOST)."""
         self._ensure_package("PowerTOST")
+        alpha, target_power, cv = float(alpha), float(target_power), float(cv)
+        theta0, theta1, theta2 = float(theta0), float(theta1), float(theta2)
+        design = _sanitize_id(design, "design")
+
         r_code = f"""
         res <- sampleN.TOST(
             alpha = {alpha},
@@ -521,6 +538,7 @@ class RBridge:
     ) -> dict:
         """Calculate Simon's optimal and minimax two-stage designs for Phase II trials."""
         self._ensure_package("clinfun")
+        pu, pa, ep1, ep2, nmax = float(pu), float(pa), float(ep1), float(ep2), int(nmax)
         # Ensure pu < pa for efficacy trials
         if pu >= pa:
             pu, pa = min(pu, pa), max(pu, pa)
@@ -536,8 +554,13 @@ class RBridge:
             nmax = {nmax}
         )
         adm <- clinfun:::twostage.admissible(res)
-        minimax <- adm[1, ]
-        optimal <- adm[nrow(adm), ]
+        if (is.matrix(adm)) {{
+            minimax <- adm[1, ]
+            optimal <- adm[nrow(adm), ]
+        }} else {{
+            minimax <- adm
+            optimal <- adm
+        }}
         .result <- list(
             pu = {pu},
             pa = {pa},
