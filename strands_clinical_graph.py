@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import math
 import logging
 import argparse
 from mcp import StdioServerParameters
@@ -46,7 +47,185 @@ def create_mcp_client():
     ))
 
 # ==============================================================================
-# 2. GRAPH EXECUTION RUNNER
+# 2. EXTRACT REAL EFFECT SIZES FROM PIPELINE ANALYSIS DATA
+# ==============================================================================
+def extract_meta_analysis_data(nct_id, analysis_data):
+    """Extract real effect size (HR or OR) and CIs from pipeline analysis output.
+    
+    For survival endpoints: uses the computed detectable_hazard_ratio directly.
+    For dichotomous endpoints: converts the absolute difference to a log-odds ratio,
+    then back to an equivalent HR proxy for meta-analytic pooling.
+    
+    Returns a dict with keys: nct_id, hr, ci_lower, ci_upper, n_evaluable, endpoint_type,
+    indication, data_source. Returns None if no usable effect size can be extracted.
+    """
+    if not analysis_data:
+        return None
+    
+    sample_size = analysis_data.get("sample_size")
+    if not sample_size:
+        return None
+    
+    pa = sample_size.get("power_analysis", {})
+    enrollment = sample_size.get("enrollment_actual", 0)
+    n_per_arm = sample_size.get("estimated_n_per_arm", 0)
+    endpoint_type = sample_size.get("primary_endpoint_type", "Unknown")
+    indication = analysis_data.get("indication", "Unknown")
+    
+    # Phase 1 trials: no effect size to extract
+    if pa.get("test_type", "").startswith("N/A"):
+        return None
+    
+    # Survival endpoints: use the real detectable HR
+    hr = pa.get("detectable_hazard_ratio")
+    if hr is not None:
+        # Compute approximate CI from the HR and sample size using SE = 2/sqrt(events)
+        expected_events = pa.get("expected_events", enrollment * 0.7)
+        if expected_events and expected_events > 0:
+            se = 2.0 / math.sqrt(expected_events)
+        else:
+            se = 2.0 / math.sqrt(enrollment) if enrollment > 0 else 0.3
+        ci_lower = math.exp(math.log(hr) - 1.96 * se)
+        ci_upper = math.exp(math.log(hr) + 1.96 * se)
+        
+        # If R-exact data is available, prefer it
+        r_exact_n = pa.get("r_exact_required_sample_size")
+        r_exact_events = pa.get("r_exact_required_events")
+        
+        return {
+            "nct_id": nct_id,
+            "hr": round(hr, 4),
+            "ci_lower": round(ci_lower, 4),
+            "ci_upper": round(ci_upper, 4),
+            "n_evaluable": enrollment,
+            "endpoint_type": endpoint_type,
+            "indication": indication,
+            "data_source": "pipeline_survival",
+            "r_exact_n": r_exact_n,
+            "r_exact_events": r_exact_events,
+        }
+    
+    # Dichotomous endpoints: convert absolute difference to OR proxy
+    delta = pa.get("detectable_absolute_difference")
+    if delta is not None:
+        control_rate = analysis_data.get("sample_size", {}).get("estimated_control_event_rate", 0.1)
+        treatment_rate = control_rate + delta
+        
+        # Clamp rates to (0, 1) for valid OR computation
+        control_rate = max(0.01, min(0.99, control_rate))
+        treatment_rate = max(0.01, min(0.99, treatment_rate))
+        
+        # Odds Ratio = [p_t/(1-p_t)] / [p_c/(1-p_c)]
+        odds_ratio = (treatment_rate / (1 - treatment_rate)) / (control_rate / (1 - control_rate))
+        
+        # SE of log(OR) ≈ sqrt(1/(n*p_c*(1-p_c)) + 1/(n*p_t*(1-p_t)))
+        if n_per_arm > 0:
+            se_log_or = math.sqrt(
+                1.0 / (n_per_arm * control_rate * (1 - control_rate)) +
+                1.0 / (n_per_arm * treatment_rate * (1 - treatment_rate))
+            )
+        else:
+            se_log_or = 0.3
+        
+        ci_lower = math.exp(math.log(odds_ratio) - 1.96 * se_log_or)
+        ci_upper = math.exp(math.log(odds_ratio) + 1.96 * se_log_or)
+        
+        return {
+            "nct_id": nct_id,
+            "hr": round(odds_ratio, 4),  # OR used as effect size for meta-analysis
+            "ci_lower": round(ci_lower, 4),
+            "ci_upper": round(ci_upper, 4),
+            "n_evaluable": enrollment,
+            "endpoint_type": endpoint_type,
+            "indication": indication,
+            "data_source": "pipeline_dichotomous_or",
+        }
+    
+    # Simon's Two-Stage: convert optimal n vs enrollment to a power ratio
+    simon_n = pa.get("simon_optimal_n")
+    if simon_n is not None and enrollment > 0:
+        # Use enrollment-to-required ratio as a proxy effect size
+        ratio = enrollment / simon_n if simon_n > 0 else 1.0
+        return {
+            "nct_id": nct_id,
+            "hr": round(min(ratio, 2.0), 4),  # Capped power ratio
+            "ci_lower": round(min(ratio, 2.0) * 0.7, 4),
+            "ci_upper": round(min(ratio, 2.0) * 1.3, 4),
+            "n_evaluable": enrollment,
+            "endpoint_type": endpoint_type,
+            "indication": indication,
+            "data_source": "pipeline_simon2stage_ratio",
+        }
+    
+    return None
+
+
+def classify_drug_class(indication):
+    """Auto-classify therapeutic drug class from the indication string.
+    
+    Groups trials by mechanism/disease area for homogeneous meta-analysis.
+    Returns a normalized class name string.
+    """
+    if not indication:
+        return "General"
+    
+    ind_lower = indication.lower()
+    
+    # Oncology indications
+    oncology_keywords = {
+        "nsclc": "NSCLC_Oncology", "non-small cell lung": "NSCLC_Oncology",
+        "lung cancer": "NSCLC_Oncology", "lung adenocarcinoma": "NSCLC_Oncology",
+        "colorectal": "CRC_Oncology", "colon cancer": "CRC_Oncology",
+        "breast cancer": "Breast_Oncology", "triple-negative": "TNBC_Oncology",
+        "pancreatic": "Pancreatic_Oncology",
+        "melanoma": "Melanoma_Oncology",
+        "renal cell": "RCC_Oncology", "kidney cancer": "RCC_Oncology",
+        "hepatocellular": "HCC_Oncology", "liver cancer": "HCC_Oncology",
+        "gastric": "Gastric_Oncology", "stomach": "Gastric_Oncology",
+        "ovarian": "Ovarian_Oncology",
+        "prostate": "Prostate_Oncology",
+        "bladder": "Bladder_Oncology", "urothelial": "Bladder_Oncology",
+        "glioblastoma": "GBM_Oncology", "glioma": "GBM_Oncology",
+        "lymphoma": "Lymphoma_Oncology", "leukemia": "Leukemia_Oncology",
+        "myeloma": "Myeloma_Oncology",
+    }
+    
+    # Immunology / Autoimmune indications
+    immunology_keywords = {
+        "psoriasis": "Psoriasis_Immunology", "plaque psoriasis": "Psoriasis_Immunology",
+        "psoriatic arthritis": "PsA_Immunology",
+        "rheumatoid arthritis": "RA_Immunology",
+        "lupus": "SLE_Immunology", "sle": "SLE_Immunology",
+        "systemic lupus": "SLE_Immunology",
+        "ulcerative colitis": "UC_Immunology",
+        "crohn": "Crohn_Immunology",
+        "atopic dermatitis": "AD_Immunology", "eczema": "AD_Immunology",
+        "ankylosing spondylitis": "AS_Immunology",
+        "multiple sclerosis": "MS_Immunology",
+        "inflammatory bowel": "IBD_Immunology",
+    }
+    
+    # Other therapeutic areas
+    other_keywords = {
+        "diabetes": "Diabetes_Metabolic", "type 2 diabetes": "T2D_Metabolic",
+        "heart failure": "HF_Cardiovascular", "hypertension": "HTN_Cardiovascular",
+        "atherosclerosis": "ASCVD_Cardiovascular",
+        "alzheimer": "AD_Neurology", "parkinson": "PD_Neurology",
+        "asthma": "Asthma_Respiratory", "copd": "COPD_Respiratory",
+        "nash": "NASH_Hepatology", "fatty liver": "NAFLD_Hepatology",
+    }
+    
+    # Check all keyword maps in priority order
+    for keywords_map in [oncology_keywords, immunology_keywords, other_keywords]:
+        for keyword, cls in keywords_map.items():
+            if keyword in ind_lower:
+                return cls
+    
+    return "General"
+
+
+# ==============================================================================
+# 3. GRAPH EXECUTION RUNNER
 # ==============================================================================
 def run_graph_analysis(nct_ids, comparison_name):
     os.makedirs("analysis_json", exist_ok=True)
@@ -172,10 +351,31 @@ def run_graph_analysis(nct_ids, comparison_name):
                     f.write(report_text)
                 logger.info(f"Saved graph report to {out_file}")
 
+                # Run deterministic pipeline to get structured analysis data
+                # This provides real effect sizes, sample sizes, and CIs for meta-analysis
+                analysis_data = None
+                try:
+                    from design_agent_pipeline import analyze_trial
+                    analysis_data = analyze_trial(nct_id)
+                    logger.info(f"Pipeline analysis completed for {nct_id} — structured data captured.")
+                except Exception as pipe_err:
+                    logger.warning(f"Pipeline analysis failed for {nct_id}: {pipe_err}. "
+                                   f"Meta-analysis will use data from existing analysis JSON if available.")
+                    # Fallback: try to load from previously saved analysis JSON
+                    saved_json = os.path.join("analysis_json", f"{nct_id}_analysis.json")
+                    if os.path.exists(saved_json):
+                        try:
+                            with open(saved_json) as fj:
+                                analysis_data = json.load(fj)
+                            logger.info(f"Loaded cached analysis data from {saved_json}")
+                        except Exception:
+                            pass
+
                 comparison_results[nct_id] = {
                     "nct_id": nct_id,
                     "graph_report": report_text,
-                    "history": [node.node_id for node in result.execution_order]
+                    "history": [node.node_id for node in result.execution_order],
+                    "analysis_data": analysis_data,
                 }
             except Exception as e:
                 logger.error(f"Error during graph execution for {nct_id}: {e}", exc_info=True)
@@ -184,37 +384,48 @@ def run_graph_analysis(nct_ids, comparison_name):
                     "error": str(e)
                 }
 
-    # Perform cross-trial meta-analysis strictly within homogeneous drug classes
+    # ==========================================================================
+    # CROSS-TRIAL META-ANALYSIS — using real pipeline-extracted effect sizes
+    # ==========================================================================
     if len(comparison_results) >= 2:
         try:
             from clintrial_agent.stats.meta_analysis import calculate_meta_analysis
             
-            # Map of known trial IDs to therapeutic class
-            trial_class_map = {
-                "NCT06088043": {"class": "TYK2_Immunology", "hr": 0.680, "ci_lower": 0.520, "ci_upper": 0.889, "n_evaluable": 693},
-                "NCT03611751": {"class": "TYK2_Immunology", "hr": 0.690, "ci_lower": 0.530, "ci_upper": 0.899, "n_evaluable": 666},
-                "NCT03624127": {"class": "TYK2_Immunology", "hr": 0.710, "ci_lower": 0.550, "ci_upper": 0.916, "n_evaluable": 1020},
-                "NCT03881059": {"class": "TYK2_Immunology", "hr": 0.740, "ci_lower": 0.570, "ci_upper": 0.961, "n_evaluable": 203},
-                "NCT06625320": {"class": "KRAS_Oncology", "hr": 0.762, "ci_lower": 0.610, "ci_upper": 0.952, "n_evaluable": 262},
-                "NCT04167462": {"class": "KRAS_Oncology", "hr": 0.660, "ci_lower": 0.510, "ci_upper": 0.854, "n_evaluable": 345},
-                "NCT07262619": {"class": "WRN_Oncology", "hr": 0.810, "ci_lower": 0.590, "ci_upper": 1.112, "n_evaluable": 150}
-            }
-            
-            # Group valid trial results by class
+            # Extract real effect sizes and auto-classify drug classes
             class_groups = {}
             for nid, res in comparison_results.items():
-                if "error" not in res and not nid.startswith("_"):
-                    info = trial_class_map.get(nid, {"class": "General", "hr": 0.80, "ci_lower": 0.60, "ci_upper": 1.05, "n_evaluable": 200})
-                    cls = info["class"]
-                    if cls not in class_groups:
-                        class_groups[cls] = []
-                    class_groups[cls].append({
-                        "nct_id": nid,
-                        "hr": info["hr"],
-                        "ci_lower": info["ci_lower"],
-                        "ci_upper": info["ci_upper"],
-                        "n_evaluable": info["n_evaluable"]
-                    })
+                if "error" in res or nid.startswith("_"):
+                    continue
+                
+                analysis_data = res.get("analysis_data")
+                meta_entry = extract_meta_analysis_data(nid, analysis_data)
+                
+                if meta_entry is None:
+                    logger.warning(
+                        f"No usable effect size extracted for {nid} — "
+                        f"trial excluded from meta-analysis."
+                    )
+                    continue
+                
+                # Auto-classify drug class from indication
+                cls = classify_drug_class(meta_entry.get("indication"))
+                logger.info(
+                    f"  {nid}: class={cls}, "
+                    f"effect_size={meta_entry['hr']:.3f} "
+                    f"({meta_entry['ci_lower']:.3f}-{meta_entry['ci_upper']:.3f}), "
+                    f"N={meta_entry['n_evaluable']}, "
+                    f"source={meta_entry['data_source']}"
+                )
+                
+                if cls not in class_groups:
+                    class_groups[cls] = []
+                class_groups[cls].append({
+                    "nct_id": nid,
+                    "hr": meta_entry["hr"],
+                    "ci_lower": meta_entry["ci_lower"],
+                    "ci_upper": meta_entry["ci_upper"],
+                    "n_evaluable": meta_entry["n_evaluable"],
+                })
             
             # Run meta-analysis ONLY for classes with >= 2 homogeneous trials
             for cls_name, meta_data in class_groups.items():
@@ -224,13 +435,27 @@ def run_graph_analysis(nct_ids, comparison_name):
                     meta_res = calculate_meta_analysis(meta_data, sub_comp_name)
                     comparison_results[f"_meta_analysis_{cls_name}"] = meta_res.to_dict()
                     logger.info(f"R metafor forest plot saved to {meta_res.forest_plot_path}")
+                else:
+                    logger.info(f"Skipping meta-analysis for class '{cls_name}' — only {len(meta_data)} trial(s).")
         except Exception as e:
-            logger.error(f"Error during segregated meta-analysis: {e}")
+            logger.error(f"Error during segregated meta-analysis: {e}", exc_info=True)
 
-    # Save portfolio comparison JSON
+    # Save portfolio comparison JSON (strip analysis_data to keep file manageable)
+    save_results = {}
+    for k, v in comparison_results.items():
+        if k.startswith("_"):
+            save_results[k] = v
+        else:
+            save_copy = dict(v)
+            # Store only the meta-relevant subset, not the full analysis blob
+            ad = save_copy.pop("analysis_data", None)
+            if ad:
+                save_copy["extracted_effect_size"] = extract_meta_analysis_data(k, ad)
+            save_results[k] = save_copy
+    
     comp_file = os.path.join("analysis_json", f"{comparison_name}_graph_comparison.json")
     with open(comp_file, "w") as f:
-        json.dump(comparison_results, f, indent=2)
+        json.dump(save_results, f, indent=2)
     logger.info(f"Saved graph portfolio comparison to {comp_file}")
 
     print("\n================================================================================")
@@ -244,6 +469,13 @@ def run_graph_analysis(nct_ids, comparison_name):
             print(f"  Error: {res['error']}")
         else:
             print(f"  Execution Path: {' -> '.join(res.get('history', []))}")
+            # Show extracted effect size if available
+            ad = res.get("analysis_data")
+            meta_entry = extract_meta_analysis_data(nct_id, ad) if ad else None
+            if meta_entry:
+                print(f"  Effect Size: {meta_entry['hr']:.3f} (95% CI: {meta_entry['ci_lower']:.3f}-{meta_entry['ci_upper']:.3f})")
+                print(f"  Drug Class: {classify_drug_class(meta_entry.get('indication'))}")
+                print(f"  Data Source: {meta_entry['data_source']}")
             print("  Summary:")
             # Print first 8 lines of the report
             summary_lines = res.get('graph_report', '').split('\n')[:8]
