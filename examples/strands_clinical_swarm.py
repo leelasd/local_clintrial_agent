@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import sys
+from pathlib import Path
 from mcp import stdio_client, StdioServerParameters
 from strands import Agent
 from strands.multiagent import Swarm
@@ -30,9 +31,9 @@ def create_model():
     )
 
 # Identify the python executable and MCP script path dynamically
-current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = Path(__file__).parent.parent
 python_bin = sys.executable
-mcp_script = os.path.join(current_dir, "clinical_agent_mcp.py")
+mcp_script = str(project_root / "clinical_agent_mcp.py")
 
 def create_mcp_client():
     return MCPClient(lambda: stdio_client(
