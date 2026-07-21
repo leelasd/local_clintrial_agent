@@ -8,52 +8,36 @@ An automated, local-first clinical trial analysis and audit system powered by **
 
 ```mermaid
 flowchart TD
-    subgraph Orchestration ["Orchestration Layer (Strands Framework)"]
-        Graph["strands_clinical_graph.py - 4-Node DAG"]
-        Swarm["examples/strands_clinical_swarm.py - Swarm Benchmark"]
+    subgraph MultiAgent ["Multi-Agent Orchestration (Strands DAG)"]
+        PE["Protocol Extractor Agent"] --> BS["Biostatistician Agent"]
+        BS --> FS["Feasibility Specialist Agent"]
+        FS --> SY["Synthesizer Agent"]
     end
 
-    subgraph Agents ["Specialized Agents (Multi-Agent DAG / Swarm)"]
-        PE["Protocol Extractor Agent (Node 1)"]
-        BS["Biostatistician Agent (Node 2)"]
-        FS["Feasibility Specialist Agent (Node 3)"]
-        SY["Synthesizer Agent (Node 4)"]
+    subgraph Guardrails ["AWS Safety & Reliability Guardrails"]
+        Debounce["DebounceHook (Loop Prevention)"]
+        MemPointer["MemoryPointer (Context Control)"]
+        NeuroGuard["NeurosymbolicGuardrail (Rule Engine)"]
     end
 
-    subgraph Guardrails ["AWS Guardrail Layer (clintrial_agent/guardrails.py)"]
-        Debounce["DebounceHook<br/>Loop Prevention (>2 calls)"]
-        MemPointer["MemoryPointer<br/>Context Overflow Prevention"]
-        NeuroGuard["NeurosymbolicGuardrail<br/>p0 < p1 Ordering & Report Cleaning"]
+    subgraph LLM ["Local Open-Weight LLM"]
+        Gemma["llama-server :8080 (Gemma 4 Q8 Metal GPU)"]
     end
 
-    subgraph LLM_Backend ["Local Open-Weight LLM Backend"]
-        LlamaServer["llama-server :8080<br/>Gemma-4 Q8 - Apple Silicon Metal GPU"]
+    subgraph MCP ["FastMCP Clinical Gateway"]
+        Tools["MCP Tools (Trial Analysis • Yield Sim • DB Query • Meta-Analysis)"]
     end
 
-    subgraph MCP_Gateway ["FastMCP Gateway (clinical_agent_mcp.py)"]
-        MCPStdio["FastMCP Stdio Server JSON-RPC"]
-        Tool1["analyze_trial_design"]
-        Tool2["simulate_eligibility_yield"]
-        Tool3["query_exact_stats"]
-        Tool4["search_chembl_bridge"]
-        Tool5["query_clinical_db"]
-        Tool6["run_cross_trial_meta_analysis"]
+    subgraph Core ["Data & Statistical Solvers"]
+        PostgreSQL[("Local PostgreSQL chembl_37<br/>(AACT + ChEMBL 37)")]
+        RBridge["R Statistical Engine (rpy2)<br/>(gsDesign • rpact • clinfun • metafor)"]
     end
 
-    subgraph Data_Kernels ["Data & Statistical Kernels"]
-        DB[("Local PostgreSQL chembl_37<br/>AACT ctgov.* + ChEMBL public.*")]
-        RBridge["rpy2 RBridge ABI Mode"]
-        REngine["R Engine 4.6.1<br/>rpact / gsDesign / clinfun / metafor"]
-    end
-
-    Graph --> PE --> BS --> FS --> SY
-    PE & BS & FS & SY <--> Debounce & MemPointer
-    SY --> NeuroGuard
-    PE & BS & FS & SY <-->|HTTP /v1/chat/completions| LlamaServer
-    PE & BS & FS <-->|Stdio Transport| MCPStdio
-    MCPStdio --> Tool1 & Tool2 & Tool3 & Tool4 & Tool5 & Tool6
-    Tool1 & Tool5 & Tool4 --> DB
-    Tool3 & Tool6 --> RBridge --> REngine
+    MultiAgent <--> Guardrails
+    MultiAgent <--> Gemma
+    MultiAgent <--> MCP
+    MCP --> PostgreSQL
+    MCP --> RBridge
 ```
 
 ---
