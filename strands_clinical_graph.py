@@ -25,8 +25,8 @@ logger = logging.getLogger("strands_clinical_graph")
 # ==============================================================================
 def create_model():
     return LlamaCppModel(
-        base_url="http://localhost:11434",
-        model_id="gemma4:latest",
+        base_url="http://localhost:8080",
+        model_id="default",
         timeout=300.0,
         context_window_limit=16384,
         params={"cache_prompt": True, "max_tokens": 2048}
