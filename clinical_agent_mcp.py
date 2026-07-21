@@ -106,7 +106,8 @@ def query_exact_stats(solver: str, params: dict) -> str:
                 pu=float(params.get('pu', 0.1)),
                 pa=float(params.get('pa', 0.3)),
                 ep1=float(params.get('ep1', 0.05)),
-                ep2=float(params.get('ep2', 0.2))
+                ep2=float(params.get('ep2', 0.2)),
+                nmax=int(params.get('nmax', 500))
             )
         elif solver == 'n_survival':
             res = bridge.gsdesign_fixed_survival(

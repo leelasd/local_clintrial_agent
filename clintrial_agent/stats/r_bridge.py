@@ -517,15 +517,23 @@ class RBridge:
         pa: float,
         ep1: float = 0.05,
         ep2: float = 0.2,
+        nmax: int = 500,
     ) -> dict:
         """Calculate Simon's optimal and minimax two-stage designs for Phase II trials."""
         self._ensure_package("clinfun")
+        # Ensure pu < pa for efficacy trials
+        if pu >= pa:
+            pu, pa = min(pu, pa), max(pu, pa)
+            if pu == pa:
+                pa = min(0.99, pu + 0.15)
+
         r_code = f"""
         res <- ph2simon(
             pu = {pu},
             pa = {pa},
             ep1 = {ep1},
-            ep2 = {ep2}
+            ep2 = {ep2},
+            nmax = {nmax}
         )
         adm <- clinfun:::twostage.admissible(res)
         minimax <- adm[1, ]
