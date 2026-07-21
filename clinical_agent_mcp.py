@@ -195,7 +195,7 @@ def search_chembl_bridge(nct_id: str) -> str:
         trials = [dict(row) for row in cur.fetchall()]
         
         if not trials:
-            # Fallback: Query interventions table and try to fuzzy match in ChEMBL dictionary
+            # Fallback: Query interventions table and match using exact, synonym, or word boundary matching
             cur.execute(
                 "SELECT name FROM ctgov.interventions WHERE nct_id = %s AND intervention_type = 'DRUG'",
                 (nct_id,)
@@ -203,20 +203,51 @@ def search_chembl_bridge(nct_id: str) -> str:
             interventions = [row['name'] for row in cur.fetchall()]
             if interventions:
                 matched_drugs = []
-                for name in interventions:
+                for raw_name in interventions:
+                    name = raw_name.strip()
+                    if not name:
+                        continue
+
+                    # Tier 1: Exact preferred name or ChEMBL ID match
                     cur.execute(
                         "SELECT pref_name, chembl_id, max_phase, withdrawn_flag "
                         "FROM public.molecule_dictionary "
-                        "WHERE pref_name ILIKE %s OR chembl_id ILIKE %s LIMIT 1",
-                        (f"%{name}%", name)
+                        "WHERE lower(pref_name) = lower(%s) OR lower(chembl_id) = lower(%s) LIMIT 1",
+                        (name, name)
                     )
                     row = cur.fetchone()
+
+                    # Tier 2: Exact synonym match via molecule_synonyms (e.g. BMS-986165 -> DEUCRAVACITINIB)
+                    if not row:
+                        cur.execute(
+                            "SELECT DISTINCT md.pref_name, md.chembl_id, md.max_phase, md.withdrawn_flag "
+                            "FROM public.molecule_dictionary md "
+                            "JOIN public.molecule_synonyms ms ON md.molregno = ms.molregno "
+                            "WHERE lower(ms.synonyms) = lower(%s) LIMIT 1",
+                            (name,)
+                        )
+                        row = cur.fetchone()
+
+                    # Tier 3: Strict word-boundary regex match (only for names >= 4 chars to prevent false positives)
+                    if not row and len(name) >= 4:
+                        pattern = r'\y' + re.escape(name) + r'\y'
+                        cur.execute(
+                            "SELECT pref_name, chembl_id, max_phase, withdrawn_flag "
+                            "FROM public.molecule_dictionary "
+                            "WHERE pref_name ~* %s LIMIT 1",
+                            (pattern,)
+                        )
+                        row = cur.fetchone()
+
                     if row:
-                        matched_drugs.append(dict(row))
+                        drug_dict = dict(row)
+                        drug_dict["query_matched"] = name
+                        matched_drugs.append(drug_dict)
+
                 return json.dumps({
                     "nct_id": nct_id,
-                    "message": "No direct FDW bridge record found. Matched by fuzzy-matching intervention drug names.",
-                    "fuzzy_matches": matched_drugs
+                    "message": f"Resolved {len(matched_drugs)} compound(s) via exact/synonym ChEMBL matching.",
+                    "matched_drugs": matched_drugs
                 }, indent=2)
                 
             return f"No ChEMBL compounds mapped to {nct_id}."
