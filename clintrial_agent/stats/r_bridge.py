@@ -41,32 +41,38 @@ class RBridge:
     def _load_core_packages(self) -> None:
         """Load the 4 core R packages. Raises if any are missing."""
         core_packages = ["rpact", "gsDesign", "gsDesign2", "graphicalMCP"]
-        for pkg_name in core_packages:
-            try:
-                self._loaded_packages[pkg_name] = importr(pkg_name, on_conflict="warn")
-            except PackageNotInstalledError as e:
-                raise RPackageError(
-                    f"R package '{pkg_name}' is not installed. "
-                    f"Install with: Rscript -e 'install.packages(\"{pkg_name}\")'"
-                ) from e
+        from rpy2.robjects.conversion import localconverter
+        with localconverter(ro.default_converter):
+            for pkg_name in core_packages:
+                try:
+                    self._loaded_packages[pkg_name] = importr(pkg_name, on_conflict="warn")
+                except PackageNotInstalledError as e:
+                    raise RPackageError(
+                        f"R package '{pkg_name}' is not installed. "
+                        f"Install with: Rscript -e 'install.packages(\"{pkg_name}\")'"
+                    ) from e
 
     @staticmethod
     def _ensure_jsonlite() -> None:
         """Ensure jsonlite is loaded for R-to-JSON marshalling."""
         if not hasattr(RBridge, "_jsonlite_loaded"):
-            importr("jsonlite", on_conflict="warn")
+            from rpy2.robjects.conversion import localconverter
+            with localconverter(ro.default_converter):
+                importr("jsonlite", on_conflict="warn")
             RBridge._jsonlite_loaded = True
 
     def _ensure_package(self, pkg_name: str) -> None:
         """Ensure an R package is loaded."""
         if pkg_name not in self._loaded_packages:
-            try:
-                self._loaded_packages[pkg_name] = importr(pkg_name, on_conflict="warn")
-            except PackageNotInstalledError as e:
-                raise RPackageError(
-                    f"R package '{pkg_name}' is not installed. "
-                    f"Install with: Rscript -e 'install.packages(\"{pkg_name}\")'"
-                ) from e
+            from rpy2.robjects.conversion import localconverter
+            with localconverter(ro.default_converter):
+                try:
+                    self._loaded_packages[pkg_name] = importr(pkg_name, on_conflict="warn")
+                except PackageNotInstalledError as e:
+                    raise RPackageError(
+                        f"R package '{pkg_name}' is not installed. "
+                        f"Install with: Rscript -e 'install.packages(\"{pkg_name}\")'"
+                    ) from e
 
     def _eval_to_json(self, r_expr: str) -> dict | list:
         """
@@ -74,10 +80,9 @@ class RBridge:
         """
         self._ensure_jsonlite()
         escaped = r_expr.replace("\\", "\\\\").replace("'", "\\'")
-        from rpy2.robjects import conversion
+        from rpy2.robjects.conversion import localconverter
         try:
-            conversion.set_conversion(ro.default_converter)
-            with ro.default_converter.context():
+            with localconverter(ro.default_converter):
                 ro.r(f"eval(parse(text='{escaped}'))")
                 json_str = ro.r(
                     "jsonlite::toJSON(.result, auto_unbox=TRUE, "
@@ -149,9 +154,8 @@ class RBridge:
                 f"informationRates = c({ir_str}), "
                 f"typeOfDesign = '{sf}')"
             )
-            from rpy2.robjects import conversion
-            with ro.default_converter.context():
-                conversion.set_conversion(ro.default_converter)
+            from rpy2.robjects.conversion import localconverter
+            with localconverter(ro.default_converter):
                 ro.r(design_code)
             design_arg = ".design"
         else:
@@ -562,15 +566,13 @@ class RBridge:
                 "carat", "mmrm", "lme4", "metafor", "mice", "rbmi",
                 "dfcrm",
             ]
-        from rpy2.robjects import conversion
-        with ro.default_converter.context():
-            conversion.set_conversion(ro.default_converter)
+        from rpy2.robjects.conversion import localconverter
+        with localconverter(ro.default_converter):
             ro.r('installed <- rownames(installed.packages())')
         results = {}
         for pkg in packages:
             try:
-                with ro.default_converter.context():
-                    conversion.set_conversion(ro.default_converter)
+                with localconverter(ro.default_converter):
                     is_installed = bool(ro.r(f'"{pkg}" %in% installed')[0])
                 results[pkg] = is_installed
             except Exception:

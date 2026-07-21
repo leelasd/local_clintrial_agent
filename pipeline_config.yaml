@@ -490,7 +490,7 @@ safety_outcome_keywords:
 # LLM CONFIGURATION
 # ==============================================================================
 llm:
-  model: gemma2:2b-instruct-q4_K_M
+  model: gemma4:latest
   batch_size: 20   # Criteria per LLM request to avoid truncation
   temperature: 0.1
   num_predict: 4096

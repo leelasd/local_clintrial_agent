@@ -20,24 +20,27 @@ logger = logging.getLogger("strands_clinical_swarm")
 # ==============================================================================
 # 1. INITIALIZE LOCAL LLM & MCP CLIENT
 # ==============================================================================
-logger.info("Initializing LlamaCpp Model (Gemma-4 Q8 running on port 8080)...")
-model = LlamaCppModel(
-    base_url="http://localhost:8080",
-    model_id="default"
-)
+def create_model():
+    return LlamaCppModel(
+        base_url="http://localhost:11434",
+        model_id="gemma4:latest",
+        timeout=300.0,
+        context_window_limit=16384,
+        params={"cache_prompt": True, "max_tokens": 2048}
+    )
 
 # Identify the python executable and MCP script path dynamically
 current_dir = os.path.dirname(os.path.abspath(__file__))
 python_bin = sys.executable
 mcp_script = os.path.join(current_dir, "clinical_agent_mcp.py")
 
-logger.info(f"Connecting to stdio MCP server at {mcp_script}")
-mcp_client = MCPClient(lambda: stdio_client(
-    StdioServerParameters(
-        command=python_bin,
-        args=[mcp_script]
-    )
-))
+def create_mcp_client():
+    return MCPClient(lambda: stdio_client(
+        StdioServerParameters(
+            command=python_bin,
+            args=[mcp_script]
+        )
+    ))
 
 # ==============================================================================
 # 2. EXECUTION RUNNER
@@ -46,92 +49,90 @@ def run_swarm_analysis(nct_ids, comparison_name):
     os.makedirs("analysis_json", exist_ok=True)
     comparison_results = {}
 
-    logger.info("Connecting to MCP client session...")
-    with mcp_client:
-        logger.info("Fetching tools from MCP server...")
-        tools = mcp_client.list_tools_sync()
-        logger.info(f"Loaded {len(tools)} tools from MCP server.")
-
-        # Configure specialized agents equipped with resolved MCP tools
-        extractor_agent = Agent(
-            name="protocol_extractor",
-            model=model,
-            system_prompt=(
-                "You are a clinical trial protocol extractor. Your task is to fetch the "
-                "raw design characteristics and endpoints for a study using the MCP tools "
-                "(query_clinical_db, search_chembl_bridge, or analyze_trial_design). "
-                "SAFETY GUARDRAIL: When querying ChEMBL compound matches, check the matched "
-                "drug name exactly. Do not assume different drug names (e.g. APREMILAST and TAK-279) "
-                "are synonyms or have the same mechanism unless explicitly confirmed by target records. "
-                "Output the concrete design details (no placeholders) and hand off to the biostatistician."
-            ),
-            tools=tools
+    for nct_id in nct_ids:
+        logger.info(f"=== Starting Swarm Analysis for {nct_id} ===")
+        prompt = (
+            f"Analyze trial {nct_id}. Handoff to the extractor to get protocol details, "
+            "then to the biostatistician for power calculations, and finally to the "
+            "feasibility specialist for recruitment yield and criteria simulation. "
+            "Synthesize everything into a clean final report."
         )
 
-        statistician_agent = Agent(
-            name="biostatistician",
-            model=model,
-            system_prompt=(
-                "You are a clinical trial biostatistician. Your task is to run statistical power "
-                "sizing and boundary calculations using the MCP tools (e.g., query_exact_stats). "
-                "SAFETY GUARDRAIL: First check the trial phase. For PHASE1 trials, do not call "
-                "statistical solvers like simon2stage or n_survival; instead, report that "
-                "statistical power calculations are N/A (Safety/Dose-finding design). For PHASE2/3 "
-                "trials, use the appropriate solver under query_exact_stats. "
-                "Report the exact calculated sample size, events, and power assessment, and hand off "
-                "to the feasibility specialist."
-            ),
-            tools=tools
-        )
+        model = create_model()
+        mcp_client = create_mcp_client()
+        with mcp_client:
+            tools = mcp_client.list_tools_sync()
+            logger.info(f"Loaded {len(tools)} tools from MCP server for {nct_id}.")
 
-        feasibility_agent = Agent(
-            name="feasibility_specialist",
-            model=model,
-            system_prompt=(
-                "You are a clinical trial feasibility specialist. Your task is to estimate "
-                "screen-to-enrollment yield rates and simulate relaxed criteria scenarios using "
-                "the MCP tools (e.g. simulate_eligibility_yield). "
-                "BIOMARKER SCALES: If a trial requires a rare genetic subgroup (like dMMR or MSI-H), "
-                "note that the screen failure rate is driven by its population prevalence (~15% prevalence "
-                "implies a ~85% screen failure rate). Report the baseline yield and relaxation "
-                "scenarios, then hand off back to the swarm coordinator."
-            ),
-            tools=tools
-        )
+            extractor_agent = Agent(
+                name="protocol_extractor",
+                model=model,
+                system_prompt=(
+                    "You are a clinical trial protocol extractor. Your task is to fetch the "
+                    "raw design characteristics and endpoints for a study using the MCP tools "
+                    "(query_clinical_db, search_chembl_bridge, or analyze_trial_design). "
+                    "SAFETY GUARDRAIL: When querying ChEMBL compound matches, check the matched "
+                    "drug name exactly. Do not assume different drug names (e.g. APREMILAST and TAK-279) "
+                    "are synonyms or have the same mechanism unless explicitly confirmed by target records. "
+                    "Output the concrete design details (no placeholders) and hand off to the biostatistician."
+                ),
+                tools=tools
+            )
 
-        coordinator_agent = Agent(
-            name="swarm_coordinator",
-            model=model,
-            system_prompt=(
-                "You are the clinical trial design swarm coordinator. Your job is to orchestrate "
-                "an analysis of an NCT ID. You MUST follow this sequential path: "
-                "1. Hand off to protocol_extractor to gather raw data and check drug structures. "
-                "2. Hand off to biostatistician to run power calculations. "
-                "3. Hand off to feasibility_specialist to run yield simulations. "
-                "You are strictly prohibited from compiling the report until ALL three specialists "
-                "have completed their tasks and returned concrete data. Do not include any bracketed "
-                "placeholder text (e.g. '[Objective text goes here]'). Synthesize their findings "
-                "into a clean, unified trial design assessment."
-            ),
-            tools=tools
-        )
+            statistician_agent = Agent(
+                name="biostatistician",
+                model=model,
+                system_prompt=(
+                    "You are a clinical trial biostatistician. Your task is to run statistical power "
+                    "sizing and boundary calculations using the MCP tools (e.g., query_exact_stats). "
+                    "SAFETY GUARDRAIL: First check the trial phase. For PHASE1 trials, do not call "
+                    "statistical solvers like simon2stage or n_survival; instead, report that "
+                    "statistical power calculations are N/A (Safety/Dose-finding design). For PHASE2/3 "
+                    "trials, use the appropriate solver under query_exact_stats. "
+                    "Report the exact calculated sample size, events, and power assessment, and hand off "
+                    "to the feasibility specialist."
+                ),
+                tools=tools
+            )
 
-        # Create cooperative swarm orchestrator
-        swarm = Swarm(
-            [coordinator_agent, extractor_agent, statistician_agent, feasibility_agent],
-            entry_point=coordinator_agent,
-            max_handoffs=10,
-            max_iterations=15,
-            execution_timeout=300.0
-        )
+            feasibility_agent = Agent(
+                name="feasibility_specialist",
+                model=model,
+                system_prompt=(
+                    "You are a clinical trial feasibility specialist. Your task is to estimate "
+                    "screen-to-enrollment yield rates and simulate relaxed criteria scenarios using "
+                    "the MCP tools (e.g. simulate_eligibility_yield). "
+                    "BIOMARKER SCALES: If a trial requires a rare genetic subgroup (like dMMR or MSI-H), "
+                    "note that the screen failure rate is driven by its population prevalence (~15% prevalence "
+                    "implies a ~85% screen failure rate). Report the baseline yield and relaxation "
+                    "scenarios, then hand off back to the swarm coordinator."
+                ),
+                tools=tools
+            )
 
-        for nct_id in nct_ids:
-            logger.info(f"=== Starting Swarm Analysis for {nct_id} ===")
-            prompt = (
-                f"Analyze trial {nct_id}. Handoff to the extractor to get protocol details, "
-                "then to the biostatistician for power calculations, and finally to the "
-                "feasibility specialist for recruitment yield and criteria simulation. "
-                "Synthesize everything into a clean final report."
+            coordinator_agent = Agent(
+                name="swarm_coordinator",
+                model=model,
+                system_prompt=(
+                    "You are the clinical trial design swarm coordinator. Your job is to orchestrate "
+                    "an analysis of an NCT ID. You MUST follow this sequential path: "
+                    "1. Hand off to protocol_extractor to gather raw data and check drug structures. "
+                    "2. Hand off to biostatistician to run power calculations. "
+                    "3. Hand off to feasibility_specialist to run yield simulations. "
+                    "You are strictly prohibited from compiling the report until ALL three specialists "
+                    "have completed their tasks and returned concrete data. Do not include any bracketed "
+                    "placeholder text (e.g. '[Objective text goes here]'). Synthesize their findings "
+                    "into a clean, unified trial design assessment."
+                ),
+                tools=tools
+            )
+
+            swarm = Swarm(
+                [coordinator_agent, extractor_agent, statistician_agent, feasibility_agent],
+                entry_point=coordinator_agent,
+                max_handoffs=10,
+                max_iterations=15,
+                execution_timeout=300.0
             )
 
             try:
