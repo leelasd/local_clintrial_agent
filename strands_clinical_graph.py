@@ -207,7 +207,7 @@ def classify_drug_class(indication):
     
     # Other therapeutic areas
     other_keywords = {
-        "diabetes": "Diabetes_Metabolic", "type 2 diabetes": "T2D_Metabolic",
+        "type 2 diabetes": "T2D_Metabolic", "diabetes": "Diabetes_Metabolic",
         "heart failure": "HF_Cardiovascular", "hypertension": "HTN_Cardiovascular",
         "atherosclerosis": "ASCVD_Cardiovascular",
         "alzheimer": "AD_Neurology", "parkinson": "PD_Neurology",
