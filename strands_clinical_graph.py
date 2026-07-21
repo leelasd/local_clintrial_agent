@@ -231,15 +231,17 @@ def run_graph_analysis(nct_ids, comparison_name):
     os.makedirs("analysis_json", exist_ok=True)
     comparison_results = {}
 
-    for nct_id in nct_ids:
-        logger.info(f"=== Starting Graph Analysis for {nct_id} ===")
-        prompt = f"Analyze clinical trial {nct_id}."
+    model = create_model()
+    mcp_client = create_mcp_client()
+    logger.info("Initializing persistent MCP client and LLM model for portfolio execution...")
 
-        model = create_model()
-        mcp_client = create_mcp_client()
-        with mcp_client:
-            tools = mcp_client.list_tools_sync()
-            logger.info(f"Loaded {len(tools)} tools from MCP server for {nct_id}.")
+    with mcp_client:
+        tools = mcp_client.list_tools_sync()
+        logger.info(f"Loaded {len(tools)} tools from MCP server.")
+
+        for nct_id in nct_ids:
+            logger.info(f"=== Starting Graph Analysis for {nct_id} ===")
+            prompt = f"Analyze clinical trial {nct_id}."
 
             # Instantiate specialized agents per trial for clean async event loops
             extractor_agent = Agent(
