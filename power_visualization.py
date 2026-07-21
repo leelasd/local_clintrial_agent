@@ -6,7 +6,7 @@ Usage: python power_visualization.py [analysis_json/*_analysis.json ...]
 import sys
 import json
 from pathlib import Path
-from design_agent_pipeline import generate_power_plots
+from clintrial_agent.reporting import generate_power_plots
 
 
 def main():
