@@ -185,16 +185,17 @@ uv run python validate_pipeline.py
 ## 📚 Technical Documentation Index (`docs/`)
 
 * **📊 Reports:**
-  * [`docs/reports/sle_clinical_trial_landscape_case.md`](docs/reports/sle_clinical_trial_landscape_case.md) — Strategic case report on contemporary Systemic Lupus Erythematosus (SLE) trial landscape & Afimetoran-based protocol specification.
+  * [`docs/reports/sle_clinical_trial_landscape_case.md`](docs/reports/sle_clinical_trial_landscape_case.md) — Strategic case report on contemporary Systemic Lupus Erythematosus (SLE) trial landscape (TYK2 vs. TLR7/8) with Afimetoran-referenced protocol specification & exact protocol quotes.
 * **⚡ Benchmarks:**
-  * [`docs/benchmarks/MODEL_BENCHMARK.md`](docs/benchmarks/MODEL_BENCHMARK.md) — Benchmark comparison of Gemma 4 Q8 vs Qwythos 9B local LLM backends.
-* **🕸️ Architecture:**
-  * [`docs/architecture/strands_architectures_comparison.md`](docs/architecture/strands_architectures_comparison.md) — Comparative topology analysis (State-Machine DAG vs Swarm).
-  * [`docs/architecture/cran_task_view_mapping.md`](docs/architecture/cran_task_view_mapping.md) — R CRAN task view mapping for biostatistical RBridge packages.
-* **💡 Proposals & Research:**
-  * [`docs/proposals/roadmap_local_clinical_agent.md`](docs/proposals/roadmap_local_clinical_agent.md) — Project development roadmap & milestone planning.
-  * [`docs/proposals/strands_agent_integration_proposal.md`](docs/proposals/strands_agent_integration_proposal.md) — Multi-agent integration architecture proposal.
-  * [`docs/research/research.md`](docs/research/research.md) — Systemic lupus background research notes.
+  * [`docs/benchmarks/MODEL_BENCHMARK.md`](docs/benchmarks/MODEL_BENCHMARK.md) — Empirical benchmark evaluation comparing Gemma-4-E2B-it (Q8) vs. Qwythos-9B backends on Apple Silicon Metal GPU across execution stability, token budgets, and instruction adherence.
+* **🕸️ Architecture & Mapping:**
+  * [`docs/architecture/strands_architectures_comparison.md`](docs/architecture/strands_architectures_comparison.md) — Comparative evaluation of multi-agent topologies (Cooperative Swarm, Sequential Workflow, State-Machine DAG) in AWS Strands Agents.
+  * [`docs/architecture/cran_task_view_mapping.md`](docs/architecture/cran_task_view_mapping.md) — Detailed mapping of R CRAN Clinical Trials packages (`rpact`, `gsDesign`, `gsDesign2`, `clinfun`, `metafor`) and Python equivalents to textbook design stages.
+* **💡 Proposals & System Roadmap:**
+  * [`docs/proposals/roadmap_local_clinical_agent.md`](docs/proposals/roadmap_local_clinical_agent.md) — Architectural roadmap detailing the transition from monolithic prototype to modular multi-agent kernel with FastMCP, PostgreSQL, and RBridge.
+  * [`docs/proposals/strands_agent_integration_proposal.md`](docs/proposals/strands_agent_integration_proposal.md) — Design proposal for converting linear procedural pipelines into collaborative multi-agent specialist swarms using AWS Strands SDK.
+* **🔬 Competitive Architecture Research:**
+  * [`docs/research/research.md`](docs/research/research.md) — Deep-dive research notes analyzing the 4-layer architecture, 9 MCP tools, and CRAN package dependencies of `wei-ai-lab/clinical-trial-design`.
 
 ---
 
