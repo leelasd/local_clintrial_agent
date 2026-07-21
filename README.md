@@ -178,6 +178,22 @@ uv run python validate_pipeline.py
 
 ---
 
+## 📚 Technical Documentation Index (`docs/`)
+
+* **📊 Reports:**
+  * [`docs/reports/sle_clinical_trial_landscape_case.md`](docs/reports/sle_clinical_trial_landscape_case.md) — Strategic case report on contemporary Systemic Lupus Erythematosus (SLE) trial landscape & Afimetoran-based protocol specification.
+* **⚡ Benchmarks:**
+  * [`docs/benchmarks/MODEL_BENCHMARK.md`](docs/benchmarks/MODEL_BENCHMARK.md) — Benchmark comparison of Gemma 4 Q8 vs Qwythos 9B local LLM backends.
+* **🕸️ Architecture:**
+  * [`docs/architecture/strands_architectures_comparison.md`](docs/architecture/strands_architectures_comparison.md) — Comparative topology analysis (State-Machine DAG vs Swarm).
+  * [`docs/architecture/cran_task_view_mapping.md`](docs/architecture/cran_task_view_mapping.md) — R CRAN task view mapping for biostatistical RBridge packages.
+* **💡 Proposals & Research:**
+  * [`docs/proposals/roadmap_local_clinical_agent.md`](docs/proposals/roadmap_local_clinical_agent.md) — Project development roadmap & milestone planning.
+  * [`docs/proposals/strands_agent_integration_proposal.md`](docs/proposals/strands_agent_integration_proposal.md) — Multi-agent integration architecture proposal.
+  * [`docs/research/research.md`](docs/research/research.md) — Systemic lupus background research notes.
+
+---
+
 ## 📜 License & Citation
 
 Licensed under MIT. Clinical classifications strictly derived from:
