@@ -14,10 +14,10 @@ flowchart TD
     end
 
     subgraph Agents ["Specialized Agents (Multi-Agent DAG / Swarm)"]
-        PE["1. Protocol Extractor Agent"]
-        BS["2. Biostatistician Agent"]
-        FS["3. Feasibility Specialist Agent"]
-        SY["4. Synthesizer Agent"]
+        PE["Protocol Extractor Agent (Node 1)"]
+        BS["Biostatistician Agent (Node 2)"]
+        FS["Feasibility Specialist Agent (Node 3)"]
+        SY["Synthesizer Agent (Node 4)"]
     end
 
     subgraph Guardrails ["AWS Guardrail Layer (clintrial_agent/guardrails.py)"]

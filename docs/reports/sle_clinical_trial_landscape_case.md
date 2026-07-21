@@ -17,8 +17,8 @@ Both drug classes demonstrate statistically significant, highly homogeneous trea
 ```mermaid
 flowchart LR
     subgraph Pillars ["Contemporary SLE Therapeutic Pillars"]
-        TYK2["1. TYK2 Allosteric Inhibitors<br/>Deucravacitinib / TAK-279"]
-        TLR["2. TLR7/8 Dual Antagonists<br/>Afimetoran / Enpatoran / E6742"]
+        TYK2["TYK2 Allosteric Inhibitors<br/>Deucravacitinib / TAK-279"]
+        TLR["TLR7/8 Dual Antagonists<br/>Afimetoran / Enpatoran / E6742"]
     end
 
     subgraph Impact ["Clinical Impact & Effect Sizes"]
