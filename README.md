@@ -1,137 +1,180 @@
 # Clinical Trial Analysis Agent
 
-An automated, local-first clinical trial analysis and audit system powered by **AWS Strands Agents SDK**, **FastMCP**, local **PostgreSQL (AACT + ChEMBL 37)**, and an **RPy2 Statistical Kernel**. Protocol classifications are guided by **Friedman, Furberg & DeMets, *Fundamentals of Clinical Trials* (4th ed.)**.
+An automated, local-first clinical trial analysis and audit system powered by **AWS Strands Agents SDK**, **FastMCP**, local **PostgreSQL (AACT + ChEMBL 37)**, and an **rpy2 R Statistical Kernel**. Protocol classifications are guided by **Friedman, Furberg & DeMets, *Fundamentals of Clinical Trials* (4th ed.)**.
 
 ---
 
 ## 🏗️ Architecture Overview
 
 ```mermaid
-graph TD
-    User[User / CLI Input] --> Graph[AWS Strands State-Machine Graph: strands_clinical_graph.py]
-    
-    subgraph Multi-Agent DAG Pipeline
-        Graph --> Node1[1. Protocol Extractor Agent]
-        Node1 --> Node2[2. Biostatistician Agent]
-        Node2 --> Node3[3. Feasibility Specialist Agent]
-        Node3 --> Node4[4. Synthesizer Agent]
+flowchart TD
+    subgraph Orchestration Layer (Strands Framework)
+        Graph[strands_clinical_graph.py - 4-Node DAG]
+        Swarm[strands_clinical_swarm.py - Swarm Orchestrator]
     end
-    
-    subgraph FastMCP Server Gateway: clinical_agent_mcp.py
-        Node1 & Node2 & Node3 <--> MCPClient[MCPClient stdio transport]
-        MCPClient <--> Tool1[analyze_trial_design]
-        MCPClient <--> Tool2[simulate_eligibility_yield]
-        MCPClient <--> Tool3[query_exact_stats]
-        MCPClient <--> Tool4[search_chembl_bridge]
-        MCPClient <--> Tool5[query_clinical_db]
+
+    subgraph Specialized Agents (Multi-Agent DAG / Swarm)
+        PE[1. Protocol Extractor Agent]
+        BS[2. Biostatistician Agent]
+        FS[3. Feasibility Specialist Agent]
+        SY[4. Synthesizer Agent]
     end
-    
-    subgraph Execution Kernels & Data Layer
-        Tool1 & Tool5 <--> Postgres[(Local PostgreSQL: AACT + ChEMBL 37)]
-        Tool3 <--> RBridge[RBridge Kernel: rpy2 + gsDesign/rpact/clinfun/graphicalMCP]
-        Tool2 <--> CohortSim[Synthetic Cohort Yield Simulator: N=10,000]
-        Node1 & Node2 & Node3 & Node4 <--> LlamaServer[Local llama-server: Gemma-4 Q8 - Port 8080]
+
+    subgraph Local Open-Weight LLM Backend
+        LlamaServer[llama-server :8080\nGemma-4 Q8 - Apple Silicon Metal GPU]
     end
-    
-    Node4 --> Report[Publication-Grade Audit Report & Comparison JSON]
+
+    subgraph FastMCP Gateway (clinical_agent_mcp.py)
+        MCPStdio[FastMCP Stdio Server JSON-RPC]
+        Tool1[analyze_trial_design]
+        Tool2[simulate_eligibility_yield]
+        Tool3[query_exact_stats]
+        Tool4[search_chembl_bridge]
+        Tool5[query_clinical_db]
+        Tool6[run_cross_trial_meta_analysis]
+    end
+
+    subgraph Data & Statistical Kernels
+        DB[(Local PostgreSQL chembl_37\nAACT ctgov.* + ChEMBL public.*)]
+        RBridge[rpy2 RBridge ABI Mode]
+        REngine[R Engine 4.6.1\nrpact / gsDesign / clinfun / metafor]
+    end
+
+    Graph --> PE --> BS --> FS --> SY
+    PE & BS & FS & SY <-->|HTTP /v1/chat/completions| LlamaServer
+    PE & BS & FS <-->|Stdio Transport| MCPStdio
+    MCPStdio --> Tool1 & Tool2 & Tool3 & Tool4 & Tool5 & Tool6
+    Tool1 & Tool5 & Tool4 --> DB
+    Tool3 & Tool6 --> RBridge --> REngine
 ```
 
 ---
 
-## 🌟 Key Features
+## 🌟 Core Features
 
-1.  **🕸️ AWS Strands State-Machine Graph (`strands_clinical_graph.py`):**
-    *   Deterministic Directed Acyclic Graph (DAG) orchestration: `protocol_extractor ➔ biostatistician ➔ feasibility_specialist ➔ synthesizer`.
-    *   State-channel isolation keeps prompt sizes < 2,000 tokens per node, permanently resolving context bloat (`MaxTokensReachedException`).
+1. **🕸️ Deterministic State-Machine Graph (`strands_clinical_graph.py`):**
+   * Executes a strict 4-stage DAG pipeline: `protocol_extractor` $\rightarrow$ `biostatistician` $\rightarrow$ `feasibility_specialist` $\rightarrow$ `synthesizer`.
+   * **State-channel isolation** prevents context window bloat, keeping prompts focused per node.
 
-2.  **🔌 FastMCP Stdio Server Interface (`clinical_agent_mcp.py`):**
-    *   Exposes 5 tools (`analyze_trial_design`, `simulate_eligibility_yield`, `query_exact_stats`, `search_chembl_bridge`, `query_clinical_db`).
-    *   Protected by `@redirect_stdout_to_stderr` wrapper to ensure zero stdio stream corruption over JSON-RPC.
+2. **🔌 FastMCP Stdio Tool Server (`clinical_agent_mcp.py`):**
+   * Exposes 6 tools over stdio (`analyze_trial_design`, `simulate_eligibility_yield`, `query_exact_stats`, `search_chembl_bridge`, `query_clinical_db`, `run_cross_trial_meta_analysis`).
+   * Wrapped with `@redirect_stdout_to_stderr` to guarantee zero stdio stream corruption over JSON-RPC.
 
-3.  **📊 RBridge Statistical Kernel (`clintrial_agent/stats/r_bridge.py`):**
-    *   Direct `rpy2` bindings for textbook-standard statistical packages:
-        *   `gsDesign` & `gsDesign2`: Fixed-sample and non-proportional hazards log-rank boundary calculations.
-        *   `rpact`: Group-sequential designs & alpha spending functions.
-        *   `clinfun`: Simon's optimal/minimax Phase II 2-stage designs.
-        *   `PowerTOST`: Bioequivalence and crossover trial power.
-        *   `dfcrm`: Continual Reassessment Method (CRM) for Phase 1 dose-finding.
-        *   `graphicalMCP`: Maurer-Bretz multi-endpoint alpha recycling.
+3. **📊 RBridge Statistical Kernel (`clintrial_agent/stats/r_bridge.py`):**
+   * Direct `rpy2` bindings for textbook-standard statistical packages:
+     * `gsDesign` & `gsDesign2`: Fixed-sample and non-proportional hazards log-rank boundary calculations.
+     * `rpact`: Group-sequential designs & alpha spending functions.
+     * `clinfun`: Simon's optimal/minimax Phase II 2-stage designs.
+     * `PowerTOST`: Bioequivalence and crossover trial power.
+     * `dfcrm`: Continual Reassessment Method (CRM) for Phase 1 dose-finding.
+     * `metafor`: Fixed and random-effects cross-trial meta-analyses and publication-grade forest plots.
+     * `graphicalMCP`: Maurer-Bretz multi-endpoint alpha recycling.
 
-4.  **🗄️ Local PostgreSQL AACT & ChEMBL 37 Database Integration:**
-    *   Direct queries against local AACT tables and ChEMBL drug target mapping bridges with automatic ClinicalTrials.gov API fallback.
+4. **🗄️ Local PostgreSQL Database Integration:**
+   * Direct queries against local AACT tables and ChEMBL 37 drug target mapping bridges with automatic ClinicalTrials.gov API fallback.
 
-5.  **🧮 Synthetic Cohort & Eligibility Yield Simulator (`clintrial_agent/eligibility/`):**
-    *   Deterministic criteria constraint parser generating $N=10,000$ synthetic patient populations to simulate screen-to-enrollment yields and criteria relaxation multipliers.
+5. **🧮 Synthetic Cohort & Eligibility Yield Simulator (`clintrial_agent/eligibility/`):**
+   * Deterministic criteria constraint parser generating $N=10,000$ synthetic patient populations to simulate screen-to-enrollment yields and criteria relaxation multipliers.
 
-6.  **🚀 Local Open-Weight LLM Backend (Gemma-4 Q8):**
-    *   Powered by `llama-server` running `gemma-4-E2B-it-Q8_0.gguf` on port 8080 with a 16,384 context window. Benchmark evaluated against Qwythos 9B (see [`MODEL_BENCHMARK.md`](MODEL_BENCHMARK.md)).
+6. **⚡ GPU-Accelerated Open-Weight LLM (`llama-server`):**
+   * Powered by `llama-server` running `gemma-4-E2B-it-Q8_0.gguf` on port 8080 with **Metal GPU offloading (`-ngl 99`)**, delivering sub-second token generation latency ($0.87\text{s}$).
 
 ---
 
-## ⚙️ Requirements & Installation
+## 🛠️ Critical Gotchas & Solved Patterns
 
-*   **Python:** 3.12
-*   **R Engine:** R $\ge$ 4.2 installed with packages: `gsDesign`, `gsDesign2`, `clinfun`, `rpact`, `PowerTOST`, `dfcrm`, `graphicalMCP`.
-*   **Database:** Local PostgreSQL running on `localhost:5432` with `chembl_37` schema.
-*   **Dependencies:** Managed via `uv`:
+### 1. **Threaded RBridge Conversion Context Exception**
+* **Issue:** `Error executing solver 'simon2stage' via RBridge: Conversion rules for rpy2.robjects appear to be missing...`
+* **Cause:** `rpy2` tracks conversion rules via `contextvars.ContextVar`, which does not automatically propagate to worker threads in FastMCP stdio server loops.
+* **Fix:** All R code executions and package loads inside `clintrial_agent/stats/r_bridge.py` are wrapped inside the explicit `localconverter(ro.default_converter)` context manager:
+  ```python
+  from rpy2.robjects.conversion import localconverter
+  with localconverter(ro.default_converter):
+      self._loaded_packages[pkg_name] = importr(pkg_name, on_conflict="warn")
+  ```
 
+---
+
+### 2. **Per-Trial Event Loop & Session Isolation**
+* **Issue:** `Trial 2: Error: Event loop is closed`
+* **Cause:** In the Strands framework, `LlamaCppModel` (holding an `httpx.AsyncClient`) and `MCPClient` bind internal async session states. Completing `asyncio.run()` on Trial 1 closed their event loop before Trial 2 could execute.
+* **Fix:** Factory functions `create_model()` and `create_mcp_client()` are called **inside the `for nct_id in nct_ids:` loop** in both `strands_clinical_graph.py` and `strands_clinical_swarm.py`:
+  ```python
+  for nct_id in nct_ids:
+      model = create_model()
+      mcp_client = create_mcp_client()
+      with mcp_client:
+          tools = mcp_client.list_tools_sync()
+          extractor_agent = Agent(model=model, tools=tools, context_manager="auto", ...)
+          # Execute graph with fresh event loop, HTTP client, and stdio transport per trial
+  ```
+
+---
+
+### 3. **Simon's Two-Stage Parameter & Boundary Constraints**
+* **Issue:** `R error: Error in ph2simon(pu = 0.2, pa = 0.05, ep1 = 0.01, ep2 = 0.01) : No feasible solution found. Current nmax value = 100.`
+* **Cause:**
+  1. `ph2simon` requires baseline response rate $p_0$ (`pu`) to be strictly less than target rate $p_1$ (`pa`).
+  2. Under strict error bounds ($\alpha=0.01, \beta=0.01$), required sample size ($N=113$) exceeds R's default ceiling (`nmax=100`).
+* **Fix:** `clinfun_simon2stage()` in `r_bridge.py` automatically checks and orders $pu < pa$, and sets `nmax = 500` by default.
+
+---
+
+### 4. **Token Context Window & Response Limits**
+* **Issue:** `MaxTokensReachedException` or `context_window_limit not set on model`
+* **Fix:**
+  1. `create_model()` passes `context_window_limit=16384` and `params={"cache_prompt": True, "max_tokens": 2048}`.
+  2. `Agent(...)` sets `context_manager="auto"` to automatically offload and summarize large tool payload responses.
+
+---
+
+## 🏃 Execution & Quickstart
+
+### Step 1: Start GPU-Accelerated `llama-server` (Gemma 4 Q8)
+In a dedicated terminal, launch `llama-server` on port 8080 with Metal GPU offloading (`-ngl 99`):
 ```bash
-uv venv .venv --python 3.12
-source .venv/bin/activate
-uv sync
+/opt/homebrew/bin/llama-server \
+  -m ~/.cache/huggingface/hub/models--ggml-org--gemma-4-E2B-it-GGUF/snapshots/a1dac71d3ab220618f5a7573a52acdc4baf3ae3b/gemma-4-E2B-it-Q8_0.gguf \
+  -c 16384 --port 8080 -ngl 99
 ```
 
----
-
-## 🏃 Quickstart & Execution
-
-### 1. Start Local LLM Server (Gemma-4 Q8)
-In a dedicated terminal, launch `llama-server` with 16K context window:
-```bash
-/opt/homebrew/bin/llama-server -m ~/.cache/huggingface/hub/models--ggml-org--gemma-4-E2B-it-GGUF/snapshots/a1dac71d3ab220618f5a7573a52acdc4baf3ae3b/gemma-4-E2B-it-Q8_0.gguf -c 16384 --port 8080
-```
-
-### 2. Run Deterministic State-Machine Graph
+### Step 2: Run Multi-Agent State-Machine Graph
 Run the full 4-stage multi-agent graph pipeline across target trials:
 ```bash
-source .venv/bin/activate
-python strands_clinical_graph.py --trials NCT06625320 NCT06088043 NCT07262619 --comparison-name portfolio_audit
+uv run python strands_clinical_graph.py \
+  --trials NCT03252587 NCT05617677 NCT05620407 \
+  --comparison-name sle_tyk2_portfolio
 ```
 
-### 3. Run FastMCP Server
-Run or inspect the stdio MCP server tools:
+### Step 3: Run Multi-Agent Swarm Orchestrator
+Run the cooperative Swarm orchestrator with dynamic handoffs:
+```bash
+uv run python strands_clinical_swarm.py \
+  --trials NCT03252587 NCT05617677 NCT05620407 \
+  --comparison-name sle_tyk2_swarm
+```
+
+### Step 4: Run FastMCP Server Gateway
+Inspect or execute FastMCP tools directly:
 ```bash
 uv run clinical_agent_mcp.py
 ```
 
-### 4. Run Legacy Swarm
-Run the cooperative Swarm orchestrator:
+### Step 5: Run Self-Testing Integration Suite
+Verify PostgreSQL database connections, RBridge solvers, and SQL security guardrails:
 ```bash
-python strands_clinical_swarm.py --trials NCT06625320 NCT06088043 NCT07262619 --comparison-name swarm_audit
-```
-
-### 5. Run Self-Testing Validation Suite
-Verify database connections, RBridge solvers, and MCP tools:
-```bash
-python validate_pipeline.py
+uv run python validate_pipeline.py
 ```
 
 ---
 
-## 📚 Technical Documentation & Guides
+## 📂 Output Directory Reference
 
-*   📄 [MODEL_BENCHMARK.md](MODEL_BENCHMARK.md) — Empirical comparison of Gemma-4 Q8 vs Qwythos 9B local backends.
-*   📄 [strands_architectures_comparison.md](strands_architectures_comparison.md) — Multi-agent topology trade-off analysis (Swarm vs. State-Machine DAG).
-*   📄 [token_limit_remediation.md](token_limit_remediation.md) — Strategies for eliminating context window bloat and `MaxTokensReachedException`.
-*   📄 [memory_observability_learning.md](memory_observability_learning.md) — Blueprint for OpenTelemetry (Langfuse/Phoenix) tracing, RAG vector memory, and self-correction.
-
----
-
-## 📂 Output Directory Structure
-
-*   `analysis_json/{NCT_ID}_graph_report.txt` — Individual publication-grade assessment reports.
-*   `analysis_json/{comparison_name}_graph_comparison.json` — Portfolio-level structured comparisons.
-*   `images/` — Power curve PNG visualizations generated by `power_visualization.py`.
+* `analysis_json/{NCT_ID}_analysis.json` — Detailed per-trial statistical, design, and feasibility JSON output.
+* `analysis_json/{NCT_ID}_graph_report.txt` — Individual publication-grade multi-agent assessment reports.
+* `analysis_json/{comparison_name}_graph_comparison.json` — Structured portfolio-level multi-trial comparisons.
+* `images/forest_plot_{comparison_name}_{class}.png` — R `metafor` cross-trial forest plots.
+* `images/power_curves.png` — Power curve PNG visualizations generated by `power_visualization.py`.
 
 ---
 
