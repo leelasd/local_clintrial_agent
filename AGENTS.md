@@ -21,7 +21,6 @@ R engine ≥4.2 with packages: `rpact`, `gsDesign`, `gsDesign2`, `graphicalMCP` 
 | `uv run clinical_agent_mcp.py` | `clinical_agent_mcp.py` | none (server only) | yes | yes |
 | `python design_agent_pipeline.py [--trials NCT1 ...] [--comparison-name foo]` | `design_agent_pipeline.py` | Ollama | optional* | optional* |
 | `python validate_pipeline.py` | `validate_pipeline.py` | none | yes | yes |
-| `python power_visualization.py` | `power_visualization.py` | none | no | no |
 | `clinical-agent` | → `design_agent_pipeline.py:main` | Ollama | optional* | optional* |
 
 *Legacy pipeline degrades gracefully: `fetch_trial` falls back to ClinicalTrials.gov v2 API if DB unreachable; `analyze_sample_size` falls back to Python approximations if R/rpy2 fails (when `calculation_mode: Python-approx`).
