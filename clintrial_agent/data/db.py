@@ -1,28 +1,83 @@
 import psycopg2
 from psycopg2.extras import DictCursor
+from psycopg2.pool import ThreadedConnectionPool
 import logging
 from clintrial_agent.config import CONFIG
 
 logger = logging.getLogger(__name__)
 
-def get_db_connection():
-    """Create a connection to the local PostgreSQL database."""
+_DB_POOL: ThreadedConnectionPool | None = None
+_READONLY_DB_POOL: ThreadedConnectionPool | None = None
+
+class PooledConnectionProxy:
+    """Proxy wrapping a pooled connection so conn.close() returns it to the pool."""
+    def __init__(self, conn, pool):
+        self._conn = conn
+        self._pool = pool
+
+    def close(self):
+        if self._conn is not None and self._pool is not None:
+            try:
+                self._pool.putconn(self._conn)
+            except Exception as e:
+                logger.warning(f"Error returning connection to pool: {e}")
+            self._conn = None
+            self._pool = None
+
+    def __getattr__(self, name):
+        if self._conn is None:
+            raise psycopg2.InterfaceError("Connection is closed.")
+        return getattr(self._conn, name)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.close()
+
+def _get_pool(user: str | None = None) -> ThreadedConnectionPool:
+    global _DB_POOL, _READONLY_DB_POOL
     dbname = CONFIG.get('db', {}).get('name', 'chembl_37')
     host = CONFIG.get('db', {}).get('host', 'localhost')
-    user = CONFIG.get('db', {}).get('user', None)
-    return psycopg2.connect(dbname=dbname, host=host, user=user)
 
+    if user == 'clintrial_readonly':
+        if _READONLY_DB_POOL is None or _READONLY_DB_POOL.closed:
+            _READONLY_DB_POOL = ThreadedConnectionPool(
+                minconn=1, maxconn=10, dbname=dbname, host=host, user='clintrial_readonly'
+            )
+        return _READONLY_DB_POOL
+    else:
+        db_user = CONFIG.get('db', {}).get('user', None)
+        if _DB_POOL is None or _DB_POOL.closed:
+            _DB_POOL = ThreadedConnectionPool(
+                minconn=1, maxconn=10, dbname=dbname, host=host, user=db_user
+            )
+        return _DB_POOL
+
+def get_db_connection():
+    """Get a pooled PostgreSQL connection. conn.close() returns connection to pool."""
+    try:
+        pool = _get_pool()
+        conn = pool.getconn()
+        return PooledConnectionProxy(conn, pool)
+    except Exception as e:
+        logger.warning(f"Pool connection failed: {e}. Falling back to direct connection.")
+        dbname = CONFIG.get('db', {}).get('name', 'chembl_37')
+        host = CONFIG.get('db', {}).get('host', 'localhost')
+        user = CONFIG.get('db', {}).get('user', None)
+        return psycopg2.connect(dbname=dbname, host=host, user=user)
 
 def get_readonly_db_connection():
-    """Create a read-only connection to PostgreSQL using the clintrial_readonly role.
-    
-    This user has GRANT SELECT only on ctgov.*, public.*, and bridge.* schemas.
-    Used by query_clinical_db MCP tool to enforce SQL injection safety at the
-    database level rather than relying on regex-based keyword blocking.
-    """
-    dbname = CONFIG.get('db', {}).get('name', 'chembl_37')
-    host = CONFIG.get('db', {}).get('host', 'localhost')
-    return psycopg2.connect(dbname=dbname, host=host, user='clintrial_readonly')
+    """Get a pooled read-only PostgreSQL connection (clintrial_readonly)."""
+    try:
+        pool = _get_pool(user='clintrial_readonly')
+        conn = pool.getconn()
+        return PooledConnectionProxy(conn, pool)
+    except Exception as e:
+        logger.warning(f"Readonly pool connection failed: {e}. Falling back to direct connection.")
+        dbname = CONFIG.get('db', {}).get('name', 'chembl_37')
+        host = CONFIG.get('db', {}).get('host', 'localhost')
+        return psycopg2.connect(dbname=dbname, host=host, user='clintrial_readonly')
 
 def _map_phase(phase_str):
     if not phase_str:
