@@ -171,8 +171,11 @@ def analyze_sample_size(protocol, endpoints, indication_params=None):
                 result['power_analysis']['r_exact_required_sample_size'] = res['n']
                 result['power_analysis']['r_exact_required_events'] = res['events']
                 result['power_analysis']['assessment'] = 'Adequately Powered (R-exact)' if enrollment >= res['n'] else 'Underpowered (R-exact)'
+                result['power_analysis']['calculation_mode_used'] = 'R-exact'
             except Exception as e:
-                logger.warning(f"R-exact gsDesign survival sizing failed: {e}")
+                logger.warning(f"R-exact gsDesign survival sizing failed: {e}. Falling back to Python approximation.", exc_info=True)
+                result['power_analysis']['r_exact_error'] = str(e)
+                result['power_analysis']['calculation_mode_used'] = 'Python-approx (R-exact fallback)'
         return result
     
     if is_dichotomous and n_per_arm > 1:

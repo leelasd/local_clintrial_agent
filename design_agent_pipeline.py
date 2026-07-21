@@ -757,7 +757,55 @@ def analyze_pharmacogenetics(protocol, indication):
             'Cannot query GWAS without indication.'
         )
     
-    return result
+def classify_endpoint_type(measure, description):
+    """Classify endpoint measure text into safety, clinical, surrogate, etc."""
+    text = (measure + ' ' + (description or '')).lower()
+    _ek = CONFIG['endpoint_keywords']
+    safety_keywords = _ek['safety']
+    qol_keywords = _ek['patient_reported']
+    clinical_keywords = _ek['clinical']
+    biomarker_keywords = _ek['biomarker']
+    surrogate_keywords = _ek['surrogate']
+    composite_keywords = _ek['composite']
+    
+    if any(k in text for k in safety_keywords):
+        return 'Safety'
+    elif any(k in text for k in composite_keywords):
+        return 'Composite'
+    elif any(k in text for k in clinical_keywords):
+        return 'Clinical'
+    elif any(k in text for k in qol_keywords):
+        return 'Patient-Reported'
+    elif any(k in text for k in biomarker_keywords):
+        return 'Biomarker'
+    elif any(k in text for k in surrogate_keywords):
+        return 'Surrogate'
+    else:
+        return 'Surrogate'
+
+
+def extract_endpoints(protocol):
+    """Extract primary and secondary endpoints from protocol data with classified types."""
+    outcomes_mod = protocol.get('outcomesModule', {})
+    endpoints = []
+    
+    for outcome in outcomes_mod.get('primaryOutcomes', []):
+        endpoints.append({
+            'text': outcome.get('measure', 'N/A'),
+            'endpoint_type': classify_endpoint_type(outcome.get('measure', ''), outcome.get('description', '')),
+            'timeframe': outcome.get('timeFrame', 'N/A'),
+            'is_primary': True
+        })
+    
+    for outcome in outcomes_mod.get('secondaryOutcomes', []):
+        endpoints.append({
+            'text': outcome.get('measure', 'N/A'),
+            'endpoint_type': classify_endpoint_type(outcome.get('measure', ''), outcome.get('description', '')),
+            'timeframe': outcome.get('timeFrame', 'N/A'),
+            'is_primary': False
+        })
+    return endpoints
+
 
 def analyze_trial(nct_id):
     """Full pipeline: fetch, classify design from API, then LLM-classify eligibility."""
@@ -792,49 +840,7 @@ def analyze_trial(nct_id):
         print(f"  Stratification Factors: {', '.join(randomization['stratification_factors'][:5])}")
     
     # --- STEP 0b: Extract and classify endpoints from API ---
-    outcomes_mod = protocol.get('outcomesModule', {})
-    endpoints = []
-    
-    def classify_endpoint_type(measure, description):
-        text = (measure + ' ' + (description or '')).lower()
-        _ek = CONFIG['endpoint_keywords']
-        safety_keywords = _ek['safety']
-        qol_keywords = _ek['patient_reported']
-        clinical_keywords = _ek['clinical']
-        biomarker_keywords = _ek['biomarker']
-        surrogate_keywords = _ek['surrogate']
-        composite_keywords = _ek['composite']
-        
-        if any(k in text for k in safety_keywords):
-            return 'Safety'
-        elif any(k in text for k in composite_keywords):
-            return 'Composite'
-        elif any(k in text for k in clinical_keywords):
-            return 'Clinical'
-        elif any(k in text for k in qol_keywords):
-            return 'Patient-Reported'
-        elif any(k in text for k in biomarker_keywords):
-            return 'Biomarker'
-        elif any(k in text for k in surrogate_keywords):
-            return 'Surrogate'
-        else:
-            return 'Surrogate'
-    
-    for outcome in outcomes_mod.get('primaryOutcomes', []):
-        endpoints.append({
-            'text': outcome['measure'],
-            'endpoint_type': classify_endpoint_type(outcome['measure'], outcome.get('description', '')),
-            'timeframe': outcome.get('timeFrame', 'N/A'),
-            'is_primary': True
-        })
-    
-    for outcome in outcomes_mod.get('secondaryOutcomes', []):
-        endpoints.append({
-            'text': outcome['measure'],
-            'endpoint_type': classify_endpoint_type(outcome['measure'], outcome.get('description', '')),
-            'timeframe': outcome.get('timeFrame', 'N/A'),
-            'is_primary': False
-        })
+    endpoints = extract_endpoints(protocol)
     
     print(f"\nEndpoints: {sum(1 for e in endpoints if e['is_primary'])} primary, {sum(1 for e in endpoints if not e['is_primary'])} secondary")
     endpoint_types = Counter(e['endpoint_type'] for e in endpoints)

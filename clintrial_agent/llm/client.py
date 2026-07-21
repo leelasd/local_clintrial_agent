@@ -149,8 +149,22 @@ Do not use escape characters. Write the JSON directly.
             json_text = json_text.replace('\\', '/')
             batch_results = json.loads(json_text)
             eligibility.extend(batch_results)
-        except Exception as e:
-            logger.warning(f"Error parsing LLM response for batch {batch_idx + 1}: {e}")
+        except Exception as parse_err:
+            logger.warning(f"JSON array parse failed for batch {batch_idx + 1}: {parse_err}. Attempting regex object recovery.")
+            recovered = []
+            import re
+            for obj_match in re.finditer(r'\{[^{}]*\}', response_text):
+                try:
+                    obj = json.loads(obj_match.group(0))
+                    if 'text' in obj:
+                        recovered.append(obj)
+                except Exception:
+                    pass
+            if recovered:
+                logger.info(f"Recovered {len(recovered)} criteria objects from batch {batch_idx + 1} via regex fallback.")
+                eligibility.extend(recovered)
+            else:
+                logger.error(f"Failed to parse LLM response for batch {batch_idx + 1}: {parse_err}. Raw output:\n{response_text[:300]}")
 
     # Normalize LLM output field names (variant keys)
     for item in eligibility:
