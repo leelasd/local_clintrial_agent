@@ -159,10 +159,13 @@ def run_graph_analysis(nct_ids, comparison_name):
                                 if isinstance(content, list) and len(content) > 0:
                                     report_text = content[0].get("text", "")
 
-                # Fallback if content extraction returned empty
-                if not report_text:
-                    report_text = f"Graph completed with status {result.status} but returned no text. Execution order: {[n.node_id for n in result.execution_order]}"
-                
+                # Apply Neurosymbolic Guardrail validation to clean placeholders & verify sections
+                from clintrial_agent.guardrails import NeurosymbolicGuardrail
+                is_valid, placeholders, clean_report_text = NeurosymbolicGuardrail.validate_report_content(report_text)
+                if placeholders:
+                    logger.info(f"NeurosymbolicGuardrail cleaned {len(placeholders)} placeholder(s) from {nct_id} report.")
+                report_text = clean_report_text
+
                 # Save individual report
                 out_file = os.path.join("analysis_json", f"{nct_id}_graph_report.txt")
                 with open(out_file, "w") as f:

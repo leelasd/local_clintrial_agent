@@ -71,6 +71,10 @@ def simulate_eligibility_yield(nct_id: str, cohort_size: int = 10000) -> str:
         logger.error(f"Error running simulate_eligibility_yield for {nct_id}: {e}")
         return f"Error running eligibility simulation for {nct_id}: {str(e)}"
 
+# Initialize global DebounceHook for MCP tool calls
+from clintrial_agent.guardrails import DebounceHook, NeurosymbolicGuardrail, MemoryPointer
+global_debounce = DebounceHook(max_repeats=2)
+
 @mcp.tool()
 @redirect_stdout_to_stderr
 def query_exact_stats(solver: str, params: dict) -> str:
@@ -78,37 +82,31 @@ def query_exact_stats(solver: str, params: dict) -> str:
     Query the in-process RBridge statistical kernel via rpy2 for exact sequential designs,
     log-rank survival sizing, bioequivalence crossover sizing, CRM dose monitoring,
     non-proportional hazards sizing, or graphical multiplicity adjustments.
-    
-    Args:
-        solver: The R statistical solver to run. Options:
-            - 'simon2stage': Simon's Two-Stage optimal/minimax Phase II designs (clinfun).
-              Params: pu (float), pa (float), ep1 (float, alpha), ep2 (float, beta).
-            - 'n_survival': log-rank survival sample size sizing (gsDesign).
-              Params: lambda1 (float), lambda2 (float), ratio (float), alpha (float), beta (float).
-            - 'powertost': bioequivalence crossover TOST sizing (PowerTOST).
-              Params: alpha (float), target_power (float), cv (float), theta0 (float), theta1 (float), theta2 (float).
-            - 'group_sequential': group sequential design boundaries (rpact).
-              Params: alpha (float), beta (float), sided (int), information_rates (list of floats).
-            - 'crm': Continual Reassessment Method for Phase I dose monitoring (dfcrm).
-              Params: prior (list of floats), target (float), tox (list of ints), level (list of ints).
-            - 'gsdesign2_nph': Non-proportional hazards fixed-sample survival design (gsDesign2).
-              Params: hr (float), control_median (float), test (str, e.g. 'maxcombo' or 'rmst'), alpha (float), power (float), enrollment_rate (float), enrollment_duration (float), follow_up_duration (float).
-            - 'graphical_mcp': graphical multiple comparison testing (graphicalMCP).
-              Params: num_hypotheses (int), alpha (float), weights (list of floats), transition_matrix (list of list of floats), p_values (list of floats).
-        params: Dict of parameters specific to the chosen solver.
     """
+    # 1. Check Debounce Guardrail to prevent tool call reasoning loops
+    allowed, debounce_msg = global_debounce.check_call("query_exact_stats", {"solver": solver, "params": params})
+    if not allowed:
+        return debounce_msg
+
     try:
         from clintrial_agent.stats import RBridge
         bridge = RBridge()
         
         if solver == 'simon2stage':
+            raw_pu = float(params.get('pu', 0.1))
+            raw_pa = float(params.get('pa', 0.3))
+            # 2. Enforce Neurosymbolic Guardrail on Simon's Two-Stage parameter ordering
+            pu, pa, warning = NeurosymbolicGuardrail.validate_simon2stage_params(raw_pu, raw_pa)
+            
             res = bridge.clinfun_simon2stage(
-                pu=float(params.get('pu', 0.1)),
-                pa=float(params.get('pa', 0.3)),
+                pu=pu,
+                pa=pa,
                 ep1=float(params.get('ep1', 0.05)),
                 ep2=float(params.get('ep2', 0.2)),
                 nmax=int(params.get('nmax', 500))
             )
+            if warning:
+                res["neurosymbolic_guardrail_notice"] = warning
         elif solver == 'n_survival':
             res = bridge.gsdesign_fixed_survival(
                 lambda1=float(params.get('lambda1', 0.0461)),
