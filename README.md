@@ -7,37 +7,52 @@ An automated, local-first clinical trial analysis and audit system powered by **
 ## 🏗️ Architecture Overview
 
 ```mermaid
-flowchart TD
-    subgraph MultiAgent ["Multi-Agent Orchestration (Strands DAG)"]
-        PE["Protocol Extractor Agent"] --> BS["Biostatistician Agent"]
-        BS --> FS["Feasibility Specialist Agent"]
-        FS --> SY["Synthesizer Agent"]
+flowchart LR
+    subgraph Agents ["🕸️ Multi-Agent DAG Orchestrator"]
+        direction TB
+        PE["📄 Protocol Extractor"] --> BS["📊 Biostatistician"]
+        BS --> FS["⚙️ Feasibility Specialist"]
+        FS --> SY["📑 Synthesizer Agent"]
     end
 
-    subgraph Guardrails ["AWS Safety & Reliability Guardrails"]
-        Debounce["DebounceHook (Loop Prevention)"]
-        MemPointer["MemoryPointer (Context Control)"]
-        NeuroGuard["NeurosymbolicGuardrail (Rule Engine)"]
+    subgraph LLM ["🧠 Local Open-Weight LLM"]
+        Gemma["llama-server :8080<br/>(Gemma 4 Q8 Metal GPU)"]
     end
 
-    subgraph LLM ["Local Open-Weight LLM"]
-        Gemma["llama-server :8080 (Gemma 4 Q8 Metal GPU)"]
+    subgraph Guardrails ["🛡️ AWS Safety Guardrails"]
+        direction TB
+        Debounce["DebounceHook<br/>(Loop Prevention)"]
+        MemPointer["MemoryPointer<br/>(Context Control)"]
+        NeuroGuard["Neurosymbolic<br/>(Rule Engine)"]
     end
 
-    subgraph MCP ["FastMCP Clinical Gateway"]
-        Tools["MCP Tools (Trial Analysis • Yield Sim • DB Query • Meta-Analysis)"]
+    subgraph MCP ["🔌 FastMCP Gateway"]
+        Tools["MCP Tools Interface<br/>(Analysis • Sim • DB • Meta)"]
     end
 
-    subgraph Core ["Data & Statistical Solvers"]
-        PostgreSQL[("Local PostgreSQL chembl_37<br/>(AACT + ChEMBL 37)")]
-        RBridge["R Statistical Engine (rpy2)<br/>(gsDesign • rpact • clinfun • metafor)"]
+    subgraph Solvers ["🧮 Data & Statistical Solvers"]
+        direction TB
+        PostgreSQL[("🗄️ Local PostgreSQL<br/>(AACT + ChEMBL 37)")]
+        RBridge["📈 R Engine (rpy2)<br/>(gsDesign • rpact • metafor)"]
     end
 
-    MultiAgent <--> Guardrails
-    MultiAgent <--> Gemma
-    MultiAgent <--> MCP
+    Agents <-->|Inference| Gemma
+    Agents <-->|Validation| Guardrails
+    Agents <-->|Tool Calls| MCP
     MCP --> PostgreSQL
     MCP --> RBridge
+
+    classDef agent fill:#1e293b,stroke:#3b82f6,stroke-width:2px,color:#fff;
+    classDef llm fill:#312e81,stroke:#6366f1,stroke-width:2px,color:#fff;
+    classDef guard fill:#4c0519,stroke:#f43f5e,stroke-width:2px,color:#fff;
+    classDef mcp fill:#2e1065,stroke:#a855f7,stroke-width:2px,color:#fff;
+    classDef solver fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#fff;
+
+    class PE,BS,FS,SY agent;
+    class Gemma llm;
+    class Debounce,MemPointer,NeuroGuard guard;
+    class Tools mcp;
+    class PostgreSQL,RBridge solver;
 ```
 
 ---
