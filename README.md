@@ -7,38 +7,35 @@ An automated, local-first clinical trial analysis and audit system powered by **
 ## 🏗️ Architecture Overview
 
 ```mermaid
-flowchart LR
-    subgraph Agents ["🕸️ Multi-Agent DAG Orchestrator"]
-        direction TB
-        PE["📄 Protocol Extractor"] --> BS["📊 Biostatistician"]
-        BS --> FS["⚙️ Feasibility Specialist"]
-        FS --> SY["📑 Synthesizer Agent"]
+flowchart TD
+    subgraph Agents ["Multi-Agent DAG Orchestrator"]
+        PE["Protocol Extractor Agent"] --> BS["Biostatistician Agent"]
+        BS --> FS["Feasibility Specialist Agent"]
+        FS --> SY["Synthesizer Agent"]
     end
 
-    subgraph LLM ["🧠 Local Open-Weight LLM"]
-        Gemma["llama-server :8080<br/>(Gemma 4 Q8 Metal GPU)"]
+    subgraph Guardrails ["AWS Safety Guardrails"]
+        Debounce["DebounceHook (Loop Prevention)"]
+        MemPointer["MemoryPointer (Context Control)"]
+        NeuroGuard["Neurosymbolic (Rule Engine)"]
     end
 
-    subgraph Guardrails ["🛡️ AWS Safety Guardrails"]
-        direction TB
-        Debounce["DebounceHook<br/>(Loop Prevention)"]
-        MemPointer["MemoryPointer<br/>(Context Control)"]
-        NeuroGuard["Neurosymbolic<br/>(Rule Engine)"]
+    subgraph LLM ["Local Open-Weight LLM"]
+        Gemma["llama-server :8080 (Gemma 4 Q8 Metal GPU)"]
     end
 
-    subgraph MCP ["🔌 FastMCP Gateway"]
-        Tools["MCP Tools Interface<br/>(Analysis • Sim • DB • Meta)"]
+    subgraph MCP ["FastMCP Gateway"]
+        Tools["MCP Tools (Analysis • Yield Sim • DB Query • Meta-Analysis)"]
     end
 
-    subgraph Solvers ["🧮 Data & Statistical Solvers"]
-        direction TB
-        PostgreSQL[("🗄️ Local PostgreSQL<br/>(AACT + ChEMBL 37)")]
-        RBridge["📈 R Engine (rpy2)<br/>(gsDesign • rpact • metafor)"]
+    subgraph Solvers ["Data & Statistical Solvers"]
+        PostgreSQL[("Local PostgreSQL chembl_37 (AACT + ChEMBL 37)")]
+        RBridge["R Engine rpy2 (gsDesign • rpact • metafor)"]
     end
 
-    Agents <-->|Inference| Gemma
-    Agents <-->|Validation| Guardrails
-    Agents <-->|Tool Calls| MCP
+    Agents <--> Gemma
+    Agents <--> Guardrails
+    Agents <--> MCP
     MCP --> PostgreSQL
     MCP --> RBridge
 
