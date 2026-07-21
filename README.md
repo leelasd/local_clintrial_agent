@@ -102,7 +102,7 @@ flowchart TD
 ### 2. **Per-Trial Event Loop & Session Isolation**
 * **Issue:** `Trial 2: Error: Event loop is closed`
 * **Cause:** In the Strands framework, `LlamaCppModel` (holding an `httpx.AsyncClient`) and `MCPClient` bind internal async session states. Completing `asyncio.run()` on Trial 1 closed their event loop before Trial 2 could execute.
-* **Fix:** Factory functions `create_model()` and `create_mcp_client()` are called **inside the `for nct_id in nct_ids:` loop** in both `strands_clinical_graph.py` and `strands_clinical_swarm.py`:
+* **Fix:** Factory functions `create_model()` and `create_mcp_client()` are called **inside the `for nct_id in nct_ids:` loop** in both `strands_clinical_graph.py` and `examples/strands_clinical_swarm.py`:
   ```python
   for nct_id in nct_ids:
       model = create_model()
