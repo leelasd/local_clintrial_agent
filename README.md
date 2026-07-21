@@ -9,38 +9,46 @@ An automated, local-first clinical trial analysis and audit system powered by **
 ```mermaid
 flowchart TD
     subgraph Orchestration Layer (Strands Framework)
-        Graph[strands_clinical_graph.py - 4-Node DAG]
-        Swarm[strands_clinical_swarm.py - Swarm Orchestrator]
+        Graph["strands_clinical_graph.py - 4-Node DAG"]
+        Swarm["examples/strands_clinical_swarm.py - Swarm Benchmark"]
     end
 
     subgraph Specialized Agents (Multi-Agent DAG / Swarm)
-        PE[1. Protocol Extractor Agent]
-        BS[2. Biostatistician Agent]
-        FS[3. Feasibility Specialist Agent]
-        SY[4. Synthesizer Agent]
+        PE["1. Protocol Extractor Agent"]
+        BS["2. Biostatistician Agent"]
+        FS["3. Feasibility Specialist Agent"]
+        SY["4. Synthesizer Agent"]
+    end
+
+    subgraph AWS Guardrail Layer (clintrial_agent/guardrails.py)
+        Debounce["DebounceHook<br/>Loop Prevention (>2 calls)"]
+        MemPointer["MemoryPointer<br/>Context Overflow Prevention"]
+        NeuroGuard["NeurosymbolicGuardrail<br/>p0 < p1 Ordering & Report Cleaning"]
     end
 
     subgraph Local Open-Weight LLM Backend
-        LlamaServer[llama-server :8080\nGemma-4 Q8 - Apple Silicon Metal GPU]
+        LlamaServer["llama-server :8080<br/>Gemma-4 Q8 - Apple Silicon Metal GPU"]
     end
 
     subgraph FastMCP Gateway (clinical_agent_mcp.py)
-        MCPStdio[FastMCP Stdio Server JSON-RPC]
-        Tool1[analyze_trial_design]
-        Tool2[simulate_eligibility_yield]
-        Tool3[query_exact_stats]
-        Tool4[search_chembl_bridge]
-        Tool5[query_clinical_db]
-        Tool6[run_cross_trial_meta_analysis]
+        MCPStdio["FastMCP Stdio Server JSON-RPC"]
+        Tool1["analyze_trial_design"]
+        Tool2["simulate_eligibility_yield"]
+        Tool3["query_exact_stats"]
+        Tool4["search_chembl_bridge"]
+        Tool5["query_clinical_db"]
+        Tool6["run_cross_trial_meta_analysis"]
     end
 
     subgraph Data & Statistical Kernels
-        DB[(Local PostgreSQL chembl_37\nAACT ctgov.* + ChEMBL public.*)]
-        RBridge[rpy2 RBridge ABI Mode]
-        REngine[R Engine 4.6.1\nrpact / gsDesign / clinfun / metafor]
+        DB[("Local PostgreSQL chembl_37<br/>AACT ctgov.* + ChEMBL public.*")]
+        RBridge["rpy2 RBridge ABI Mode"]
+        REngine["R Engine 4.6.1<br/>rpact / gsDesign / clinfun / metafor"]
     end
 
     Graph --> PE --> BS --> FS --> SY
+    PE & BS & FS & SY <--> Debounce & MemPointer
+    SY --> NeuroGuard
     PE & BS & FS & SY <-->|HTTP /v1/chat/completions| LlamaServer
     PE & BS & FS <-->|Stdio Transport| MCPStdio
     MCPStdio --> Tool1 & Tool2 & Tool3 & Tool4 & Tool5 & Tool6
